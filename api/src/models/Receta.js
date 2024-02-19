@@ -13,9 +13,6 @@ module.exports = (sequelize) => {
             },
             nombre: {
                 type: DataTypes.INTEGER,
-            },
-            ingredientes: {
-                type: DataTypes.INTEGER,
             }
         },
         {
