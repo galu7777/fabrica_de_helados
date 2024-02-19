@@ -3,7 +3,7 @@ const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const {
-  DB_USER, DB_PASSWORD, DB_HOST,
+  DB_USER, DB_PASSWORD, DB_HOST, DB_NAME
 } = process.env;
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
@@ -37,7 +37,7 @@ const {
   DetallesDeVenta,
   DetallesDevolucion,
   Devolucion,
-  Ingredientes,
+  Ingrediente,
   InventarioMateriaPrima,
   Paleta,
   Producto,
@@ -49,6 +49,14 @@ const {
 } = sequelize.models;
 
 // Aca vendrian las relaciones
+// Relacion entre ingredientes, proveedores e inventario.
+Ingrediente.belongsTo(Proveedor);
+InventarioMateriaPrima.belongsTo(Ingrediente);
+InventarioMateriaPrima.belongsTo(Proveedor);
+// Relacion entre receta e ingrediente
+Receta.belongsToMany(Ingrediente, {through: "RecetaIngrediente"});
+
+
 // Product.hasMany(Reviews);
 
 module.exports = {
