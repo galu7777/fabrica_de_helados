@@ -43,7 +43,8 @@ const {
   Producto,
   ProductoFinal,
   Proveedor,
-  Receta,
+  RecipeIngrediente,
+  Recipe,
   TipoDePaleta,
   Venta
 } = sequelize.models;
@@ -54,7 +55,10 @@ Ingrediente.belongsTo(Proveedor);
 InventarioMateriaPrima.belongsTo(Ingrediente);
 InventarioMateriaPrima.belongsTo(Proveedor);
 // Relacion entre receta e ingrediente
-Receta.belongsToMany(Ingrediente, {through: "RecetaIngrediente"});
+Recipe.belongsToMany(Ingrediente, {through: RecipeIngrediente, constraints: false});
+//Relacion entre receta y batido
+Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
+BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
 
 
 // Product.hasMany(Reviews);
