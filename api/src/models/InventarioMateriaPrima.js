@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
             cantidad: {
                 type: DataTypes.INTEGER
             },
+            unidad_medida: {
+                type: DataTypes.STRING,
+                defaultValue: 'KG'
+            },
             tipo: {
                 type: DataTypes.ENUM('ENTREGA','SALIDA'),
             }
