@@ -11,9 +11,13 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
                 field: "id_batida",
             },
+            id_receta: {
+                type: DataTypes.INTEGER,
+            },
             cantidad: {
                 type: DataTypes.FLOAT,
-            },
+                defaultValue: 0
+            }
         },
         {
         timestamps: true,
