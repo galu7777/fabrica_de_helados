@@ -5,6 +5,10 @@ const getProvider = require('../controllers/Provider/getProvider');
 const createProvider = require('../controllers/Provider/createProvider');
 const getMaterialsInventory = require('../controllers/Inventory/getMaterialsInventory');
 const RawMaterialsInventory = require('../controllers/Inventory/rawMaterialsInventory');
+const createRecipe = require('../controllers/Recipe/createRecipe');
+const getRecipe = require('../controllers/Recipe/getRecipe');
+const createSmoothie = require('../controllers/smoothie/createSmoothie');
+const getSmoothie = require('../controllers/Smoothie/getSmoothie');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -24,6 +28,12 @@ router.get('/inventory/get_ingredient', getMaterialsInventory)
 router.post('/inventory/create_ingredient', RawMaterialsInventory)
 
 // rutas de receta
+router.get('/recipe/get_recipe', getRecipe)
+router.post('/recipe/create_recipe', createRecipe)
+
+// rutas de batido
+router.get('/smoothie/get_smoothie', getSmoothie)
+router.post('/smoothie/create_smoothie', createSmoothie)
 
 
 
