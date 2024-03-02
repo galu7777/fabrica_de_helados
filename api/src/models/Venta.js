@@ -11,8 +11,11 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
                 field: "id_venta",
             },
-            cliente: {
-                type: DataTypes.STRING,     
+            cantidad: {
+                type: DataTypes.INTEGER,
+            },
+            precio: {
+                type: DataTypes.INTEGER,
             },
             monto: {
                 type: DataTypes.INTEGER,

@@ -9,6 +9,14 @@ const createRecipe = require('../controllers/Recipe/createRecipe');
 const getRecipe = require('../controllers/Recipe/getRecipe');
 const createSmoothie = require('../controllers/smoothie/createSmoothie');
 const getSmoothie = require('../controllers/Smoothie/getSmoothie');
+const createTypePopsicle = require('../controllers/Popsicle/TypePopsicle/createTypePopsicle');
+const getTypePopsicle = require('../controllers/Popsicle/TypePopsicle/getTypePopsicle');
+const createInventoryPopsicle = require('../controllers/Popsicle/InventoryPopsicle/createInventoryPopsicle');
+const getInventoryPopsicle = require('../controllers/Popsicle/InventoryPopsicle/getInventoryPopsicle');
+const createClient = require('../controllers/Client/createClient');
+const getAllClient = require('../controllers/Client/getAllClient');
+const createSale = require('../controllers/Sale/createSale');
+const getSales = require('../controllers/Sale/getSales');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -24,8 +32,8 @@ router.get('/provider/get_allproviders', getProvider)
 router.post('/provider/create_provider', createProvider)
 
 // rutas de inventario
-router.get('/inventory/get_ingredient', getMaterialsInventory)
-router.post('/inventory/create_ingredient', RawMaterialsInventory)
+router.get('/inventory/get_inventory', getMaterialsInventory)
+router.post('/inventory/create_entry', RawMaterialsInventory)
 
 // rutas de receta
 router.get('/recipe/get_recipe', getRecipe)
@@ -35,6 +43,21 @@ router.post('/recipe/create_recipe', createRecipe)
 router.get('/smoothie/get_smoothie', getSmoothie)
 router.post('/smoothie/create_smoothie', createSmoothie)
 
+// rutas de tipos paletas
+router.get('/popsicle/get_type_popsicle', getTypePopsicle)
+router.post('/popsicle/create_type_popsicle', createTypePopsicle)
+
+// rutas inventario de paletas
+router.get('/inventory_popsicle/get_inventory', getInventoryPopsicle)
+router.post('/inventory_popsicle/create_entry', createInventoryPopsicle)
+
+// rutas cliente
+router.get('/client/get_allclients', getAllClient)
+router.post('/client/create_new_client', createClient)
+
+// rutas de ventas
+router.get('/sale/get_allsales', getSales)
+router.post('/sale/create_sale', createSale)
 
 
 module.exports = router;
