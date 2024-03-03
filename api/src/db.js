@@ -39,6 +39,7 @@ const {
   Devolucion,
   Ingrediente,
   InventarioMateriaPrima,
+  InventarioPaleta,
   Paleta,
   Producto,
   ProductoFinal,
@@ -59,6 +60,12 @@ Recipe.belongsToMany(Ingrediente, {through: RecipeIngrediente, constraints: fals
 //Relacion entre receta y batido
 Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
 BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
+// Relacion entre batido y paleta
+InventarioPaleta.belongsTo(BatidaDeHelado)
+InventarioPaleta.belongsTo(TipoDePaleta)
+// Relacion entre cliente y venta
+Cliente.hasMany(Venta)
+Venta.belongsTo(Cliente)
 
 
 // Product.hasMany(Reviews);
