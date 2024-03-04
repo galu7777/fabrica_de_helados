@@ -1,21 +1,26 @@
-const { Venta, Cliente } = require('../../db')
+const { where } = require('sequelize');
+const { Venta, Cliente, InventarioPaleta } = require('../../db')
 const response = require('../../utils/response')
 
 module.exports = async (req, res) => {
-    const { id_cliente, cantidad, precio, monto, tasa  } = req.body;    
+    const { id_cliente, id_inventario_paleta, cantidad, precio, monto, tasa  } = req.body;
     try {
         const foundSmoothie = await Cliente.findOne({
             where: { id_cliente }
         })
 
         if(foundSmoothie){
+            const foundPopsicle = await InventarioPaleta.findOne({
+                where: { id_inventario_paleta }
+             })
+             
             const out_inventory_popsicle = await InventarioPaleta.create({
-                paleta: typePopsicle.nombre,
-                cantidad: cantidad_paleta,
+                paleta: foundPopsicle.paleta,
+                cantidad: -cantidad,
                 unidad_medida: "GRS",
-                tipo: "ENTREGA",
-                BatidaDeHeladoId: id,
-                TipoDePaletumId: typePopsicle.id
+                tipo: "SALIDA POR VENTA",
+                BatidaDeHeladoId: foundPopsicle.BatidaDeHeladoId,
+                TipoDePaletumId: foundPopsicle.TipoDePaletumId
             })
 
             const venta = await Venta.create({
