@@ -34,22 +34,23 @@ const Ingredient = () => {
         text: "Por favor, ingresa un nombre de ingrediente válido.",
         icon: "warning"
       });
+    } else {
+      Swal.fire({
+        title: "Quieres registrar este Ingrediente ?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Registrar",
+        denyButtonText: `No registrar`
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire("Registro Exitoso!", "", "success");
+          dispatch(createIngredient(form.nombre));
+        } else if (result.isDenied) {
+          Swal.fire("Los Cambios no se registraron.", "", "info");
+        }
+      });
     }
-    Swal.fire({
-      title: "Quieres registrar este Ingrediente ?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Registrar",
-      denyButtonText: `No registrar`
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Swal.fire("Registro Exitoso!", "", "success");
-        dispatch(createIngredient(form.nombre));
-      } else if (result.isDenied) {
-        Swal.fire("Los Cambios no se registraron.", "", "info");
-      }
-    });
   };
 
   const columns = [
