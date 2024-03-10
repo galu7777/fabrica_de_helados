@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
-const navItems = ['home', 'ingredientes'];
+const navItems = ['home', 'ingredientes', 'Receta'];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -41,7 +41,7 @@ function DrawerAppBar(props) {
                   <ListItemText primary={item} />
                 </ListItemButton>
               </Link>
-          </ListItem>          
+          </ListItem>
         ))}
       </List>
     </Box>

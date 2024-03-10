@@ -1,11 +1,15 @@
-import { 
+import {
     ADD_INGREDIENT,
-    GET_INGREDIENTS
-} from "../actions/actionsTypes" 
+    GET_INGREDIENTS,
+    ADD_RECIPE,
+    GET_RECIPES
+} from "../actions/actionsTypes"
 
 const initialState = {
     ingredients: {},
-    newIngredient: {}
+    newIngredient: {},
+    recipes: {},
+    newRecipe: {}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -21,6 +25,19 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 newIngredient: payload
+            }
+        }
+        case GET_RECIPES: {
+            return {
+                ...state,
+                recipes: payload
+            }
+        }
+
+        case ADD_RECIPE: {
+            return {
+                ...state,
+                newRecipe: payload
             }
         }
 
