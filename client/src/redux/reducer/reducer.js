@@ -2,14 +2,18 @@ import {
     ADD_INGREDIENT,
     GET_INGREDIENTS,
     ADD_RECIPE,
-    GET_RECIPES
+    GET_RECIPES,
+    ADD_PROVIDER,
+    GET_PROVIDERS
 } from "../actions/actionsTypes"
 
 const initialState = {
     ingredients: {},
     newIngredient: {},
     recipes: {},
-    newRecipe: {}
+    newRecipe: {},
+    providers: {},
+    newProvider:{}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -38,6 +42,20 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 newRecipe: payload
+            }
+        }
+
+        case GET_PROVIDERS: {
+            return {
+                ...state,
+                providers: payload
+            }
+        }
+
+        case ADD_PROVIDER: {
+            return {
+                ...state,
+                newProvider: payload
             }
         }
 
