@@ -2,7 +2,9 @@ import {
     ADD_INGREDIENT,
     GET_INGREDIENTS,
     ADD_RECIPE,
-    GET_RECIPES
+    GET_RECIPES,
+    GET_PROVIDERS,
+    ADD_PROVIDER
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
 import axios from 'axios'
@@ -57,6 +59,34 @@ export const createRecipe = (nombre, ingredientes) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/recipe/create_recipe', nombre, ingredientes)
         dispatch({
             type: ADD_RECIPE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const getProviders = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/provider/get_allproviders')
+
+        dispatch({
+            type: GET_PROVIDERS,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const createProvider = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/provider/create_provider', nombre)
+        dispatch({
+            type: ADD_PROVIDER,
             payload: data,
         });
     } catch (error) {
