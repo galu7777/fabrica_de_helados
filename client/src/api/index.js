@@ -5,3 +5,7 @@ export {
 export {
     getRecipes as getRecipesApi
 } from "./recipes"
+
+export {
+    getProviders as getProvidersApi
+} from "./providers"
