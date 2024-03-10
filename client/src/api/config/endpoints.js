@@ -15,4 +15,7 @@ export const Endpoints = {
     Recipe: {
         GetRecipes: createUrl({ base: "recipe", endpoint: "get_recipe" }),
     },
+    Provider: {
+        GetProviders: createUrl({ base: "provider", endpoint: "get_allproviders" }),
+    },
 }
