@@ -11,6 +11,8 @@ import Inventory from "./views/Inventory/Inventory";
 import CreateInventory from "./views/Inventory/CreateInventory";
 import Smoothie from "./views/Smoothie/Smoothie";
 import CreateSmoothie from "./views/Smoothie/CreateSmoothie";
+import Customers from "./views/Customer/Customers";
+import CreateCustomers from "./views/Customer/CreateCustomers";
 
 
 function App() {
@@ -23,14 +25,16 @@ function App() {
           <Route path="*" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/ingredientes" element={<Ingredient />} />
-          <Route path="/receta" element={<Recipe />} />
+          <Route path="/recetas" element={<Recipe />} />
           <Route path="/crear_receta" element={<CreateRecipe />} />
           <Route path="/proveedores" element={<Provider />} />
           <Route path="/crear_proveedore" element={<CreateProvider />} />
           <Route path="/Inventario" element={<Inventory />} />
           <Route path="/crear_inventario" element={<CreateInventory />} />
-          <Route path="/batido" element={<Smoothie />} />
+          <Route path="/batidos" element={<Smoothie />} />
           <Route path="/crear_smoothie" element={<CreateSmoothie />} />
+          <Route path="/Clientes" element={<Customers />} />
+          <Route path="/crear_clientes" element={<CreateCustomers />} />
         </Routes>
       </div>
     </BrowserRouter>
