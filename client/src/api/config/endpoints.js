@@ -24,4 +24,7 @@ export const Endpoints = {
     Smoothie: {
         GetSmoothies: createUrl({ base: "smoothie", endpoint: "get_smoothie" }),
     },
+    Client: {
+        GetClients: createUrl({ base: "client", endpoint: "get_allclients" }),
+    },
 }
