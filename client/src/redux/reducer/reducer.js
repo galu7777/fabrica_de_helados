@@ -6,7 +6,9 @@ import {
     ADD_PROVIDER,
     GET_PROVIDERS,
     GET_INVENTORY,
-    ADD_INVENTORY
+    ADD_INVENTORY,
+    GET_SMOOTHIES,
+    ADD_SMOOTHIE
 } from "../actions/actionsTypes"
 
 const initialState = {
@@ -17,7 +19,9 @@ const initialState = {
     providers: {},
     newProvider:{},
     inventory:{},
-    newInventory:{}
+    newInventory:{},
+    smoothies: {},
+    newSmoothie: {}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -73,6 +77,20 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 newInventory: payload
+            }
+        }
+
+        case GET_SMOOTHIES: {
+            return {
+                ...state,
+                smoothies: payload
+            }
+        }
+
+        case ADD_SMOOTHIE: {
+            return {
+                ...state,
+                newSmoothie: payload
             }
         }
 
