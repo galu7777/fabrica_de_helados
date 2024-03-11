@@ -18,4 +18,7 @@ export const Endpoints = {
     Provider: {
         GetProviders: createUrl({ base: "provider", endpoint: "get_allproviders" }),
     },
+    Inventory: {
+        GetInventory: createUrl({ base: "inventory", endpoint: "get_inventory" }),
+    },
 }
