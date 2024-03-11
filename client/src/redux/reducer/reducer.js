@@ -2,18 +2,36 @@ import {
     ADD_INGREDIENT,
     GET_INGREDIENTS,
     ADD_RECIPE,
-    GET_RECIPES
+    GET_RECIPES,
+    REGISTER,
+    SIGNIN
 } from "../actions/actionsTypes"
 
 const initialState = {
     ingredients: {},
     newIngredient: {},
     recipes: {},
-    newRecipe: {}
+    newRecipe: {},
+    user: {},
+    newUser: {}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
     switch (type) {
+        case REGISTER: {
+            return {
+                ...state,
+                newUser: payload
+            }            
+        }
+
+        case SIGNIN: {
+            return {
+                ...state,
+                user: payload
+            }            
+        }
+
         case GET_INGREDIENTS: {
             return {
                 ...state,

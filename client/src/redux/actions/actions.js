@@ -2,10 +2,40 @@ import {
     ADD_INGREDIENT,
     GET_INGREDIENTS,
     ADD_RECIPE,
-    GET_RECIPES
+    GET_RECIPES,
+    REGISTER,
+    SIGNIN,
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
 import axios from 'axios'
+
+export const registerNewUser = (newUser) => async (dispatch) => {
+    try {
+        const { data } = await axios.post('http://localhost:3001/user/create_user', newUser)
+        console.log(data)
+        dispatch({
+            type: REGISTER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const signin = (user) => async (dispatch) => {
+    try {
+        const { data } = await axios.post('http://localhost:3001/auth/signin', user)
+        console.log(data)
+        dispatch({
+            type: SIGNIN,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
 
 export const getIngredients = () => async (dispatch) => {
     try {
