@@ -6,7 +6,9 @@ import {
     GET_PROVIDERS,
     ADD_PROVIDER,
     ADD_INVENTORY,
-    GET_INVENTORY
+    GET_INVENTORY,
+    ADD_SMOOTHIE,
+    GET_SMOOTHIES,
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
 import axios from 'axios'
@@ -118,6 +120,34 @@ export const createInventory = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/inventory/create_entry', nombre)
         dispatch({
             type: ADD_INVENTORY,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const getSmoothies = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/smoothie/get_smoothie')
+
+        dispatch({
+            type: GET_SMOOTHIES,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const createSmoothie = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/smoothie/create_smoothie', nombre)
+        dispatch({
+            type: ADD_SMOOTHIE,
             payload: data,
         });
     } catch (error) {
