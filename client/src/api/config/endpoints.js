@@ -21,4 +21,7 @@ export const Endpoints = {
     Inventory: {
         GetInventory: createUrl({ base: "inventory", endpoint: "get_inventory" }),
     },
+    Smoothie: {
+        GetSmoothies: createUrl({ base: "smoothie", endpoint: "get_smoothie" }),
+    },
 }
