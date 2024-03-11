@@ -9,3 +9,7 @@ export {
 export {
     getProviders as getProvidersApi
 } from "./providers"
+
+export {
+    getInventory as getInventoryApi
+} from "./inventory"
