@@ -9,6 +9,9 @@ import Provider from "./views/Provider/Provider";
 import CreateProvider from "./views/Provider/CreateProvider";
 import Inventory from "./views/Inventory/Inventory";
 import CreateInventory from "./views/Inventory/CreateInventory";
+import Smoothie from "./views/Smoothie/Smoothie";
+import CreateSmoothie from "./views/Smoothie/CreateSmoothie";
+
 
 function App() {
   return (
@@ -26,6 +29,8 @@ function App() {
           <Route path="/crear_proveedore" element={<CreateProvider />} />
           <Route path="/Inventario" element={<Inventory />} />
           <Route path="/crear_inventario" element={<CreateInventory />} />
+          <Route path="/batido" element={<Smoothie />} />
+          <Route path="/crear_smoothie" element={<CreateSmoothie />} />
         </Routes>
       </div>
     </BrowserRouter>
