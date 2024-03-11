@@ -11,11 +11,17 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
                 field: "id_inventario_paleta",
             },
-            paleta: {
+            nombre_paleta: {
+                type: DataTypes.STRING
+            },
+            tipo_paleta: {
                 type: DataTypes.STRING,
             },
             cantidad: {
                 type: DataTypes.INTEGER,
+            },
+            peso_unitario: {
+                type: DataTypes.INTEGER
             },
             unidad_medida: {
                 type: DataTypes.STRING,

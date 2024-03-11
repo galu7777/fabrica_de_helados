@@ -47,7 +47,8 @@ const {
   RecipeIngrediente,
   Recipe,
   TipoDePaleta,
-  Venta
+  Venta,
+  User
 } = sequelize.models;
 
 // Aca vendrian las relaciones

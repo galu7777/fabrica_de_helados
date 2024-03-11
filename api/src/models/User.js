@@ -2,31 +2,35 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Paleta",
+        "User",
         {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 allowNull: false,
                 autoIncrement: true,
-                field: "id_paleta",
+                field: "id_user",
             },
             nombre: {
-                type: DataTypes.STRING,     
+                type: DataTypes.STRING
             },
-            peso: {
-                type: DataTypes.INTEGER
+            apellido: {
+                type: DataTypes.STRING
             },
-            unidad_medida: {
+            email: {
                 type: DataTypes.STRING,
-                defaultValue: 'GRS'
+                unique: true
             },
-            descripcion: {
+            password: {
                 type: DataTypes.STRING,
+            },
+            rol: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0
             }
         },
         {
-        timestamps: true,
+            timestamps: true,
         }
     );
 };
