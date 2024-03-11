@@ -7,6 +7,8 @@ import Recipe from "./views/Recipe/Recipe";
 import CreateRecipe from "./views/Recipe/CreateRecipe";
 import Provider from "./views/Provider/Provider";
 import CreateProvider from "./views/Provider/CreateProvider";
+import Inventory from "./views/Inventory/Inventory";
+import CreateInventory from "./views/Inventory/CreateInventory";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/crear_receta" element={<CreateRecipe />} />
           <Route path="/proveedores" element={<Provider />} />
           <Route path="/crear_proveedore" element={<CreateProvider />} />
+          <Route path="/Inventario" element={<Inventory />} />
+          <Route path="/crear_inventario" element={<CreateInventory />} />
         </Routes>
       </div>
     </BrowserRouter>
