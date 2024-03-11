@@ -11,5 +11,8 @@ function createUrl({ base = "api", endpoint, path = "", backSlash = false }) {
 export const Endpoints = {
     Ingredient: {
         GetIngredients: createUrl({ base: "ingredient", endpoint: "get_allingredients" }),
-    }
+    },
+    Recipe: {
+        GetRecipes: createUrl({ base: "recipe", endpoint: "get_recipe" }),
+    },
 }
