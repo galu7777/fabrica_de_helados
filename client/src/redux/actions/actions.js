@@ -4,7 +4,9 @@ import {
     ADD_RECIPE,
     GET_RECIPES,
     GET_PROVIDERS,
-    ADD_PROVIDER
+    ADD_PROVIDER,
+    ADD_INVENTORY,
+    GET_INVENTORY
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
 import axios from 'axios'
@@ -87,6 +89,35 @@ export const createProvider = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/provider/create_provider', nombre)
         dispatch({
             type: ADD_PROVIDER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+export const getInventory = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/inventory/get_inventory')
+
+        dispatch({
+            type: GET_INVENTORY,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const createInventory = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/inventory/create_entry', nombre)
+        dispatch({
+            type: ADD_INVENTORY,
             payload: data,
         });
     } catch (error) {
