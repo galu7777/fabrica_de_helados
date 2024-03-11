@@ -13,3 +13,7 @@ export {
 export {
     getInventory as getInventoryApi
 } from "./inventory"
+
+export {
+    getSmoothies as getSmoothiesApi
+} from "./smoothie"
