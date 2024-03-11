@@ -9,6 +9,8 @@ import {
     GET_INVENTORY,
     ADD_SMOOTHIE,
     GET_SMOOTHIES,
+    ADD_CUSTOMER,
+    GET_CUSTOMERS,
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
 import axios from 'axios'
@@ -148,6 +150,34 @@ export const createSmoothie = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/smoothie/create_smoothie', nombre)
         dispatch({
             type: ADD_SMOOTHIE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const getCustomers = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/client/get_allclients')
+
+        dispatch({
+            type: GET_CUSTOMERS,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const createCustomer = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/client/create_new_client   ', nombre)
+        dispatch({
+            type: ADD_CUSTOMER,
             payload: data,
         });
     } catch (error) {
