@@ -17,3 +17,7 @@ export {
 export {
     getSmoothies as getSmoothiesApi
 } from "./smoothie"
+
+export {
+    getClient as getClientsApi
+} from "./client"
