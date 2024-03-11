@@ -17,6 +17,11 @@ const createClient = require('../controllers/Client/createClient');
 const getAllClient = require('../controllers/Client/getAllClient');
 const createSale = require('../controllers/Sale/createSale');
 const getSales = require('../controllers/Sale/getSales');
+const createNewPopsicle = require('../controllers/Popsicle/NewPopsicle/createNewPopsicle');
+const getNewPopsicle = require('../controllers/Popsicle/NewPopsicle/getNewPopsicle');
+const createUser = require('../controllers/User/createUser');
+const getAllUser = require('../controllers/User/getAllUser');
+const auth = require('../controllers/Auth/auth');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -47,6 +52,10 @@ router.post('/smoothie/create_smoothie', createSmoothie)
 router.get('/popsicle/get_type_popsicle', getTypePopsicle)
 router.post('/popsicle/create_type_popsicle', createTypePopsicle)
 
+// rutas nuevas paletas
+router.get('/popsicle/get_popsicle', getNewPopsicle)
+router.post('/popsicle/create_popsicle', createNewPopsicle)
+
 // rutas inventario de paletas
 router.get('/inventory_popsicle/get_inventory', getInventoryPopsicle)
 router.post('/inventory_popsicle/create_entry', createInventoryPopsicle)
@@ -58,6 +67,13 @@ router.post('/client/create_new_client', createClient)
 // rutas de ventas
 router.get('/sale/get_allsales', getSales)
 router.post('/sale/create_sale', createSale)
+
+// rutas de user
+router.get('/user/get_alluser', getAllUser)
+router.post('/user/create_user', createUser)
+
+// rutas de auth
+router.post('/auth/signin', auth)
 
 
 module.exports = router;

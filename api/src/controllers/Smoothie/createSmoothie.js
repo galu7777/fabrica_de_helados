@@ -20,7 +20,6 @@ module.exports = async (req, res) => {
         if (!foundRecipe) {
             return response(res, 404, 'Receta no encontrada');
         }
-
         // Preparar para crear un registro de 'SALIDA' para cada ingrediente utilizado
         for (const ingrediente of foundRecipe.Ingredientes) {
             await InventarioMateriaPrima.create({
@@ -38,7 +37,7 @@ module.exports = async (req, res) => {
             cantidad: foundRecipe.Ingredientes.reduce((acc, item) => acc + item.RecipeIngrediente.cantidad, 0),
         });
 
-        response(res, 201, `Batida de helado creada con éxito. Salidas registradas.`);
+        response(res, 201,{message:  `Batida de helado creada con éxito. Salidas registradas.`, newBatidaDeHelado});
     } catch (error) {
         console.error('Error: ', error.message);
         response(res, 500, `Internal Server Error: ${error.message}`);

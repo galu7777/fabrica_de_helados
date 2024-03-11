@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import NavBar from "./components/Navbar/NavBar";
 import Home from "./views/Home/Home";
@@ -12,14 +12,18 @@ import CreateInventory from "./views/Inventory/CreateInventory";
 import Smoothie from "./views/Smoothie/Smoothie";
 import CreateSmoothie from "./views/Smoothie/CreateSmoothie";
 
+import Login from "./views/Login/Login";
+import Register from "./views/Register/Register";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
       <div>
-        <NavBar />
+        {
+          location.pathname !== "/register" && location.pathname !== "/login" && <NavBar />
+        }
         <Routes>
-          <Route index element={<Home />} />
           <Route path="*" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/ingredientes" element={<Ingredient />} />
@@ -31,11 +35,11 @@ function App() {
           <Route path="/crear_inventario" element={<CreateInventory />} />
           <Route path="/batido" element={<Smoothie />} />
           <Route path="/crear_smoothie" element={<CreateSmoothie />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
-    </BrowserRouter>
   );
 }
 
 export default App;
-

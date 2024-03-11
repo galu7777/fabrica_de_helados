@@ -13,13 +13,7 @@ module.exports = async (req, res) => {
         for (const ingredienteData of ingredientes) {
             const { id: ingredienteId, cantidad } = ingredienteData;
 
-            const cnt = cantidad 
-            // Validar que la cantidad no sea 0 o negativa
-            if (cnt <= 0) {
-                response(res, 400, 'La cantidad debe ser mayor que 0');
-                return;
-            }
-
+            const cnt = cantidad
             // Obtener el modelo del ingrediente basado en el ID
             const ingrediente = await Ingrediente.findByPk(ingredienteId);
 

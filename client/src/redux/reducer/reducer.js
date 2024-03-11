@@ -8,7 +8,9 @@ import {
     GET_INVENTORY,
     ADD_INVENTORY,
     GET_SMOOTHIES,
-    ADD_SMOOTHIE
+    ADD_SMOOTHIE,
+    REGISTER,
+    SIGNIN
 } from "../actions/actionsTypes"
 
 const initialState = {
@@ -21,11 +23,27 @@ const initialState = {
     inventory:{},
     newInventory:{},
     smoothies: {},
-    newSmoothie: {}
+    newSmoothie: {},
+    user: {},
+    newUser: {}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
     switch (type) {
+        case REGISTER: {
+            return {
+                ...state,
+                newUser: payload
+            }
+        }
+
+        case SIGNIN: {
+            return {
+                ...state,
+                user: payload
+            }
+        }
+
         case GET_INGREDIENTS: {
             return {
                 ...state,
