@@ -27,4 +27,7 @@ export const Endpoints = {
     Client: {
         GetClients: createUrl({ base: "client", endpoint: "get_allclients" }),
     },
+    TypePopsicle: {
+        GetTypePopsicle: createUrl({ base: "typePopsicle", endpoint: "get_type_popsicle" }),
+    },
 }
