@@ -21,3 +21,7 @@ export {
 export {
     getClient as getClientsApi
 } from "./client"
+
+export {
+    getTypePopsicle as getTypePopsicleApi
+} from "./typePopsicle"
