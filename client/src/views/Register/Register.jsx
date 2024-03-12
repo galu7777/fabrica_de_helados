@@ -19,10 +19,11 @@ function Register() {
     apellido: "",
     email: "",
     password: "",
-    repitPassword: "",
-  });
+    });
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfimPassword] = useState(false);
+    const [repitPassword, setrepitPassword] = useState('');
 
 
   // const [error, setError] = useState({
@@ -76,9 +77,11 @@ function Register() {
     // );
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // if (Object.keys(error).length === 0) {
+       console.log(input);
     const newUser = { ...input };
     try {
       await dispatch(registerNewUser(newUser));
@@ -198,9 +201,9 @@ function Register() {
                       label="Repetir contraseña"
                       variant="outlined"
                       fullWidth
-                      value={input.repitPassword}
+                      value={repitPassword}
                       required
-                      onChange={handleChange}
+                      onChange={(e)=> setrepitPassword(e.target.value)}
                       type={showConfirmPassword ? "text" : "password"}
                       name="repitPassword"
                       id="repitPassword"
@@ -224,7 +227,7 @@ function Register() {
                   <hr className="espacio"></hr>
                   <div className="flex justify-center content-center w-full">
                     <button
-                      type="button"
+                      type="submit"
                       className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-gradient-to-r from-blue-500 to-pink-400 hover:from-pink-500 hover:to-wite "
                     >
                       Registrarse
@@ -254,9 +257,7 @@ function Register() {
             </div>
           </div>
           <div className="flex-1">
-            <div className="bg-white rounded-md shadow-md w-96">
-              
-            </div>
+            <div className="bg-white rounded-md shadow-md w-96"></div>
           </div>
         </div>
       </div>
