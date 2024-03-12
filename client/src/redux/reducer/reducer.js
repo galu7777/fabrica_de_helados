@@ -11,6 +11,8 @@ import {
     ADD_SMOOTHIE,
     GET_CUSTOMERS,
     ADD_CUSTOMER,
+    GET_TYPE_POPSICLE,
+    ADD_TYPE_POPSICLE,
     REGISTER,
     SIGNIN
 } from "../actions/actionsTypes"
@@ -28,6 +30,8 @@ const initialState = {
     newSmoothie: {},
     customers: {},
     newCustomers: {},
+    newTypePopsicles: {},
+    typePopsicles: {},
     user: {},
     newUser: {}
 }
@@ -126,6 +130,20 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 newCustomers: payload
+            }
+        }
+
+        case GET_TYPE_POPSICLE: {
+            return {
+                ...state,
+                typePopsicles: payload
+            }
+        }
+
+        case ADD_TYPE_POPSICLE: {
+            return {
+                ...state,
+                newTypePopsicles: payload
             }
         }
 
