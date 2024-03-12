@@ -10,5 +10,8 @@ export const GET_SMOOTHIES = 'GET_SMOOTHIES'
 export const ADD_SMOOTHIE = 'ADD_SMOOTHIE'
 export const GET_CUSTOMERS = 'GET_CUSTOMERS'
 export const ADD_CUSTOMER = 'ADD_CUSTOMER'
+export const ADD_TYPE_POPSICLE = 'ADD_TYPE_POPSICLE'
+export const GET_TYPE_POPSICLE = 'GET_TYPE_POPSICLE'
 export const REGISTER = 'REGISTER'
 export const SIGNIN = 'SIGNIN'
+
