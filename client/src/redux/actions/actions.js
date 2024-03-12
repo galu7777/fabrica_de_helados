@@ -13,6 +13,8 @@ import {
     GET_CUSTOMERS,
     REGISTER,
     SIGNIN,
+    ADD_TYPE_POPSICLE,
+    GET_TYPE_POPSICLE
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
 import axios from 'axios'
@@ -208,6 +210,34 @@ export const createCustomer = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/client/create_new_client   ', nombre)
         dispatch({
             type: ADD_CUSTOMER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const getTypePopsicle = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/popsicle/get_type_popsicle')
+
+        dispatch({
+            type: GET_TYPE_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const createTypePopsicle = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/popsicle/create_type_popsicle', nombre)
+        dispatch({
+            type: ADD_TYPE_POPSICLE,
             payload: data,
         });
     } catch (error) {
