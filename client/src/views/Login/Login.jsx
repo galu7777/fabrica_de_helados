@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
@@ -21,7 +21,6 @@ function Login() {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-
   // useEffect(() => {
   //   if (usuarioActual) {
   //     navigate("/");
@@ -33,7 +32,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(cUser)
+      console.log(cUser);
       await dispatch(signin(cUser));
       Swal.fire({
         width: "20em",
@@ -64,68 +63,93 @@ function Login() {
   };
 
   return (
-    <div className="body-login bg-red-400">
-      <div className="login-container flex content-center">
-        <div className="container flex h-1/2  justify-center">
-          <div className="login-div bg-white rounded-lg shadow-2xl ">
-            <h1 className="text-2xl font-bold text-center text-[#9b1028]">
-              Iniciar Sesión
-            </h1>
-            {/* {error && <p>{error}</p>} */}
+    <div
+      className="bg-cover bg-center h-screen"
+      style={{ backgroundImage: "url('/naranja.jpeg')" }}
+    >
+      <div className="flex">
+        <div className="flex-1"></div>
+        <div className="flex-1">
+          <div className="flex justify-center items-center h-screen">
+            <div className="bg-white rounded-md shadow-md h-2/4 w-2/4 p-8">
+              <form className="p-6  " onSubmit={handleSubmit}>
+                <h1 className="text-indigo-600 text-2xl font-bold text-center">
+                  Iniciar Session
+                </h1>
+                <div className="mb-6 px-2 mt-10">
+                  <TextField
+                    label="Email"
+                    value={cUser.email}
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    type="text"
+                    required
+                    name="email"
+                    id="email"
+                  />
 
-            <form className="w-full" onSubmit={handleSubmit}>
-              <div className="div-inputs">
-                <TextField
-                  label="Email"
-                  variant="outlined"
-                  fullWidth
-                  value={cUser.email}
-                  onChange={handleChange}
-                  type="text"
-                  name="email"
-                  id="email"
-                />
-              </div>
+                  {/* {error.email && <p className="error-inputs text-center">{error.email}</p>} */}
+                </div>
 
-              <div className="div-inputs">
-                <TextField
-                  label="password"
-                  variant="outlined"
-                  fullWidth
-                  value={cUser.password}
-                  onChange={handleChange}
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  id="password"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <VisibilityOutlinedIcon
-                          onClick={() => setShowPassword((prev) => !prev)}
-                          className="cursor-pointer text-black"
-                        />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
+                <div className="mb-6 px-2">
+                  <TextField
+                    label="contraseña"
+                    value={cUser.password}
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    required
+                    id="password"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <VisibilityOutlinedIcon
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="cursor-pointer text-black"
+                          />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
 
-              <div className="w-full flex justify-center p-3">
-                <button type="submit" className="btn-is">
-                  Iniciar sesión
-                </button>
-              </div>
-            </form>
-            <p>
-              ¿No tienes una cuenta?{" "}
-              <Link className="text-blue-500 font-semibold hover:text-indigo-700" to="/register">
-                Regístrate
-              </Link>
-            </p>
+                  {/* {error.password && <p className="error-inputs text-center">{error.password}</p>} */}
+                </div>
+
+                <hr className="espacio"></hr>
+                <div className="flex justify-center content-center w-full">
+                  <button
+                    type="submit"
+                    className="rounded-md bg-blue-600 px-3.5 hover:bg-indigo-600  py-2.5 text-sm font-semibold text-white shadow-sm "
+                  >
+                    Registrarse
+                  </button>
+                </div>
+                {/* {Object.keys(error).length === 0 ? (
+            <div className='flex justify-center content-center w-full'>
+              <button type="submit" className="btn-register">
+                Registrarse
+              </button>
+            </div>
+          ) : (
+            <div className='flex justify-center content-center w-full'>
+              <button type="submit" className="btn-register-dis" disabled>
+                Registrarse
+              </button>
+            </div>
+          )} */}
+              </form>
+              <p className="text-center">
+                ¿No tienes una cuenta?{" "}
+                <Link to="/register" className="linkR text-center hover:text-indigo-600">
+                  Regístrate
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
-
-        <div className="login-image-div"></div>
       </div>
     </div>
   );
