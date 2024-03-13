@@ -4,14 +4,19 @@ import { DataGrid } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import { createIngredient, getIngredients } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
+
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import TextField from "@mui/material/TextField";
 
 
 const Ingredient = () => {
   const dispatch = useDispatch();
+
   const ingredients = useSelector((state) => state.ingredients);
   const { data } = ingredients;
+  const refrescarPagina = () => {
+    window.location.reload();
+  };
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -48,6 +53,11 @@ const Ingredient = () => {
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
           dispatch(createIngredient(form.nombre));
+          setTimeout(() => {
+             refrescarPagina();
+          }, "1000");
+
+
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -79,7 +89,7 @@ const Ingredient = () => {
     >
       <div className="flex flex-col items-center py-10">
         <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
-          <h2 className="text-2xl font-bold mb-6 text-blue-700">
+          <h2 className="text-2xl text-center font-bold mb-6 text-blue-700">
             Crea un Nuevo Ingrediente
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
