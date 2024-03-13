@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
-
+import Button from "@mui/material/Button";
 import { getProviders } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
+import CircularIndeterminate from "../../components/spinner/Spinner";
 
 export default function Provider() {
   const dispatch = useDispatch();
@@ -16,42 +17,85 @@ export default function Provider() {
 
 
   const columns = [
-    { field: "razon_social", headerName: "Razon Social", width: 200},
-    { field: "direccion", headerName: "Direccion", width: 200 },
-    { field: "cod_dni", headerName: "DNI", width: 200 },
-    { field: "cedula_rif", headerName: "RIF", width: 200 },
-    { field: "telefono", headerName: "Telefono", width: 200 },
+    {
+      field: "razon_social",
+      headerName: "Razon Social",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "direccion",
+      headerName: "Direccion",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "cod_dni",
+      headerName: "DNI",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "cedula_rif",
+      headerName: "RIF",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "telefono",
+      headerName: "Telefono",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
   ];
+  console.log(data)
+ const rows =
+   data && data.length > 0
+     ? data.slice(1).map((item) => ({
+         id: item.id,
+         razon_social: item.razon_social,
+         direccion: item.direccion,
+         cod_dni: item.cod_dni,
+         cedula_rif: item.cedula_rif,
+         telefono: item.telefono,
+       }))
+     : [];
 
-  const rows =
-    data &&
-    data.map((item) =>
-      //bg-[#fae9ee]
-      ({
-        id: item.id,
-        razon_social: item.razon_social,
-        direccion: item.direccion,
-        cod_dni: item.cod_dni,
-        cedula_rif: item.cedula_rif,
-        telefono: item.telefono,
-      })
-    );
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="bg-white rounded-md shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-[#9b1028] p-1 text-center">
-          Proveedores
-        </h2>
-        <a
-          href="/crear_proveedore"
-          type="submit"
-          className="text-center w-full bg-[#fa042c] text-white py-2 rounded-md hover:bg-red-600 transition duration-300"
-        >
-          Crear Proveedores
-        </a>
+    <div
+      className="bg-cover bg-center h-screen select-none "
+      style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+    >
+      <div className="w-full flex flex-col items-center select-none py-10">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+          <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
+            Proveedor
+          </div>
+          <Button
+            color="error"
+            variant="outlined"
+            fullWidth
+            href="/crear_proveedore"
+          >
+            Crear Proveedor
+          </Button>
+        </div>
       </div>
-      <div className="mt-8">
-        <Box sx={{ height: 400, width: "100%" }} className="text-center">
+      <div className="mt-8 justify-center flex">
+        <Box
+          sx={{
+            height: 400,
+            width: "50%",
+            backgroundColor: "white",
+            boxShadow: 24,
+            borderRadius: 2,
+          }}
+        >
           {data ? (
             <DataGrid
               rows={rows}
@@ -68,9 +112,7 @@ export default function Provider() {
               disableRowSelectionOnClick
             />
           ) : (
-            <h3 className="text-2xl font-bold text-[#9b1028]">
-              No hay Ingredientes !
-            </h3>
+            <CircularIndeterminate />
           )}
         </Box>
       </div>
