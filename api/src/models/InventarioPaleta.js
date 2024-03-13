@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
                 field: "id_inventario_paleta",
             },
             nombre_paleta: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
             },
             tipo_paleta: {
                 type: DataTypes.STRING,
