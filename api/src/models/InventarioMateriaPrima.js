@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
                 field: "id_inventario",
             },
             cantidad: {
-                type: DataTypes.INTEGER
+                type: DataTypes.FLOAT
             },
             unidad_medida: {
                 type: DataTypes.ENUM("KG", "GR", "L", "ML", "OZ"),
