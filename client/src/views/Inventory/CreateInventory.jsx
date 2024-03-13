@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getIngredients, getProviders, createInventory } from "../../redux/actions/actions";
+import {
+  getIngredients,
+  getProviders,
+  createInventory,
+} from "../../redux/actions/actions";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import Swal from "sweetalert2";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateInventory() {
   const [selectedIngredient, setSelectedIngredient] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("");
   const [type, setType] = useState("");
+  const navigate = useNavigate();
   const [cantidad, setCantidad] = useState("");
-  console.log(type)
+  const [unidad, setUnidad] = useState("");
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredients);
   const providers = useSelector((state) => state.providers);
@@ -23,23 +30,19 @@ export default function CreateInventory() {
     dispatch(getProviders());
   }, [dispatch]);
 
-  console.log(selectedIngredient);
-  console.log(selectedProvider);
-  console.log(cantidad)
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(cantidad)
-    if (!type.trim() || !isNaN(type)) {
+    if (!selectedIngredient || !selectedProvider || !cantidad || !unidad) {
       // Muestra una alerta indicando el error
       Swal.fire({
         title: "Verifica la informacion.",
-        text: "Por favor, ingresa un nombre de ingrediente válido.",
+        text: "Por favor, Seleccione todos los campos",
         icon: "warning",
       });
     } else {
       Swal.fire({
-        title: "Quieres registrar este Ingrediente ?",
+        title: "Quieres registrar esta Mercancia ?",
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: "Registrar",
@@ -54,8 +57,10 @@ export default function CreateInventory() {
               tipo: type,
               IngredienteId: selectedIngredient,
               ProveedorId: selectedProvider,
+              unidad_medida: unidad
             })
           );
+           navigate("/Inventario");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -64,13 +69,18 @@ export default function CreateInventory() {
   };
 
   return (
-    <div className="select-none w-full flex flex-col items-center">
-      <div className="bg-white rounded-md shadow-md w-96">
-        <div className="text-center text-2xl font-bold mb-4 text-[#9b1028] p-1">
-          Agregar Mercancia
+    <div
+      className="bg-cover bg-center h-screen select-none "
+      style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+    >
+      <div className="w-full flex flex-col items-center select-none py-10">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+          <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
+            Agregar Mercancia
+          </div>
         </div>
       </div>
-      <div className="flex justify-center  h-full w-full">
+      <div className="mt-8 justify-center flex">
         <form
           onSubmit={handleSubmit}
           className="w-2/4 p-8 bg-white rounded-lg shadow-2xl"
@@ -84,6 +94,7 @@ export default function CreateInventory() {
                 <Select
                   labelId="ingredient-select-label"
                   id="ingredient-select"
+                  required
                   value={selectedIngredient}
                   onChange={(e) => setSelectedIngredient(e.target.value)}
                   fullWidth
@@ -103,6 +114,7 @@ export default function CreateInventory() {
                 Seleccione un Proveedor
               </InputLabel>
               <Select
+                required
                 labelId="provider-select-label"
                 id="provider-select"
                 value={selectedProvider}
@@ -123,6 +135,7 @@ export default function CreateInventory() {
                 Seleccione un tipo
               </InputLabel>
               <Select
+                required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={type}
@@ -133,24 +146,47 @@ export default function CreateInventory() {
                 <MenuItem value={"SALIDA"}>SALIDA</MenuItem>
               </Select>
             </div>
-            <div className="w-full px-3">
-              <TextField
-                fullWidth
-                type="number"
-                label="Cantidad"
-                variant="outlined"
-                value={cantidad}
-                onChange={(e) => setCantidad(e.target.value)}
-              />
+            <div className="w-full px-3 flex">
+              <div className="w-2/4 mr-4 py-6">
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  label="Cantidad"
+                  variant="outlined"
+                  value={cantidad}
+                  onChange={(e) => setCantidad(e.target.value)}
+                />
+              </div>
+
+              <div className="w-2/4 py-0.5">
+                <InputLabel id="demo-simple-select-helper-label">
+                  Seleccione una Unidad de medida
+                </InputLabel>
+                <Select
+                  required
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={unidad}
+                  fullWidth
+                  onChange={(e) => setUnidad(e.target.value)}
+                >
+                  <MenuItem value="">
+                    <em>Seleccionar unidad</em>
+                  </MenuItem>
+                  <MenuItem value={"KG"}>KG</MenuItem>
+                  <MenuItem value={"GR"}>GR</MenuItem>
+                  <MenuItem value={"L"}>L</MenuItem>
+                  <MenuItem value={"ML"}>ML</MenuItem>
+                  <MenuItem value={"OZ"}>OZ</MenuItem>
+                </Select>
+              </div>
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-          >
+          <Button color="error" variant="outlined" fullWidth type="submit">
             Aceptar
-          </button>
+          </Button>
         </form>
       </div>
     </div>
