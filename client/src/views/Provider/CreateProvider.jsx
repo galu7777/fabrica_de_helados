@@ -94,6 +94,7 @@ export default function CreateProvider() {
                   label="Nombre del proveedor"
                   variant="outlined"
                   fullWidth
+                  required
                   value={form.razon_social}
                   onChange={handleChange}
                   name="razon_social"
@@ -109,6 +110,7 @@ export default function CreateProvider() {
                   onChange={handleChange}
                   fullWidth
                   name="direccion"
+                  required
                 />
               </div>
             </div>
@@ -119,6 +121,7 @@ export default function CreateProvider() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     className="w-full"
+                    required
                     defaultValue={"V"}
                     value={form.cod_dni}
                     onChange={handleChange}
@@ -138,6 +141,7 @@ export default function CreateProvider() {
                     value={form.cedula_rif}
                     onChange={handleChange}
                     name="cedula_rif"
+                    required
                   />
                 </div>
               </div>
@@ -153,6 +157,7 @@ export default function CreateProvider() {
                     onChange={handleTel}
                     name="uno"
                     value={form.uno}
+                    required
                   >
                     <MenuItem value={"0414"}>0414</MenuItem>
                     <MenuItem value={"0424"}>0424</MenuItem>
@@ -170,6 +175,7 @@ export default function CreateProvider() {
                     onChange={handleTel}
                     name="dos"
                     value={form.dos}
+                    required
                   />
                 </div>
               </div>
