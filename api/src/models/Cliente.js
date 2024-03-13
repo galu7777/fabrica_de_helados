@@ -11,17 +11,20 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
                 field: "id_cliente",
             },
-            nombre: {
-                type: DataTypes.STRING,     
-            },
-            apellido: {
+            razon_social: {
                 type: DataTypes.STRING,
             },
             direccion: {
                 type: DataTypes.STRING,
             },
             telefono: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+            },
+            cod_dni: {
+                type: DataTypes.ENUM("V", "E", "J", "G", "R", "P")
+            },
+            cedula_rif: {
+                type: DataTypes.INTEGER
             }
         },
         {
