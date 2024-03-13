@@ -12,10 +12,11 @@ module.exports = (sequelize) => {
                 field: "id_paleta",
             },
             nombre: {
-                type: DataTypes.STRING,     
+                type: DataTypes.STRING,
+                unique: true  
             },
             peso: {
-                type: DataTypes.INTEGER
+                type: DataTypes.FLOAT
             },
             unidad_medida: {
                 type: DataTypes.STRING,
