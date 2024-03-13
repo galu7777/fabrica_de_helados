@@ -22,6 +22,7 @@ const getNewPopsicle = require('../controllers/Popsicle/NewPopsicle/getNewPopsic
 const createUser = require('../controllers/User/createUser');
 const getAllUser = require('../controllers/User/getAllUser');
 const auth = require('../controllers/Auth/auth');
+const createRestore = require('../controllers/Restore/createRestore');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -75,5 +76,7 @@ router.post('/user/create_user', createUser)
 // rutas de auth
 router.post('/auth/signin', auth)
 
+// rutas de devolucion
+router.post('/restore/create_restore', createRestore)
 
 module.exports = router;
