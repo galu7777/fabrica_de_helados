@@ -10,6 +10,7 @@ module.exports = async (req, res) => {
         response(res, 201, ingredient)
     } catch (error) {
         console.error('Error: ', error.message)
+        response(res, 500, `Internal Server Error: ${error.message}`)
     }
 
 }
