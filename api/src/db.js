@@ -64,10 +64,18 @@ BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
 // Relacion entre batido y paleta
 InventarioPaleta.belongsTo(BatidaDeHelado)
 InventarioPaleta.belongsTo(TipoDePaleta)
+//Relacion entre devolucion inventario paleta
+Devolucion.belongsTo(InventarioPaleta)
 // Relacion entre cliente y venta
 Cliente.hasMany(Venta)
 Venta.belongsTo(Cliente)
-
+// Relacion entre devolucion y cliente
+Cliente.hasMany(Devolucion)
+Devolucion.belongsTo(Cliente)
+// Relacion entre devolucion y paleta
+Devolucion.belongsTo(Paleta)
+// Relacion entre devolucion y venta
+Devolucion.belongsTo(Venta)
 
 // Product.hasMany(Reviews);
 
