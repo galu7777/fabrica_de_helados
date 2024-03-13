@@ -4,12 +4,12 @@ const response = require('../../utils/response')
 module.exports = async (req, res) => {
     const { cantidad, tipo, IngredienteId, ProveedorId } = req.body;
     try {        
-        await InventarioMateriaPrima.create({
+        const entry = await InventarioMateriaPrima.create({
             cantidad, tipo, IngredienteId, ProveedorId
         })
-        response(res, 201, 'success')
+        return response(res, 201, {message: 'success', entry})
     } catch (error) {
         console.error('Error: ', error.message)
-        response(res, 500, 'Internal Server Error')
+        return response(res, 500, `Internal Server Error: ${error.message}`)
     }
 }
