@@ -72,8 +72,6 @@ Venta.belongsTo(Cliente)
 // Relacion entre devolucion y cliente
 Cliente.hasMany(Devolucion)
 Devolucion.belongsTo(Cliente)
-// Relacion entre devolucion y paleta
-Devolucion.belongsTo(Paleta)
 // Relacion entre devolucion y venta
 Devolucion.belongsTo(Venta)
 
