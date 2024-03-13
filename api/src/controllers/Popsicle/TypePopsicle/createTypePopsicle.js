@@ -10,5 +10,6 @@ module.exports = async (req, res) => {
         response(res, 201, tipoPaleta)
     } catch (error) {
         console.error('Error: ', error.message)
+        return response(res, 500, `Internal Server Error: ${error.message}`)
     }
 }
