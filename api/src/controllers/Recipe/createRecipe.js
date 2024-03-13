@@ -20,18 +20,7 @@ module.exports = async (req, res) => {
             // Asociar el ingrediente a la receta
             await nuevaReceta.addIngrediente(ingrediente);
 
-            // Validar que la cantidad en el inventario sea suficiente
-            const inventarioActual = await InventarioMateriaPrima.findOne({
-                where: {
-                    IngredienteId: ingredienteId,
-                },
-            });
-
-            if (!inventarioActual || inventarioActual.cantidad < cnt) {
-                response(res, 400, 'Cantidad insuficiente en el inventario');
-                return;
-            }
-
+            
             const existingRecipeIngrediente = await RecipeIngrediente.findOne({
                 where: {
                     RecipeId: nuevaReceta.id,
