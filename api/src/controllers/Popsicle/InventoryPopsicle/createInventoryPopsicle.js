@@ -39,6 +39,6 @@ module.exports = async (req, res) => {
         }
     } catch (error) {
         console.error('Error: ', error.message)
-        response(res, 500, 'Internal Server Error')
+        return response(res, 500, `Internal Server Error: ${error.message}`)
     }
 }
