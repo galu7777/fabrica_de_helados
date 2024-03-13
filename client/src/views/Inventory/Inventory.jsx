@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getInventory } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
+import CircularIndeterminate from "../../components/spinner/Spinner";
 export default function Inventory() {
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state.inventory);
@@ -19,35 +21,45 @@ export default function Inventory() {
     {
       field: "nombre",
       headerName: "Nombre del Ingrediente",
-      width: 200,
+      width: 300,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "cantidad",
       headerName: "Cantidad",
       width: 200,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "unidad_medida",
       headerName: "Unidad de medida",
-      width: 200,
+      width: 100,
     },
     {
       field: "tipo",
       headerName: "Tipo",
       width: 200,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "Proveedor",
       headerName: "Proveedor",
-      width: 200,
+      width: 400,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "updatedAt",
       headerName: "Fecha",
       width: 200,
+      headerAlign: "center",
+      align: "center",
     },
   ];
-
+  console.log(data)
   const rows =
     data &&
     data.map((item) =>
@@ -65,21 +77,35 @@ export default function Inventory() {
 
   return (
     <>
-      <div className="select-none w-full flex flex-col items-center">
-        <div className="bg-white rounded-md shadow-md w-96">
-          <div className="text-center text-2xl font-bold mb-4 text-[#9b1028] p-1">
-            Inventario
+      <div
+        className="bg-cover bg-center h-screen select-none "
+        style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+      >
+        <div className="w-full flex flex-col items-center select-none py-10">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+            <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
+              Movimiento
+            </div>
+            <Button
+              color="error"
+              variant="outlined"
+              fullWidth
+              href="/crear_inventario"
+            >
+              Crear Movimiento de Mercancia
+            </Button>
           </div>
-          <a
-            href="/crear_inventario"
-            type="submit"
-            className="text-center w-full bg-[#fa042c] text-white py-2 rounded-md hover:bg-[#da637a] transition duration-300"
-          >
-           Agregar Mercancia
-          </a>
         </div>
-        <div className="mt-8 h-full">
-          <Box sx={{ height: 750, width: "100%" }}>
+        <div className="mt-8 justify-center flex">
+          <Box
+            sx={{
+              height: 400,
+              width: "70%",
+              backgroundColor: "white",
+              boxShadow: 24,
+              borderRadius: 2,
+            }}
+          >
             {data ? (
               <DataGrid
                 rows={rows}
@@ -87,23 +113,20 @@ export default function Inventory() {
                 initialState={{
                   pagination: {
                     paginationModel: {
-                      pageSize: 10,
+                      pageSize: 5,
                     },
                   },
                 }}
-                sx={{ height: 750 }}
-                pageSizeOptions={[10]}
+                pageSizeOptions={[5]}
+                checkboxSelection
                 disableRowSelectionOnClick
               />
             ) : (
-              <h3 className="text-2xl font-bold text-[#9b1028]">
-                No hay Receitas !
-              </h3>
+              <CircularIndeterminate />
             )}
           </Box>
         </div>
       </div>
-      
     </>
   );
 }
