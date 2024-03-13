@@ -15,4 +15,19 @@ export const Endpoints = {
     Recipe: {
         GetRecipes: createUrl({ base: "recipe", endpoint: "get_recipe" }),
     },
+    Provider: {
+        GetProviders: createUrl({ base: "provider", endpoint: "get_allproviders" }),
+    },
+    Inventory: {
+        GetInventory: createUrl({ base: "inventory", endpoint: "get_inventory" }),
+    },
+    Smoothie: {
+        GetSmoothies: createUrl({ base: "smoothie", endpoint: "get_smoothie" }),
+    },
+    Client: {
+        GetClients: createUrl({ base: "client", endpoint: "get_allclients" }),
+    },
+    TypePopsicle: {
+        GetTypePopsicle: createUrl({ base: "typePopsicle", endpoint: "get_type_popsicle" }),
+    },
 }
