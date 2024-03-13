@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import TableRecipe from "./TableRecipe";
+import {  useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { createRecipe, getIngredients } from "../../redux/actions/actions";
-
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 export default function CreateRecipe() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
 
   useEffect(() => {7
     dispatch(getIngredients());
@@ -18,106 +20,115 @@ export default function CreateRecipe() {
    setSelectedIngredients(ingredients);
  };
 
- console.log(selectedIngredients)
+
   const [form, setForm] = useState({
     nombre: ""
   });
   // nombre de la receta
-  console.log(form.nombre);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
     setForm({ ...form, [name]: value });
   };
 
- const handleSubmit = (e) => {
-   e.preventDefault();
-   // Obtener solo los ingredientes seleccionados
-   const selectedIngredientesIds = selectedIngredients
-     .filter((ingredient) => ingredient.selected)
-     .map((ingredient) => ({
-       id: ingredient.id,
-       cantidad: ingredient.cantidad || 0, // Si no hay cantidad especificada, establecer como 0
-     }));
-     console.log({
-       nombre: form.nombre,
-       ingredientes: selectedIngredientesIds,
-     });
-   if (
-     !form.nombre.trim() ||
-     !isNaN(form.nombre) ||
-     selectedIngredientesIds.length === 0
-   ) {
-     Swal.fire({
-       title: "Verifica la informacion.",
-       text: "Por favor, ingresa un nombre de receta válido y selecciona al menos un ingrediente.",
-       icon: "warning",
-     });
-   } else {
-     Swal.fire({
-       title: "Quieres registrar esta receta ?",
-       showDenyButton: true,
-       showCancelButton: true,
-       confirmButtonText: "Registrar",
-       denyButtonText: `No registrar`,
-     }).then((result) => {
-       if (result.isConfirmed) {
-         Swal.fire("Registro Exitoso!", "", "success");
-         // Envía los datos al backend
-         dispatch(
-           createRecipe({
-             nombre: form.nombre,
-             ingredientes: selectedIngredientesIds,
-           })
-         );
-         // Limpia el formulario después de enviar
-         setForm({ nombre: "", cantidad: "", medida: "" });
-       } else if (result.isDenied) {
-         Swal.fire("Los Cambios no se registraron.", "", "info");
-       }
-     });
-   }
- };
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // Obtener solo los ingredientes seleccionados
+  const selectedIngredientesIds = selectedIngredients
+    .filter((ingredient) => ingredient.selected)
+    .map((ingredient) => ({
+      id: ingredient.id,
+      cantidad: ingredient.cantidad || 0,
+      unidad: ingredient.unidad || 0
+    }));
+
+
+  const nombre = form.nombre.toUpperCase();
+
+
+  // Verificar si form.cantidad y form.medida están definidos antes de llamar a trim()
+    if (
+      !nombre ||
+      !nombre.trim() ||
+      !selectedIngredientesIds ||
+      !selectedIngredientesIds.length ||
+      selectedIngredientesIds.some((ingrediente) => !ingrediente.cantidad) ||
+      selectedIngredientesIds.some((unidades) => !unidades.unidad)
+    ) {
+      Swal.fire({
+        title: "Verifica la información.",
+        text: "Por favor, completa todos los campos.",
+        icon: "warning",
+      });
+    } else {
+      Swal.fire({
+        title: "¿Quieres registrar esta receta?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Registrar",
+        denyButtonText: `No registrar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Registro Exitoso!", "", "success");
+          // Envía los datos al backend
+          dispatch(
+            createRecipe({
+              nombre: nombre,
+              ingredientes: selectedIngredientesIds,
+            })
+          );
+           navigate("/Recetas");
+        } else if (result.isDenied) {
+          Swal.fire("Los Cambios no se registraron.", "", "info");
+        }
+      });
+    }
+};
+
 
 
   return (
-    <>
-      <div className="w-full select-none flex flex-col items-center">
-        <div className="bg-white items-center justify-center rounded-md shadow-md w-96">
-          <div className="text-center text-2xl font-bold mb-4 text-[#9b1028] p-1">
-            Receta
-          </div>
-
-          <form onSubmit={handleSubmit}>
-            <label className="block mb-4">
-              <span className="text-sm text-[#9b1028] p-1">
-                Nombre de la receta:
-              </span>
-              <input
+    <div
+      className="bg-cover bg-center h-screen select-none "
+      style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+    >
+      <div className="flex flex-col items-center py-10">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+          <h2 className="text-2xl text-center font-bold mb-6 text-red-700">
+            Crea una Nueva Receta
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <TextField
+                fullWidth
                 type="text"
                 name="nombre"
+                required
+                label="Escribe el nuevo ingrediente a registrar"
+                variant="standard"
                 value={form.nombre}
                 onChange={handleChange}
-                placeholder="Escribe el nombre de la receta"
-                className="w-full px-3 py-2 mt-1 rounded-md border-2 border-9b1028 focus:outline-none focus:border-fa042c"
               />
-            </label>
-
-            <button
+            </div>
+            <Button
+              color="error"
+              variant="outlined"
+              fullWidth
               type="submit"
-              className="w-full bg-[#fa042c] text-white py-2 rounded-md hover:bg-[#da637a] transition duration-300"
+
             >
               Crear Receta
-            </button>
+            </Button>
           </form>
         </div>
       </div>
-      <div className="mt-8 w-2/5 mx-auto">
+      <div className="mt-8 w-2/5 mx-auto shadow-2xl rounded-lg">
         <TableRecipe
           onSelectedIngredientsChange={handleSelectedIngredientsChange}
         />
       </div>
-    </>
+    </div>
   );
 }
