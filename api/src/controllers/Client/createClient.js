@@ -2,13 +2,14 @@ const { Cliente } = require('../../db')
 const response = require('../../utils/response')
 
 module.exports = async (req, res) => {
-    const { nombre, apellido, direccion, telefono } = req.body;    
+    const { razon_social, direccion, telefono, cod_dni, cedula_rif } = req.body;   
     try {        
         const cliente = await Cliente.create({
-            nombre,
-            apellido,
+            razon_social,
             direccion,
-            telefono
+            telefono,
+            cod_dni,
+            cedula_rif
         })
         response(res, 201, cliente)
     } catch (error) {
