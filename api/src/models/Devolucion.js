@@ -14,6 +14,9 @@ module.exports = (sequelize) => {
             concepto: {
                 type: DataTypes.STRING,     
             },
+            cantidad: {
+                type: DataTypes.FLOAT
+            }
         },
         {
         timestamps: true,
