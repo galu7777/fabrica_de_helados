@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DataGrid } from '@mui/x-data-grid';
-import Swal from 'sweetalert2'
+import { DataGrid } from "@mui/x-data-grid";
+import Swal from "sweetalert2";
 import { createIngredient, getIngredients } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
+import CircularIndeterminate from "../../components/spinner/Spinner";
+import TextField from "@mui/material/TextField";
+
 
 const Ingredient = () => {
   const dispatch = useDispatch();
@@ -13,10 +16,9 @@ const Ingredient = () => {
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
-  console.log(data);
 
   const [form, setForm] = useState({
-    nombre: '',
+    nombre: "",
   });
 
   const handleChange = (e) => {
@@ -32,7 +34,7 @@ const Ingredient = () => {
       Swal.fire({
         title: "Verifica la informacion.",
         text: "Por favor, ingresa un nombre de ingrediente válido.",
-        icon: "warning"
+        icon: "warning",
       });
     } else {
       Swal.fire({
@@ -40,7 +42,7 @@ const Ingredient = () => {
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: "Registrar",
-        denyButtonText: `No registrar`
+        denyButtonText: `No registrar`,
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
@@ -54,43 +56,64 @@ const Ingredient = () => {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
     {
-      field: 'nombre',
-      headerName: 'Nombre del Ingrediente',
-      width: 200,
-      editable: true,
-    }
+      field: "nombre",
+      headerName: "Nombre del Ingrediente",
+      width:500,
+      headerAlign: "center",
+      align: "center",
+    },
   ];
 
-  const rows = data && data.map((item) => (
-    //bg-[#fae9ee]
-    { id: item.id, nombre: item.nombre }
-  ));
+  const rows =
+    data &&
+    data.map((item) =>
+      //bg-[#fae9ee]
+      ({ id: item.id, nombre: item.nombre })
+    );
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="bg-white rounded-md shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-[#9b1028] p-1">Crea un Nuevo Ingrediente</h2>
-        <form onSubmit={handleSubmit}>
-          <label className="block mb-4">
-            <span className="text-sm text-[#9b1028] p-1">Nombre del Ingrediente:</span>
-            <input
-              type="text"
-              name='nombre'
-              value={form.nombre}
-              onChange={handleChange}
-              placeholder="Escribe el nuevo ingrediente a registrar"
-              className="w-full px-3 py-2 mt-1 rounded-md border-2 border-9b1028 focus:outline-none focus:border-fa042c"
-            />
-          </label>
-          <button type="submit" className="w-full bg-[#fa042c] text-white py-2 rounded-md hover:bg-[#da637a] transition duration-300">
-            Crear Ingrediente
-          </button>
-        </form>
+    <div
+      className="bg-cover bg-center h-screen select-none "
+      style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+    >
+      <div className="flex flex-col items-center py-10">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+          <h2 className="text-2xl font-bold mb-6 text-blue-700">
+            Crea un Nuevo Ingrediente
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <TextField
+                fullWidth
+                type="text"
+                name="nombre"
+                label="Escribe el nuevo ingrediente a registrar"
+                variant="standard"
+                value={form.nombre}
+                onChange={handleChange}
+              />
+
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
+            >
+              Crear Ingrediente
+            </button>
+          </form>
+        </div>
       </div>
-      <div className="mt-8">
-        <Box sx={{ height: 400, width: '100%' }}>
+      <div className="mt-8 justify-center flex">
+        <Box
+          sx={{
+            height: 400,
+            width: "30%",
+            backgroundColor: "white",
+            boxShadow: 24,
+            borderRadius: 2,
+          }}
+        >
           {data ? (
             <DataGrid
               rows={rows}
@@ -107,12 +130,12 @@ const Ingredient = () => {
               disableRowSelectionOnClick
             />
           ) : (
-            <h3 className="text-2xl font-bold text-[#9b1028]">No hay Ingredientes !</h3>
+            <CircularIndeterminate />
           )}
         </Box>
       </div>
     </div>
   );
-}
+};
 
 export default Ingredient;
