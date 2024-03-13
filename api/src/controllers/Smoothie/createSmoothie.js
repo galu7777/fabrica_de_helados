@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
 
         // Crear la BatidaDeHelado después de registrar las salidas de inventario
         const newBatidaDeHelado = await BatidaDeHelado.create({
-            id_receta,
+            id_recipe: id_receta,
             cantidad: foundRecipe.Ingredientes.reduce((acc, item) => acc + item.RecipeIngrediente.cantidad, 0),
         });
 
