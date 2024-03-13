@@ -15,16 +15,16 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING
             },
             cantidad: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
             },
             precio: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
             },
             monto: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
             },
             tasa: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
             },
         },
         {
