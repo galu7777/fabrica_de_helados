@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCustomers } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-
+import CircularIndeterminate from "../../components/spinner/Spinner";
+import Button from "@mui/material/Button";
 export default function Customers() {
   const dispatch = useDispatch();
   const customers = useSelector((state) => state.customers);
@@ -18,33 +19,42 @@ export default function Customers() {
   };
     const columns = [
       {
-        field: "nombre",
-        headerName: "Nombre",
+        field: "razon_social",
+        headerName: "Razon Social",
         width: 200,
-        editable: true,
-      },
-      {
-        field: "apellido",
-        headerName: "Apellido",
-        width: 300,
-        editable: true,
-      },
-      {
-        field: "telefono",
-        headerName: "Telefono",
-        width: 300,
+        headerAlign: "center",
+        align: "center",
       },
       {
         field: "direccion",
         headerName: "Direccion",
-        width: 400,
+        width: 200,
+        headerAlign: "center",
+        align: "center",
+      },
+      {
+        field: "cod_dni",
+        headerName: "DNI",
+        width: 200,
+        headerAlign: "center",
+        align: "center",
+      },
+      {
+        field: "cedula_rif",
+        headerName: "RIF",
+        width: 200,
+        headerAlign: "center",
+        align: "center",
       },
       {
         field: "updatedAt",
         headerName: "Fecha",
         width: 300,
+        headerAlign: "center",
+        align: "center",
       },
     ];
+    console.log(data)
 
     const rows =
       data &&
@@ -52,10 +62,11 @@ export default function Customers() {
         //bg-[#fae9ee]
         ({
           id: item.id,
-          nombre: item.nombre,
-          apellido: item.apellido,
-          telefono: item.telefono,
+          razon_social: item.razon_social,
           direccion: item.direccion,
+          cod_dni: item.cod_dni,
+          cedula_rif: item.cedula_rif,
+          telefono: item.telefono,
           updatedAt: formatDateTime(item.updatedAt),
         })
       );
@@ -63,21 +74,35 @@ export default function Customers() {
 
   return (
     <>
-      <div className="select-none w-full flex flex-col items-center">
-        <div className="bg-white rounded-md shadow-md w-96">
-          <div className="text-center text-2xl font-bold mb-4 text-[#9b1028] p-1">
-            Clientes
+      <div
+        className="bg-cover bg-center h-screen select-none "
+        style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+      >
+        <div className="w-full flex flex-col items-center select-none py-10">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+            <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
+              Cliente
+            </div>
+            <Button
+              color="error"
+              variant="outlined"
+              fullWidth
+              href="/crear_clientes"
+            >
+              Crear Cliente
+            </Button>
           </div>
-          <a
-            href="/crear_clientes"
-            type="submit"
-            className="text-center w-full bg-[#fa042c] text-white py-2 rounded-md hover:bg-[#da637a] transition duration-300"
-          >
-            Agregar Clientes
-          </a>
         </div>
-        <div className="mt-8 h-full">
-          <Box sx={{ height: 750, width: "100%" }}>
+        <div className="mt-8 justify-center flex">
+          <Box
+            sx={{
+              height: 400,
+              width: "55%",
+              backgroundColor: "white",
+              boxShadow: 24,
+              borderRadius: 2,
+            }}
+          >
             {data ? (
               <DataGrid
                 rows={rows}
@@ -85,18 +110,16 @@ export default function Customers() {
                 initialState={{
                   pagination: {
                     paginationModel: {
-                      pageSize: 10,
+                      pageSize: 5,
                     },
                   },
                 }}
-                sx={{ height: 750, textAlign: "center" }}
-                pageSizeOptions={[10]}
+                pageSizeOptions={[5]}
+                checkboxSelection
                 disableRowSelectionOnClick
               />
             ) : (
-              <h3 className="text-2xl font-bold text-[#9b1028]">
-                No hay Receitas !
-              </h3>
+              <CircularIndeterminate />
             )}
           </Box>
         </div>
