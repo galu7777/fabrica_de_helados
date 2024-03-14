@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Cuentas_por_Cobrar",
+        "CuentasPorCobrar",
         {
             id: {
                 type: DataTypes.INTEGER,

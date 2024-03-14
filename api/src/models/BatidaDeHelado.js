@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Batida_de_helado",
+        "BatidaDeHelado",
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -11,15 +11,10 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
                 field: "id_batida",
             },
-            cod_receta: {
-                type: DataTypes.INTEGER,
-            },
-            cod_ingredientes: {
-                type: DataTypes.INTEGER,
-            },
             cantidad: {
                 type: DataTypes.FLOAT,
-            },
+                defaultValue: 0
+            }
         },
         {
         timestamps: true,

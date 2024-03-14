@@ -3,7 +3,7 @@ const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const {
-  DB_USER, DB_PASSWORD, DB_HOST,
+  DB_USER, DB_PASSWORD, DB_HOST, DB_NAME
 } = process.env;
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
@@ -37,18 +37,44 @@ const {
   DetallesDeVenta,
   DetallesDevolucion,
   Devolucion,
-  Ingredientes,
+  Ingrediente,
   InventarioMateriaPrima,
+  InventarioPaleta,
   Paleta,
   Producto,
   ProductoFinal,
   Proveedor,
-  Receta,
+  RecipeIngrediente,
+  Recipe,
   TipoDePaleta,
-  Venta
+  Venta,
+  User
 } = sequelize.models;
 
 // Aca vendrian las relaciones
+// Relacion entre ingredientes, proveedores e inventario.
+Ingrediente.belongsTo(Proveedor);
+InventarioMateriaPrima.belongsTo(Ingrediente);
+InventarioMateriaPrima.belongsTo(Proveedor);
+// Relacion entre receta e ingrediente
+Recipe.belongsToMany(Ingrediente, {through: RecipeIngrediente, constraints: false});
+//Relacion entre receta y batido
+Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
+BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
+// Relacion entre batido y paleta
+InventarioPaleta.belongsTo(BatidaDeHelado)
+InventarioPaleta.belongsTo(TipoDePaleta)
+//Relacion entre devolucion inventario paleta
+Devolucion.belongsTo(InventarioPaleta)
+// Relacion entre cliente y venta
+Cliente.hasMany(Venta)
+Venta.belongsTo(Cliente)
+// Relacion entre devolucion y cliente
+Cliente.hasMany(Devolucion)
+Devolucion.belongsTo(Cliente)
+// Relacion entre devolucion y venta
+Devolucion.belongsTo(Venta)
+
 // Product.hasMany(Reviews);
 
 module.exports = {

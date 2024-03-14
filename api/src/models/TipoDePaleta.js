@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Tipo_de_Paleta",
+        "TipoDePaleta",
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -13,6 +13,7 @@ module.exports = (sequelize) => {
             },
             nombre: {
                 type: DataTypes.STRING,
+                unique: true
             },
         },
         {

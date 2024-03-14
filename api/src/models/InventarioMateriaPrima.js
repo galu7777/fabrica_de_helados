@@ -2,21 +2,25 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Inventario_Materia_Prima",
+        "InventarioMateriaPrima",
         {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 allowNull: false,
                 autoIncrement: true,
-                field: "id_inventario_materia_prima",
+                field: "id_inventario",
             },
-            id_producto: {
-                type: DataTypes.INTEGER,
+            cantidad: {
+                type: DataTypes.FLOAT
+            },
+            unidad_medida: {
+                type: DataTypes.ENUM("KG", "GR", "L", "ML", "OZ"),
+                defaultValue: 'KG'
             },
             tipo: {
                 type: DataTypes.ENUM('ENTREGA','SALIDA'),
-            },
+            }
         },
         {
             timestamps: true,

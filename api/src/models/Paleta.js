@@ -12,9 +12,17 @@ module.exports = (sequelize) => {
                 field: "id_paleta",
             },
             nombre: {
-                type: DataTypes.STRING,     
+                type: DataTypes.STRING,
+                unique: true  
             },
-            description: {
+            peso: {
+                type: DataTypes.FLOAT
+            },
+            unidad_medida: {
+                type: DataTypes.STRING,
+                defaultValue: 'GRS'
+            },
+            descripcion: {
                 type: DataTypes.STRING,
             }
         },
