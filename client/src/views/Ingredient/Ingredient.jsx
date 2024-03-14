@@ -7,7 +7,7 @@ import { Box } from "@mui/material";
 
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import TextField from "@mui/material/TextField";
-
+import Button from "@mui/material/Button";
 
 const Ingredient = () => {
   const dispatch = useDispatch();
@@ -89,7 +89,7 @@ const Ingredient = () => {
     >
       <div className="flex flex-col items-center py-10">
         <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
-          <h2 className="text-2xl text-center font-bold mb-6 text-blue-700">
+          <h2 className="text-2xl text-center font-bold mb-6 text-red-700">
             Crea un Nuevo Ingrediente
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -103,14 +103,10 @@ const Ingredient = () => {
                 value={form.nombre}
                 onChange={handleChange}
               />
-
             </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
-            >
-              Crear Ingrediente
-            </button>
+            <Button color="error" variant="outlined" fullWidth type="submit">
+              Aceptar
+            </Button>
           </form>
         </div>
       </div>
