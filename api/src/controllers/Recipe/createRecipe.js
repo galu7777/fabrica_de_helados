@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
         });
         // Iterar sobre cada ingrediente y asociarlo a la receta
         for (const ingredienteData of ingredientes) {
-            const { id: ingredienteId, cantidad } = ingredienteData;
+            const { id: ingredienteId, cantidad, unidad_medida } = ingredienteData;
 
             const cnt = cantidad
             // Obtener el modelo del ingrediente basado en el ID
@@ -47,7 +47,8 @@ module.exports = async (req, res) => {
             });
 
             foundRecipeIngrediente.update({
-                cantidad: cnt
+                cantidad: cnt,
+                unidad_medida
             })
         }
 
