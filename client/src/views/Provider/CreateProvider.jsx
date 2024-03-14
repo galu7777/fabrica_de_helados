@@ -128,8 +128,11 @@ export default function CreateProvider() {
                     name="cod_dni"
                   >
                     <MenuItem value={"V"}>V</MenuItem>
+                    <MenuItem value={"E"}>E</MenuItem>
                     <MenuItem value={"J"}>J</MenuItem>
                     <MenuItem value={"G"}>G</MenuItem>
+                    <MenuItem value={"R"}>R</MenuItem>
+                    <MenuItem value={"P"}>P</MenuItem>
                   </Select>
                 </div>
                 <div className="w-3/4">
@@ -181,7 +184,7 @@ export default function CreateProvider() {
               </div>
             </div>
             <Button color="error" variant="outlined" fullWidth type="submit">
-             Aceptar
+              Aceptar
             </Button>
           </form>
         </div>
