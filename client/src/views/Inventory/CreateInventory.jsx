@@ -123,7 +123,7 @@ export default function CreateInventory() {
               >
                 <MenuItem value="">Seleccione un proveedor</MenuItem>
                 {dataProv &&
-                  dataProv.map((provider) => (
+                  dataProv.slice(1).map((provider) => (
                     <MenuItem key={provider.id} value={provider.id}>
                       {provider.razon_social}
                     </MenuItem>
