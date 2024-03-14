@@ -13,7 +13,7 @@ export default function Smoothie() {
     useEffect(() => {
       dispatch(getSmoothies());
     }, [dispatch]);
-
+console.log(data)
       const formatDateTime = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
         return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
@@ -21,7 +21,7 @@ export default function Smoothie() {
 
   const columns = [
     {
-      field: "id_receta",
+      field: "nombre",
       headerName: "Nombre la receta",
       width: 400,
       headerAlign: "center",
@@ -49,7 +49,7 @@ export default function Smoothie() {
       //bg-[#fae9ee]
       ({
         id: item.id,
-        id_receta: item.id_receta,
+        nombre: item.Recipe.nombre,
         cantidad: item.cantidad,
         updatedAt: formatDateTime(item.updatedAt),
       })
