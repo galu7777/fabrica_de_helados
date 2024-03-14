@@ -17,6 +17,8 @@ import Login from "./views/Login/Login";
 import Register from "./views/Register/Register";
 import Popsicles from "./views/Popsicle/Popsicles/Popsicles";
 import CreatePopsicles from "./views/Popsicle/Popsicles/CreatePopsicles";
+import InventoryPopsicles from "./views/Popsicle/Inventory/InventoryPopsicles";
+import CreateInvPopsicles from "./views/Popsicle/Inventory/CreateInvPopsicles";
 
 function App() {
   const location = useLocation();
@@ -42,6 +44,8 @@ function App() {
         <Route path="/TipoPaletas" element={<TypePopsicle />} />
         <Route path="/Paletas" element={<Popsicles />} />
         <Route path="/crear_paletas" element={<CreatePopsicles />} />
+        <Route path="/InventarioPaletas" element={<InventoryPopsicles />} />
+        <Route path="/create_inven_Paletas" element={<CreateInvPopsicles />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
