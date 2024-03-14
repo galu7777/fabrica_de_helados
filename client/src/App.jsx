@@ -10,12 +10,13 @@ import CreateProvider from "./views/Provider/CreateProvider";
 import Inventory from "./views/Inventory/Inventory";
 import CreateInventory from "./views/Inventory/CreateInventory";
 import Smoothie from "./views/Smoothie/Smoothie";
-import CreateSmoothie from "./views/Smoothie/CreateSmoothie";
 import Customers from "./views/Customer/Customers";
 import CreateCustomers from "./views/Customer/CreateCustomers";
 import TypePopsicle from "./views/Popsicle/TypePopsicle/TypePopsicle";
 import Login from "./views/Login/Login";
 import Register from "./views/Register/Register";
+import Popsicles from "./views/Popsicle/Popsicles/Popsicles";
+import CreatePopsicles from "./views/Popsicle/Popsicles/CreatePopsicles";
 
 function App() {
   const location = useLocation();
@@ -36,10 +37,11 @@ function App() {
         <Route path="/Inventario" element={<Inventory />} />
         <Route path="/crear_inventario" element={<CreateInventory />} />
         <Route path="/batidos" element={<Smoothie />} />
-        <Route path="/crear_smoothie" element={<CreateSmoothie />} />
         <Route path="/Clientes" element={<Customers />} />
         <Route path="/crear_clientes" element={<CreateCustomers />} />
         <Route path="/TipoPaletas" element={<TypePopsicle />} />
+        <Route path="/Paletas" element={<Popsicles />} />
+        <Route path="/crear_paletas" element={<CreatePopsicles />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
