@@ -30,4 +30,7 @@ export const Endpoints = {
     TypePopsicle: {
         GetTypePopsicle: createUrl({ base: "typePopsicle", endpoint: "get_type_popsicle" }),
     },
+    Popsicle: {
+        GetPopsicle: createUrl({ base: "popsicle", endpoint: "get_popsicle" }),
+    },
 }
