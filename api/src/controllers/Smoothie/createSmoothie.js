@@ -1,6 +1,24 @@
 const { Recipe, Ingrediente, RecipeIngrediente, BatidaDeHelado, InventarioMateriaPrima } = require('../../db');
 const response = require('../../utils/response');
 
+// Función para convertir unidades a kilogramos
+function convertirAKilogramos(cantidad, unidad_medida) {
+    switch (unidad_medida) {
+        case 'KG':
+            return cantidad;
+        case 'GR':
+            return cantidad / 1000; // Convertir gramos a kilogramos
+        case 'L':
+            return cantidad; // Litros ya están en kilogramos (asumiendo que son líquidos)
+        case 'ML':
+            return cantidad / 1000; // Convertir mililitros a kilogramos
+        case 'OZ':
+            return cantidad * 0.0283495; // Convertir onzas a kilogramos
+        default:
+            return cantidad; // Si la unidad de medida no es reconocida, se asume que ya está en kilogramos
+    }
+}
+
 module.exports = async (req, res) => {
     const { id_receta } = req.body;
     try {
@@ -20,24 +38,19 @@ module.exports = async (req, res) => {
         if (!foundRecipe) {
             return response(res, 404, 'Receta no encontrada');
         }
-        // Preparar para crear un registro de 'SALIDA' para cada ingrediente utilizado
-        for (const ingrediente of foundRecipe.Ingredientes) {
-            await InventarioMateriaPrima.create({
-                IngredienteId: ingrediente.id,
-                cantidad: -ingrediente.RecipeIngrediente.cantidad, // Negativo para indicar salida
-                tipo: 'SALIDA',
-                ProveedorId: 1, // Asumiendo que ProveedorId es necesario; ajusta según tu esquema
-                // Aquí puedes agregar otros campos necesarios según tu modelo de InventarioMateriaPrima
-            });
-        }
+        
+        let cantidadTotalEnKG = foundRecipe.Ingredientes.reduce((acc, item) => {
+            const cantidadEnKG = convertirAKilogramos(item.RecipeIngrediente.cantidad, item.RecipeIngrediente.unidad_medida);
+            return acc + cantidadEnKG;
+        }, 0);
 
         // Crear la BatidaDeHelado después de registrar las salidas de inventario
         const newBatidaDeHelado = await BatidaDeHelado.create({
             id_recipe: id_receta,
-            cantidad: foundRecipe.Ingredientes.reduce((acc, item) => acc + item.RecipeIngrediente.cantidad, 0),
+            cantidad: cantidadTotalEnKG,
         });
 
-        response(res, 201,{message:  `Batida de helado creada con éxito. Salidas registradas.`, newBatidaDeHelado});
+        response(res, 201, { message: `Batida de helado creada con éxito. Salidas registradas.`, newBatidaDeHelado });
     } catch (error) {
         console.error('Error: ', error.message);
         response(res, 500, `Internal Server Error: ${error.message}`);
