@@ -25,3 +25,7 @@ export {
 export {
     getTypePopsicle as getTypePopsicleApi
 } from "./typePopsicle"
+
+export {
+    getPopsicle as getPopsicleApi
+} from "./popsicles"
