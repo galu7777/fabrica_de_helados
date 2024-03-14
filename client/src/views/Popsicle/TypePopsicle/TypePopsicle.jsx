@@ -2,16 +2,22 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
+import Button from "@mui/material/Button";
 import {
   getTypePopsicle,
   createTypePopsicle,
 } from "../../../redux/actions/actions";
 import { Box } from "@mui/material";
+import CircularIndeterminate from "../../../components/spinner/Spinner";
+import TextField from "@mui/material/TextField";
 
 export default function TypePopsicle() {
   const dispatch = useDispatch();
   const typePopsicles = useSelector((state) => state.typePopsicles);
   const { data } = typePopsicles;
+    const refrescarPagina = () => {
+      window.location.reload();
+    };
 
   useEffect(() => {
     dispatch(getTypePopsicle());
@@ -46,6 +52,7 @@ export default function TypePopsicle() {
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
           dispatch(createTypePopsicle({nombre: form.nombre}));
+          refrescarPagina("TipoPaletas");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -71,57 +78,63 @@ export default function TypePopsicle() {
 
   return (
     <>
-      <div className="w-full flex flex-col items-center">
-        <div className="bg-white rounded-md shadow-md w-96">
-          <h2 className="text-2xl font-bold mb-4 text-[#9b1028] p-1">
-           Clasificacion de Paletas
-          </h2>
-          <form onSubmit={handleSubmit}>
-            <label className="block mb-4">
-              <span className="text-sm text-[#9b1028] p-1">
-                Tipo de paleta:
-              </span>
-              <input
-                type="text"
-                name="nombre"
-                value={form.nombre}
-                onChange={handleChange}
-                placeholder="Escribe el nuevo tipo de paleta a registrar"
-                className="w-full px-3 py-2 mt-1 rounded-md border-2 border-9b1028 focus:outline-none focus:border-fa042c"
-              />
-            </label>
-            <button
-              type="submit"
-              className="w-full bg-[#fa042c] text-white py-2 rounded-md hover:bg-[#da637a] transition duration-300"
-            >
-              Crear tipo de paleta
-            </button>
-          </form>
+      <div
+        className="bg-cover bg-center h-screen select-none "
+        style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+      >
+        <div className="flex flex-col items-center py-10">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+            <h2 className="text-2xl text-center font-bold mb-6 text-red-700">
+              Crea un Nuevo Tipo de Paleta
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <TextField
+                  fullWidth
+                  type="text"
+                  name="nombre"
+                  label="Escribe el nuevo tipo de paleta a registrar"
+                  variant="standard"
+                  value={form.nombre}
+                  onChange={handleChange}
+                />
+              </div>
+              <Button color="error" variant="outlined" fullWidth type="submit">
+                Aceptar
+              </Button>
+            </form>
+          </div>
         </div>
-      </div>
-      <div className="mt-8 justify-center flex">
-        <Box sx={{ height: "100%", width: "30%" }}>
-          {data ? (
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 10,
+        <div className="mt-8 justify-center flex">
+          <Box
+            sx={{
+              height: 400,
+              width: "30%",
+              backgroundColor: "white",
+              boxShadow: 24,
+              borderRadius: 2,
+            }}
+          >
+            {data ? (
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
                   },
-                },
-              }}
-              pageSizeOptions={[5]}
-              checkboxSelection
-              disableRowSelectionOnClick
-            />
-          ) : (
-            <h3 className="text-2xl font-bold text-[#9b1028]">
-              No hay tipo de paletas !
-            </h3>
-          )}
-        </Box>
+                }}
+                pageSizeOptions={[5]}
+                checkboxSelection
+                disableRowSelectionOnClick
+              />
+            ) : (
+              <CircularIndeterminate />
+            )}
+          </Box>
+        </div>
       </div>
     </>
   );
