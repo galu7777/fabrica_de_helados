@@ -14,6 +14,8 @@ import {
     REGISTER,
     SIGNIN,
     ADD_TYPE_POPSICLE,
+    ADD_POPSICLE,
+    GET_POPSICLE,
     GET_TYPE_POPSICLE
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
@@ -238,6 +240,35 @@ export const createTypePopsicle = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/popsicle/create_type_popsicle', nombre)
         dispatch({
             type: ADD_TYPE_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+export const getPopsicle = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/popsicle/get_popsicle')
+
+        dispatch({
+            type: GET_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const createPopsicle = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/popsicle/create_popsicle', nombre)
+        dispatch({
+            type: ADD_POPSICLE,
             payload: data,
         });
     } catch (error) {
