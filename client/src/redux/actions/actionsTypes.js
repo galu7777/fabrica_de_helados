@@ -12,6 +12,8 @@ export const GET_CUSTOMERS = 'GET_CUSTOMERS'
 export const ADD_CUSTOMER = 'ADD_CUSTOMER'
 export const ADD_TYPE_POPSICLE = 'ADD_TYPE_POPSICLE'
 export const GET_TYPE_POPSICLE = 'GET_TYPE_POPSICLE'
+export const ADD_POPSICLE = 'ADD_POPSICLE'
+export const GET_POPSICLE = 'GET_POPSICLE'
 export const REGISTER = 'REGISTER'
 export const SIGNIN = 'SIGNIN'
 
