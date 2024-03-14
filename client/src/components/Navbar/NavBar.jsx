@@ -17,7 +17,18 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
-const navItems = ['home', 'ingredientes', 'Recetas', 'Proveedores', 'Inventario', 'Batidos', 'Clientes', 'TipoPaletas', 'Paletas'];
+const navItems = [
+  "home",
+  "ingredientes",
+  "Recetas",
+  "Proveedores",
+  "Inventario",
+  "Batidos",
+  "Clientes",
+  "TipoPaletas",
+  "Paletas",
+  "InventarioPaletas",
+];
 
 function DrawerAppBar(props) {
   const { window } = props;
