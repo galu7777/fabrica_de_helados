@@ -19,7 +19,7 @@ export {
 } from "./smoothie"
 
 export {
-    getClient as getClientsApi
+    getCliente as getClientsApi
 } from "./client"
 
 export {
@@ -29,3 +29,7 @@ export {
 export {
     getPopsicle as getPopsicleApi
 } from "./popsicles"
+
+export {
+    getInventoryPopsicles as getInventoryPopsicleApi
+} from "./inventoryPopsicles"
