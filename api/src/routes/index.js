@@ -36,6 +36,8 @@ const deleteProvider = require('../controllers/Provider/deleteProvider');
 const updateProvider = require('../controllers/Provider/updateProvider');
 const deleteSmoothie = require('../controllers/Smoothie/deleteSmoothie');
 const updateSmoothie = require('../controllers/Smoothie/updateSmoothie');
+const updateSale = require('../controllers/Sale/updateSale');
+const deleteSale = require('../controllers/Sale/deleteSale');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -92,6 +94,8 @@ router.put('/client/update_client/:id', updateCliente)
 
 // rutas de ventas
 router.get('/sale/get_allsales', getSales)
+router.put('/sale/update/:id', updateSale)
+router.delete('/sale/delete/:id', deleteSale)
 router.post('/sale/create_sale', createSale)
 
 // rutas de user
