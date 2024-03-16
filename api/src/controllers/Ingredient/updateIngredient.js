@@ -3,7 +3,7 @@ const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
     const { id } = req.params;
-    const { nombre, descripcion } = req.body;
+    const { nombre } = req.body;
 
     try {
         if (!id) {
@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         if (nombre) {
             ingrediente.nombre = nombre;
         }
-      
+
 
         await ingrediente.save();
 
