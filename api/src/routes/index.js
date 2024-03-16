@@ -28,6 +28,8 @@ const deleteIngredient = require('../controllers/Ingredient/deleteIngredient');
 const updateIngredient = require('../controllers/Ingredient/updateIngredient');
 const deleteCliente = require('../controllers/Client/deleteCliente');
 const updateCliente = require('../controllers/Client/updateCliente');
+const deleteMaterialsInventory = require('../controllers/Inventory/deleteMaterialsInventory');
+const updateMaterialsInventory = require('../controllers/Inventory/updateMaterialsInventory');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -46,6 +48,8 @@ router.post('/provider/create_provider', createProvider)
 
 // rutas de inventario
 router.get('/inventory/get_inventory', getMaterialsInventory)
+router.delete('/inventory/delete/:id', deleteMaterialsInventory)
+router.put('/inventory/update/:id', updateMaterialsInventory)
 router.post('/inventory/create_entry', RawMaterialsInventory)
 
 // rutas de receta
