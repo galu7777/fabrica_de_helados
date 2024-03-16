@@ -33,3 +33,7 @@ export {
 export {
     getInventoryPopsicles as getInventoryPopsicleApi
 } from "./inventoryPopsicles"
+
+export {
+    getSales as getSalesApi
+} from "./sales"
