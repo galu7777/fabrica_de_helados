@@ -10,10 +10,14 @@ export default function InventoryPopsicles() {
 const dispatch = useDispatch();
   const inventoryPopsicle = useSelector((state) => state.inventoryPopsicle);
   const { data } = inventoryPopsicle;
+
    useEffect(() => {
      dispatch(getInventoryPopsicle());
    }, [dispatch]);
-   console.log(data)
+       const formatDateTime = (dateTimeString) => {
+         const dateTime = new Date(dateTimeString);
+         return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
+       };
 
      const columns = [
        {
@@ -26,7 +30,7 @@ const dispatch = useDispatch();
        {
          field: "tipo_paleta",
          headerName: "Tipo de Paleta",
-         width: 300,
+         width: 150,
          headerAlign: "center",
          align: "center",
        },
@@ -51,6 +55,13 @@ const dispatch = useDispatch();
          headerAlign: "center",
          align: "center",
        },
+       {
+         field: "updatedAt",
+         headerName: "Fecha",
+         width: 200,
+         headerAlign: "center",
+         align: "center",
+       },
      ];
       const rows =
         data &&
@@ -63,6 +74,7 @@ const dispatch = useDispatch();
             tipo: item.tipo,
             peso_unitario: item.peso_unitario,
             unidad_medida: item.unidad_medida,
+            updatedAt: formatDateTime(item.updatedAt),
           })
         );
   return (
@@ -89,7 +101,7 @@ const dispatch = useDispatch();
         <Box
           sx={{
             height: 400,
-            width: "60%",
+            width: "70%",
             backgroundColor: "white",
             boxShadow: 24,
             borderRadius: 2,
