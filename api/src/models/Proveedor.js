@@ -24,7 +24,8 @@ module.exports = (sequelize) => {
                 type: DataTypes.ENUM("V", "E", "J", "G", "R", "P")
             },
             cedula_rif: {
-                type: DataTypes.INTEGER
+                type: DataTypes.INTEGER,
+                 unique: true
             }
         },
         {
