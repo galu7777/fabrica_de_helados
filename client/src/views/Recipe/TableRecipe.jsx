@@ -9,6 +9,8 @@ import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import CircularIndeterminate from "../../components/spinner/Spinner";
+import PropTypes from "prop-types";
+
 
 const TableRecipe = ({ onSelectedIngredientsChange }) => {
   const dispatch = useDispatch();
@@ -159,6 +161,10 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
       )}
     </div>
   );
+};
+
+TableRecipe.propTypes = {
+  onSelectedIngredientsChange: PropTypes.func.isRequired,
 };
 
 export default TableRecipe;
