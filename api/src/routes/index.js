@@ -26,6 +26,8 @@ const createRestore = require('../controllers/Restore/createRestore');
 const getRestore = require('../controllers/Restore/getRestore');
 const deleteIngredient = require('../controllers/Ingredient/deleteIngredient');
 const updateIngredient = require('../controllers/Ingredient/updateIngredient');
+const deleteCliente = require('../controllers/Client/deleteCliente');
+const updateCliente = require('../controllers/Client/updateCliente');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -69,6 +71,8 @@ router.post('/inventory_popsicle/create_entry', createInventoryPopsicle)
 // rutas cliente
 router.get('/client/get_allclients', getAllClient)
 router.post('/client/create_new_client', createClient)
+router.delete('/client/delete_client/:id', deleteCliente)
+router.put('/client/update_client/:id', updateCliente)
 
 // rutas de ventas
 router.get('/sale/get_allsales', getSales)
