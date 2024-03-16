@@ -19,6 +19,8 @@ import Popsicles from "./views/Popsicle/Popsicles/Popsicles";
 import CreatePopsicles from "./views/Popsicle/Popsicles/CreatePopsicles";
 import InventoryPopsicles from "./views/Popsicle/Inventory/InventoryPopsicles";
 import CreateInvPopsicles from "./views/Popsicle/Inventory/CreateInvPopsicles";
+import Sales from "./views/Sales/Sales.jsx";
+import CreateSale from "./views/Sales/CreateSale";
 
 function App() {
   const location = useLocation();
@@ -48,6 +50,8 @@ function App() {
         <Route path="/create_inven_Paletas" element={<CreateInvPopsicles />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/Ventas" element={<Sales />} />
+        <Route path="/crear_ventas" element={<CreateSale />} />
       </Routes>
     </div>
   );
