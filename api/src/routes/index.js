@@ -42,6 +42,8 @@ const deleteInventoryPopsicle = require('../controllers/Popsicle/InventoryPopsic
 const updateInventoryPopsicle = require('../controllers/Popsicle/InventoryPopsicle/updateInventoryPopsicle');
 const deletePopsicle = require('../controllers/Popsicle/NewPopsicle/deletePopsicle');
 const updatePopsicle = require('../controllers/Popsicle/NewPopsicle/updatePopsicle');
+const updateTypePopsicle = require('../controllers/Popsicle/TypePopsicle/updateTypePopsicle');
+const deleteTypePopsicle = require('../controllers/Popsicle/TypePopsicle/deleteTypePopsicle');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -80,6 +82,8 @@ router.post('/smoothie/create_smoothie', createSmoothie)
 
 // rutas de tipos paletas
 router.get('/popsicle/get_type_popsicle', getTypePopsicle)
+router.put('/popsicletype/update/:id', updateTypePopsicle)
+router.delete('/popsicletype/delete/:id', deleteTypePopsicle)
 router.post('/popsicle/create_type_popsicle', createTypePopsicle)
 
 // rutas nuevas paletas
