@@ -19,6 +19,8 @@ import {
     GET_POPSICLE,
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
+    GET_SALES,
+    ADD__SALE
 
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
@@ -300,6 +302,34 @@ export const createInventoryPopsicle = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/inventory_popsicle/create_entry', nombre)
         dispatch({
             type: ADD_INVENTORY_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const getsales = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/sale/get_allsales')
+
+        dispatch({
+            type: GET_SALES,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const createSales = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/sale/create_sale', nombre)
+        dispatch({
+            type: ADD__SALE,
             payload: data,
         });
     } catch (error) {
