@@ -36,4 +36,7 @@ export const Endpoints = {
     InventoryPopsicle: {
         GetInventoryPopsicle: createUrl({ base: "inventory_popsicle", endpoint: "get_inventoryPopsicle" }),
     },
+    Sale: {
+        GetSales: createUrl({ base: "sale", endpoint: "get_allsales" }),
+    },
 }
