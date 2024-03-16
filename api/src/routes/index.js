@@ -24,6 +24,8 @@ const getAllUser = require('../controllers/User/getAllUser');
 const auth = require('../controllers/Auth/auth');
 const createRestore = require('../controllers/Restore/createRestore');
 const getRestore = require('../controllers/Restore/getRestore');
+const deleteIngredient = require('../controllers/Ingredient/deleteIngredient');
+const updateIngredient = require('../controllers/Ingredient/updateIngredient');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -32,6 +34,8 @@ const router = Router();
 // Configurar los routers
 // rutas de ingredientes
 router.get('/ingredient/get_allingredient', getIngredient)
+router.delete('/ingredient/delete_ingredient/:id', deleteIngredient)
+router.put('/ingredient/update_ingredient/:id', updateIngredient)
 router.post('/ingredient/create_ingredient', createIngredient)
 
 // rutas de proveedor
