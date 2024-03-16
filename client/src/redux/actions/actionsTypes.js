@@ -18,4 +18,5 @@ export const GET_INVENTORY_POPSICLE = 'GET_INVENTORY_POPSICLE'
 export const ADD_INVENTORY_POPSICLE = 'ADD_INVENTORY_POPSICLE'
 export const REGISTER = 'REGISTER'
 export const SIGNIN = 'SIGNIN'
-
+export const GET_SALES = 'GET_SALES'
+export const ADD__SALE = 'ADD__SALE'
