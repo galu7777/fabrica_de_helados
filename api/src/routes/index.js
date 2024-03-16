@@ -34,6 +34,8 @@ const deleteRecipe = require('../controllers/Recipe/deleteRecipe');
 const updateRecipe = require('../controllers/Recipe/updateRecipe');
 const deleteProvider = require('../controllers/Provider/deleteProvider');
 const updateProvider = require('../controllers/Provider/updateProvider');
+const deleteSmoothie = require('../controllers/Smoothie/deleteSmoothie');
+const updateSmoothie = require('../controllers/Smoothie/updateSmoothie');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -66,6 +68,8 @@ router.post('/recipe/create_recipe', createRecipe)
 
 // rutas de batido
 router.get('/smoothie/get_smoothie', getSmoothie)
+router.delete('/smoothie/delete/:id', deleteSmoothie)
+router.put('/smoothie/update/:id', updateSmoothie)
 router.post('/smoothie/create_smoothie', createSmoothie)
 
 // rutas de tipos paletas
