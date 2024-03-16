@@ -28,6 +28,7 @@ const navItems = [
   "TipoPaletas",
   "Paletas",
   "InventarioPaletas",
+  "Ventas"
 ];
 
 function DrawerAppBar(props) {
