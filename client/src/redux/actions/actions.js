@@ -1,6 +1,9 @@
 import {
     ADD_INGREDIENT,
     GET_INGREDIENTS,
+    EDIT_INGREDIENTS,
+    DELETE_INGREDIENTS,
+    DETAIL_INGREDIENTS,
     ADD_RECIPE,
     GET_RECIPES,
     GET_PROVIDERS,
@@ -57,7 +60,7 @@ export const signin = (user) => async (dispatch) => {
 export const getIngredients = () => async (dispatch) => {
     try {
         const { data } = await axios.get('http://localhost:3001/ingredient/get_allingredient')
-        console.log(data)
+
         dispatch({
             type: GET_INGREDIENTS,
             payload: data,
@@ -72,7 +75,6 @@ export const createIngredient = (nombre) => async (dispatch) => {
     try {
         const name = { nombre }
         const { data } = await axios.post('http://localhost:3001/ingredient/create_ingredient', name)
-        console.log(data)
         dispatch({
             type: ADD_INGREDIENT,
             payload: data,
@@ -83,6 +85,51 @@ export const createIngredient = (nombre) => async (dispatch) => {
     }
 }
 
+export const editIngredient = (ingredientId,nombre) => async (dispatch) => {
+    try {
+        const name = { nombre }
+        const { data } = await axios.put(`http://localhost:3001/ingredient/update_ingredient/${ingredientId}`, name)
+
+        dispatch({
+            type: EDIT_INGREDIENTS,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const detailIngredient = (ingredientId, nombre) => async (dispatch) => {
+    try {
+        const name = { nombre }
+        const { data } = await axios.get(`http://localhost:3001/ingredient/detail/${ingredientId}`, name)
+
+        dispatch({
+            type: DETAIL_INGREDIENTS,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+export const deleteIngredient = (id) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.delete(`http://localhost:3001/ingredient/delete_ingredient/${id}`)
+        console.log(data)
+        dispatch({
+            type: DELETE_INGREDIENTS,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
 
 export const getRecipes = () => async (dispatch) => {
     try {
