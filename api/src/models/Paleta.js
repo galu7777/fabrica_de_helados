@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
             },
             nombre: {
                 type: DataTypes.STRING,
-                unique: true  
+                unique: true
             },
             peso: {
                 type: DataTypes.FLOAT
@@ -24,7 +24,11 @@ module.exports = (sequelize) => {
             },
             descripcion: {
                 type: DataTypes.STRING,
-            }
+            },
+            tipo_paleta: {
+                type: DataTypes.STRING,
+            },
+
         },
         {
         timestamps: true,
