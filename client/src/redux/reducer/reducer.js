@@ -1,6 +1,9 @@
 import {
     ADD_INGREDIENT,
     GET_INGREDIENTS,
+    EDIT_INGREDIENTS,
+    DELETE_INGREDIENTS,
+    DETAIL_INGREDIENTS,
     ADD_RECIPE,
     GET_RECIPES,
     ADD_PROVIDER,
@@ -27,6 +30,7 @@ import {
 const initialState = {
     ingredients: {},
     newIngredient: {},
+    ingredientDetail: {},
     recipes: {},
     newRecipe: {},
     providers: {},
@@ -77,6 +81,30 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 ...state,
                 newIngredient: payload
             }
+        }
+
+        case EDIT_INGREDIENTS: {
+            return {
+                ...state,
+                ingredients: {
+                    ...state.ingredients,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_INGREDIENTS:
+            return {
+                ...state,
+                ingredientDetail: payload,
+
+            };
+        case DELETE_INGREDIENTS: {
+            const { [payload.id]: _, ...remainingIngredients } = state.ingredients;
+            return {
+                ...state,
+                ingredients: remainingIngredients,
+                error: null,
+            };
         }
         case GET_RECIPES: {
             return {
