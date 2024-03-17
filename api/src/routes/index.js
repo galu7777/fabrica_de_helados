@@ -52,6 +52,7 @@ const router = Router();
 // Configurar los routers
 // rutas de ingredientes
 router.get('/ingredient/get_allingredient', getIngredient)
+router.get('/ingredient/detail/:id', getIngredient)
 router.delete('/ingredient/delete_ingredient/:id', deleteIngredient)
 router.put('/ingredient/update_ingredient/:id', updateIngredient)
 router.post('/ingredient/create_ingredient', createIngredient)
