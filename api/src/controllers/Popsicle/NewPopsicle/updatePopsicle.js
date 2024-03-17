@@ -1,36 +1,35 @@
-const { Paleta } = require('../../../db');
+const { Paleta, TipoDePaleta } = require('../../../db');
 const response = require('../../../utils/response');
 
 module.exports = async (req, res) => {
-    const { id } = req.params;
-    const { nombre, peso, descripcion } = req.body;
+    const { id, nombre, peso, descripcion, id_tipo_de_paleta } = req.body;
 
     try {
-        if (!id) {
-            return response(res, 400, 'Se requiere un ID de paleta');
+        // Buscar la paleta por su ID
+        const paletaExistente = await Paleta.findByPk(id);
+
+        // Verificar si la paleta existe
+        if (!paletaExistente) {
+            return response(res, 404, "Popsicle not found.");
         }
 
-        const paleta = await Paleta.findByPk(id);
-        if (!paleta) {
-            return response(res, 404, 'Paleta no encontrada');
+        // Verificar si el tipo de paleta existe
+        const tipoDePaleta = await TipoDePaleta.findByPk(id_tipo_de_paleta);
+        if (!tipoDePaleta) {
+            return response(res, 404, "Popsicle type not found.");
         }
 
-        // Actualizar los campos de la paleta
-        if (nombre !== undefined) {
-            paleta.nombre = nombre;
-        }
-        if (peso !== undefined) {
-            paleta.peso = peso;
-        }
-        if (descripcion !== undefined) {
-            paleta.descripcion = descripcion;
-        }
+        // Actualizar la paleta con los nuevos datos
+        const updatedPaleta = await paletaExistente.update({
+            nombre,
+            peso,
+            descripcion,
+            tipo_paleta: id_tipo_de_paleta // Actualizar el tipo de paleta
+        });
 
-        await paleta.save();
-
-        return response(res, 200, 'Paleta actualizada correctamente', paleta);
+        return response(res, 200, updatedPaleta);
     } catch (error) {
-        console.error('Error: ', error.message);
-        return response(res, 500, `Error interno del servidor: ${error.message}`);
+        console.error('Error:', error.message);
+        return response(res, 500, `Internal Server Error: ${error.message}`);
     }
 };
