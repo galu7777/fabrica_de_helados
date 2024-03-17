@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
-import { createIngredient, getIngredients } from "../../redux/actions/actions";
+import {
+  createIngredient,
+  getIngredients,
+  deleteIngredient,
+  detailIngredient,
+  editIngredient,
+} from "../../redux/actions/actions";
 import { Box } from "@mui/material";
 
 import CircularIndeterminate from "../../components/spinner/Spinner";
@@ -13,18 +19,24 @@ const Ingredient = () => {
   const dispatch = useDispatch();
 
   const ingredients = useSelector((state) => state.ingredients);
-  const { data } = ingredients;
+  const detail = useSelector((state) => state.ingredientDetail);
+  const data = ingredients.data;
+  const detailData = detail.data;
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  useEffect(() => {
+    if (isEditing && detailData) {
+      showEditDialog();
+    }
+  }, [isEditing, detailData]);
   const refrescarPagina = () => {
     window.location.reload();
   };
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
   const [form, setForm] = useState({
     nombre: "",
   });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,26 +64,122 @@ const Ingredient = () => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(createIngredient(form.nombre));
+          dispatch(createIngredient(form.nombre.toUpperCase()));
           setTimeout(() => {
-             refrescarPagina();
+            refrescarPagina();
           }, "1000");
-
-
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
       });
     }
   };
+  const handleEdit = (id) => {
+    dispatch(detailIngredient(id));
+    setIsEditing(true);
+    setEditingId(id);
+  };
+
+  const showEditDialog = () => {
+    const nombre = detailData.nombre;
+    Swal.fire({
+      title: "Editar Ingrediente",
+      icon: "warning",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Editar",
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+      html: `<input id="swal-nombre" class="swal2-input" value="${nombre}" placeholder="Nombre">`,
+      preConfirm: () => {
+        const newNombre = Swal.getPopup()
+          .querySelector("#swal-nombre")
+          .value.trim();
+        if (!newNombre) {
+          Swal.showValidationMessage("Por favor, ingrese un nombre válido.");
+        }
+        return { nombre: newNombre };
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(editIngredient(editingId, result.value));
+      }
+      setIsEditing(false);
+      setEditingId(null);
+    });
+  };
+
+  // Función para manejar la eliminación de un ingrediente
+  const handleDelete = (id) => {
+    // Mostrar un cuadro de diálogo de confirmación con SweetAlert
+    Swal.fire({
+      title: "¿Estás seguro de que quieres Eliminarlo?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(`Eliminando ingrediente con ID: ${id}`);
+        Swal.fire("Registro Exitoso!", "", "success");
+        dispatch(deleteIngredient(id));
+        setTimeout(() => {
+          refrescarPagina();
+        }, "1000");
+      }
+    });
+  };
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   const columns = [
     {
       field: "nombre",
       headerName: "Nombre del Ingrediente",
-      width:500,
+      width: 400,
       headerAlign: "center",
       align: "center",
+    },
+    {
+      field: "Editar",
+      headerName: "Acciones",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => handleEdit(params.row.id)}
+          >
+            Editar
+          </Button>
+        </div>
+      ),
+    },
+    {
+      field: "Eliminar",
+      headerName: "Eliminar",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => handleDelete(params.row.id)}
+          >
+            Eliminar
+          </Button>
+        </div>
+      ),
     },
   ];
 
@@ -114,7 +222,7 @@ const Ingredient = () => {
         <Box
           sx={{
             height: 400,
-            width: "30%",
+            width: "50%",
             backgroundColor: "white",
             boxShadow: 24,
             borderRadius: 2,
