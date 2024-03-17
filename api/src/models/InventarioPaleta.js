@@ -14,9 +14,6 @@ module.exports = (sequelize) => {
             nombre_paleta: {
                 type: DataTypes.STRING,
             },
-            tipo_paleta: {
-                type: DataTypes.STRING,
-            },
             cantidad: {
                 type: DataTypes.INTEGER,
             },
