@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import Swal from "sweetalert2";
 //import { useNavigate } from "react-router-dom";
 
+
+
 export default function CreateSale() {
   const dispatch = useDispatch();
   //const navigate = useNavigate();
@@ -33,11 +35,9 @@ export default function CreateSale() {
         cantidad: row.cantidad || 0,
         precio: row.peso_unitario || 0,
         monto: row.total || 0,
-        tasa: row.tasa
+        tasa: row.tasa,
       }));
     const selectedCustomersIds = selectedCustomer.id;
-
-    console.log(filteredRows);
 
     if (!filteredRows) {
       Swal.fire({
@@ -79,7 +79,6 @@ export default function CreateSale() {
         Swal.fire("Venta registrada exitosamente!", "", "success");
         // Envía los datos al backend
         dispatch(createSales({ selectedCustomersIds, filteredRows }));
-
       } else if (result.isDenied) {
         Swal.fire("La venta no se registró.", "", "info");
       }
@@ -96,7 +95,11 @@ export default function CreateSale() {
               alt="Logo"
               style={{ width: "80px", height: "50px" }}
             />
-            <Typography variant="h4" gutterBottom className="font-bold py-5 text-center items-start text-red-600">
+            <Typography
+              variant="h4"
+              gutterBottom
+              className="font-bold py-5 text-center items-start text-red-600"
+            >
               Tony Gelati
             </Typography>
           </div>
