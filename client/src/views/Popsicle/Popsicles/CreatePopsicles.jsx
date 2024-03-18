@@ -5,25 +5,38 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchPopsicles from "./SearchPopsicles";
+
 export default function CreatePopsicles() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [selectedPopsicle, setSelectedPopsicle] = useState(null);
 
   const [form, setForm] = useState({
     nombre: "",
     peso: "",
     descripcion: "",
+    precio: "",
   });
     const handleChange = (e) => {
       const { name, value } = e.target;
       setForm({ ...form, [name]: value });
     };
 
-    console.log(form)
+      const handlePopsicleSelect = (popsicle) => {
+        setSelectedPopsicle(popsicle);
+      };
  const handleSubmit = (e) => {
    e.preventDefault();
-
-   if (!form.nombre || !form.peso || !form.descripcion) {
+ console.log(selectedPopsicle.id);
+   if (
+     !form.nombre ||
+     !form.peso ||
+     !form.descripcion ||
+     !form.precio ||
+    (selectedPopsicle === null || selectedPopsicle.id === null)
+   ) {
      // Muestra una alerta indicando el error
      Swal.fire({
        title: "Verifica la informacion.",
@@ -42,10 +55,12 @@ export default function CreatePopsicles() {
        if (result.isConfirmed) {
          Swal.fire("Registro Exitoso!", "", "success");
          dispatch(
-           createPopsicle({ 
+           createPopsicle({
              nombre: form.nombre.toUpperCase(),
              peso: form.peso,
              descripcion: form.descripcion.toUpperCase(),
+             id_tipo_de_paleta: selectedPopsicle.id,
+             precio: form.precio,
            })
          );
          navigate("/Paletas");
@@ -79,31 +94,49 @@ export default function CreatePopsicles() {
                 />
               </div>
             </div>
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full px-3 mb-6 md:mb-0">
+                <SearchPopsicles onPopsicleTypeSelect={handlePopsicleSelect} />
+              </div>
+            </div>
             <div className="flex -mx-3 mb-6">
               <div className="w-full px-3 flex">
                 <div className="w-3/4 mr-4">
                   <div>
                     <TextField
-                      label="Peso"
+                      id="outlined-adornment-weight"
                       variant="outlined"
                       type="number"
                       fullWidth
-                      value={form.peso}
+                      label="Precio"
+                      value={form.precio}
                       onChange={handleChange}
-                      name="peso"
+                      name="precio"
                       required
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">$</InputAdornment>
+                        ),
+                      }}
                     />
                   </div>
                 </div>
                 <div className="">
                   <TextField
-                    label="Unidad de medida"
+                    id="outlined-adornment-weight"
                     variant="outlined"
-                    disabled
-                    type="text"
+                    type="number"
+                    label="Peso"
                     fullWidth
-                    value={"GRMS"}
-                    name="unidadmedida"
+                    value={form.peso}
+                    onChange={handleChange}
+                    name="peso"
+                    required
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="start">GRMS</InputAdornment>
+                      ),
+                    }}
                   />
                 </div>
               </div>
