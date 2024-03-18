@@ -10,7 +10,7 @@ export default function CreateRecipe() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {7
+  useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
@@ -43,6 +43,7 @@ const handleSubmit = (e) => {
       cantidad: ingredient.cantidad || 0,
       unidad: ingredient.unidad || 0
     }));
+    console.log(selectedIngredientesIds);
 
 
   const nombre = form.nombre.toUpperCase();
@@ -73,12 +74,17 @@ const handleSubmit = (e) => {
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
           // Envía los datos al backend
-          dispatch(
-            createRecipe({
-              nombre: nombre,
-              ingredientes: selectedIngredientesIds,
-            })
-          );
+        dispatch(
+          createRecipe({
+            nombre: nombre,
+            ingredientes: selectedIngredientesIds.map((ingrediente) => ({
+              id: ingrediente.id,
+              cantidad: ingrediente.cantidad,
+              unidad_medida: ingrediente.unidad, // Aquí pasamos la unidad de medida
+            })),
+          })
+        );
+
            navigate("/Recetas");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
