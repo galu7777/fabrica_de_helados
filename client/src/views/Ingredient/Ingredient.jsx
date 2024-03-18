@@ -123,7 +123,7 @@ const Ingredient = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(`Eliminando ingrediente con ID: ${id}`);
+      
         Swal.fire("Registro Exitoso!", "", "success");
         dispatch(deleteIngredient(id));
         setTimeout(() => {
@@ -147,7 +147,7 @@ const Ingredient = () => {
     },
     {
       field: "Editar",
-      headerName: "Acciones",
+      headerName: "Editar",
       width: 200,
       headerAlign: "center",
       align: "center",
