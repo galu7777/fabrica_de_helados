@@ -13,12 +13,19 @@ export default function Popsicles() {
   useEffect(() => {
     dispatch(getPopsicle());
   }, [dispatch]);
-  console.log(data);
+
 
   const columns = [
     {
       field: "nombre",
-      headerName: "Nombre del Ingrediente",
+      headerName: "Nombre de la Paleta",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "tipo_paleta",
+      headerName: "Tipo de Paleta",
       width: 200,
       headerAlign: "center",
       align: "center",
@@ -26,7 +33,7 @@ export default function Popsicles() {
     {
       field: "peso",
       headerName: "Peso",
-      width: 200,
+      width: 100,
       headerAlign: "center",
       align: "center",
     },
@@ -44,6 +51,13 @@ export default function Popsicles() {
       headerAlign: "center",
       align: "center",
     },
+    {
+      field: "precio",
+      headerName: "Precio",
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+    },
   ];
   const rows =
     data &&
@@ -53,8 +67,10 @@ export default function Popsicles() {
         id: item.id,
         nombre: item.nombre,
         peso: item.peso,
+        tipo_paleta: item.tipo_paleta,
         unidad_medida: item.unidad_medida,
-        descripcion: item.descripcion
+        descripcion: item.descripcion,
+        precio: item.precio,
       })
     );
   return (
