@@ -23,15 +23,22 @@ const SearchCustomers = ({ onCustomerSelect }) => {
   return (
     <div className="border-gray-300 border border-solid p-4 rounded-md">
       <div className="mb-5 flex items-center justify-center ">
-        <Autocomplete
-          options={data}
-          getOptionLabel={(option) => option.razon_social}
-          renderInput={(params) => (
-            <TextField {...params} label="Buscar clientes" variant="outlined" />
-          )}
-          onChange={handleCustomerSelect}
-          sx={{ width: 300 }}
-        />
+        {data && (
+          <Autocomplete
+            options={data}
+            getOptionLabel={(option) => option.razon_social}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                required
+                label="Buscar clientes"
+                variant="outlined"
+              />
+            )}
+            onChange={handleCustomerSelect}
+            sx={{ width: 300 }}
+          />
+        )}
       </div>
       {selectedCustomer && (
         <div className="flex flex-wrap -mx-3 mb-6">
