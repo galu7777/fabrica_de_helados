@@ -2,7 +2,7 @@ const { Paleta, TipoDePaleta } = require('../../../db');
 const response = require('../../../utils/response');
 
 module.exports = async (req, res) => {
-    const { id, nombre, peso, descripcion, id_tipo_de_paleta } = req.body;
+    const { id, nombre, peso, descripcion, id_tipo_de_paleta, precio } = req.body;
 
     try {
         // Buscar la paleta por su ID
@@ -24,7 +24,8 @@ module.exports = async (req, res) => {
             nombre,
             peso,
             descripcion,
-            tipo_paleta: id_tipo_de_paleta // Actualizar el tipo de paleta
+            tipo_paleta: id_tipo_de_paleta,
+            precio
         });
 
         return response(res, 200, updatedPaleta);
