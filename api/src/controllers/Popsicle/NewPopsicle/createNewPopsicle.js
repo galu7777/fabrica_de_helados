@@ -2,7 +2,7 @@ const { Paleta, TipoDePaleta } = require('../../../db');
 const response = require('../../../utils/response');
 
 module.exports = async (req, res) => {
-    const { nombre, peso, descripcion, id_tipo_de_paleta } = req.body;
+    const { nombre, peso, descripcion, id_tipo_de_paleta, precio } = req.body;
     try {
         const foundedPopsicleType = await TipoDePaleta.findByPk(id_tipo_de_paleta);
         if (foundedPopsicleType !== null) {
@@ -12,7 +12,8 @@ module.exports = async (req, res) => {
                 nombre,
                 peso,
                 descripcion,
-                tipo_paleta: typePopsicle.id
+                tipo_paleta: typePopsicle.id,
+                precio
             });
             return response(res, 201, newPaleta);
         } else {
