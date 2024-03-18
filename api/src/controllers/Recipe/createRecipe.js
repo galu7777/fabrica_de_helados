@@ -1,8 +1,9 @@
-const { Recipe, Ingrediente, InventarioMateriaPrima, RecipeIngrediente } = require('../../db');
+const { Recipe, Ingrediente,  RecipeIngrediente } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
     const { nombre, ingredientes } = req.body;
+    console.log(ingredientes)
 
     try {
         // Crear la receta
@@ -11,24 +12,25 @@ module.exports = async (req, res) => {
         });
         // Iterar sobre cada ingrediente y asociarlo a la receta
         for (const ingredienteData of ingredientes) {
-            const { id: ingredienteId, cantidad } = ingredienteData;
+            const { id: ingredienteId, cantidad, unidad_medida  } = ingredienteData;
 
             const cnt = cantidad
+            const unit = unidad_medida
             // Obtener el modelo del ingrediente basado en el ID
             const ingrediente = await Ingrediente.findByPk(ingredienteId);
 
             // Asociar el ingrediente a la receta
             await nuevaReceta.addIngrediente(ingrediente);
 
-            
+
             const existingRecipeIngrediente = await RecipeIngrediente.findOne({
                 where: {
                     RecipeId: nuevaReceta.id,
                     IngredienteId: ingredienteId,
                 },
             });
-            
-            
+
+
             if (existingRecipeIngrediente) {
                 console.log('Este registro ya existe en RecipeIngredientes.');
             } else {
@@ -47,7 +49,9 @@ module.exports = async (req, res) => {
             });
 
             foundRecipeIngrediente.update({
-                cantidad: cnt
+                cantidad: cnt,
+                unidad_medida: unit
+
             })
         }
 
