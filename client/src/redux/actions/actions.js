@@ -6,6 +6,9 @@ import {
     DETAIL_INGREDIENTS,
     ADD_RECIPE,
     GET_RECIPES,
+    EDIT_RECIPES,
+    DELETE_RECIPES,
+    DETAIL_RECIPES,
     GET_PROVIDERS,
     ADD_PROVIDER,
     ADD_INVENTORY,
@@ -86,9 +89,11 @@ export const createIngredient = (nombre) => async (dispatch) => {
 }
 
 export const editIngredient = (ingredientId,nombre) => async (dispatch) => {
+    console.log(ingredientId)
     try {
-        const name = { nombre }
-        const { data } = await axios.put(`http://localhost:3001/ingredient/update_ingredient/${ingredientId}`, name)
+
+        const { data } = await axios.put(`http://localhost:3001/ingredient/update_ingredient/${ingredientId}`, nombre)
+
 
         dispatch({
             type: EDIT_INGREDIENTS,
@@ -151,6 +156,55 @@ export const createRecipe = (nombre, ingredientes) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/recipe/create_recipe', nombre, ingredientes)
         dispatch({
             type: ADD_RECIPE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const editRecipe = (id, nombre) => async (dispatch) => {
+    console.log(nombre)
+
+    try {
+
+        const { data } = await axios.put(`http://localhost:3001/recipe/update/${id}`, nombre)
+
+        dispatch({
+            type: EDIT_RECIPES,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const detailRecipe = (id, nombre) => async (dispatch) => {
+    console.log(id)
+    try {
+        const name = { nombre }
+        const { data } = await axios.get(`http://localhost:3001/recipe/detail/${id}`, name)
+        console.log(data)
+        dispatch({
+            type: DETAIL_RECIPES,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+export const deleteRecipe = (id) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.delete(`http://localhost:3001/recipe/delete/${id}`)
+        console.log(data)
+        dispatch({
+            type: DELETE_RECIPES,
             payload: data,
         });
     } catch (error) {
