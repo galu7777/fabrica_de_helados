@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
         // Guardar los cambios en la base de datos
         await provider.save();
 
-        response(res, 200, 'Proveedor actualizado correctamente', provider);
+        response(res, 200, { message: 'Proveedor actualizado correctamente',provider});
     } catch (error) {
         console.error('Error: ', error.message);
         response(res, 500, 'Internal Server Error');
