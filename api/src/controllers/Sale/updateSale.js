@@ -3,7 +3,7 @@ const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
     const { id } = req.params;
-    const { cantidad, precio, monto, tasa } = req.body;
+    const { cantidad,  monto, tasa } = req.body;
 
     try {
         if (!id) {
@@ -18,9 +18,6 @@ module.exports = async (req, res) => {
         // Actualizar los campos de la venta
         if (cantidad !== undefined) {
             venta.cantidad = cantidad;
-        }
-        if (precio !== undefined) {
-            venta.precio = precio;
         }
         if (monto !== undefined) {
             venta.monto = monto;
