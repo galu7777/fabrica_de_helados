@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { getInventoryPopsicle } from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import PropTypes from "prop-types";
-
+import { getMonitor } from "consulta-dolar-venezuela";
 export default function SalesTable({ onSelectedPopsiclesChange }) {
   const dispatch = useDispatch();
   const popInventory = useSelector((state) => state.inventoryPopsicle);
@@ -14,6 +14,15 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
   const [rows, setRows] = useState([]);
   const [showTextField, setShowTextField] = useState({});
   const [totalOfTotals, setTotalOfTotals] = useState(0);
+    const [BCV, setBCV] = useState("");
+    useEffect(() => {
+      const fetchData = async () => {
+        const response = await getMonitor("BCV", "lastUpdate");
+        setBCV(response.bcv);
+      };
+
+      fetchData();
+    }, []);
 
 
   useEffect(() => {
@@ -62,7 +71,7 @@ const handleQuantityChange = (event, rowId) => {
     }
   }
 };
-
+const totalEnBSCalculado = totalOfTotals * BCV.price;
   const handleAddButtonClick = (rowId) => {
     setShowTextField((prevState) => ({ ...prevState, [rowId]: true }));
 
@@ -136,26 +145,46 @@ const handleQuantityChange = (event, rowId) => {
   ];
 
   return (
-    <div className="mt-8 w-full rounded-md bg-white mx-auto">
+    <div className="mt-8 mx-auto max-w-3xl rounded-lg bg-white shadow-lg">
       {dataPopInv ? (
         <>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            autoHeight
-            disableRowSelectionOnClick
-          />
+          <div className="p-4">
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              autoHeight
+              disableRowSelectionOnClick
+            />
+          </div>
           <div className="p-4 border-t border-gray-200">
             <div className="flex justify-between items-center">
-              <p className="text-gray-500">Total de a pagar :</p>
+              <p className="text-gray-500">Total a pagar:</p>
               <p className="text-2xl font-bold text-amazon-orange">
-                $ {totalOfTotals.toFixed(2)}
+                $
+                {totalOfTotals.toLocaleString("es-VE", {
+                  maximumFractionDigits: 2,
+                })}
               </p>
+            </div>
+            <div className="h-px bg-gray-300 my-4"></div>
+            <div className="flex justify-between items-center">
+              <p className="text-gray-500">Tasa {BCV.price}:</p>
+              <div className="text-right">
+                <p className="text-gray-500">Total a pagar en BS:</p>
+                <p className="text-lg font-medium text-gray-600">
+                  {totalEnBSCalculado.toLocaleString("es-VE", {
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  Bs
+                </p>
+              </div>
             </div>
           </div>
         </>
       ) : (
-        <CircularIndeterminate />
+        <div className="flex justify-center items-center p-8">
+          <CircularIndeterminate />
+        </div>
       )}
     </div>
   );
