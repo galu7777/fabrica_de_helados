@@ -1,4 +1,4 @@
-const { InventarioPaleta, Paleta, TipoDePaleta, BatidaDeHelado } = require('../../../db');
+const { InventarioPaleta, Paleta, BatidaDeHelado } = require('../../../db');
 const response = require('../../../utils/response');
 
 module.exports = async (req, res) => {
