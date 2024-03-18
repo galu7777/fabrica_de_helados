@@ -2,55 +2,34 @@ const { Recipe, Ingrediente, RecipeIngrediente } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
-    const { id } = req.params;
     const { nombre, ingredientes } = req.body;
 
     try {
-        if (!id) {
-            return response(res, 400, 'Se requiere un ID de receta');
-        }
+        // Crear o actualizar la receta
+        const [nuevaReceta] = await Recipe.findOrCreate({
+            where: { nombre },
+            defaults: { nombre }
+        });
 
-        const receta = await Recipe.findByPk(id);
-        if (!receta) {
-            return response(res, 404, 'Receta no encontrada');
-        }
+        // Iterar sobre cada ingrediente y asociarlo a la receta
+        for (const ingredienteData of ingredientes) {
+            const { id: ingredienteId, cantidad, unidad_medida } = ingredienteData;
 
-        // Actualizar el nombre de la receta si se proporciona en el cuerpo de la solicitud
-        if (nombre !== undefined) {
-            receta.nombre = nombre;
-        }
+            // Obtener el modelo del ingrediente basado en el ID
+            const ingrediente = await Ingrediente.findByPk(ingredienteId);
 
-        await receta.save();
-
-        // Actualizar la lista de ingredientes asociados a la receta
-        if (ingredientes && ingredientes.length > 0) {
-            for (const ingredienteData of ingredientes) {
-                const { id: ingredienteId, cantidad } = ingredienteData;
-
-                const foundRecipeIngrediente = await RecipeIngrediente.findOne({
-                    where: {
-                        RecipeId: receta.id,
-                        IngredienteId: ingredienteId,
-                    },
-                });
-
-                if (foundRecipeIngrediente) {
-                    foundRecipeIngrediente.update({
-                        cantidad: cantidad
-                    });
-                } else {
-                    await RecipeIngrediente.create({
-                        RecipeId: receta.id,
-                        IngredienteId: ingredienteId,
-                        cantidad: cantidad
-                    });
+            // Asociar el ingrediente a la receta
+            await nuevaReceta.addIngrediente(ingrediente, {
+                through: {
+                    cantidad,
+                    unidad_medida
                 }
-            }
+            });
         }
 
-        return response(res, 200, 'Receta actualizada correctamente', receta);
+        response(res, 201, { message: 'success', nueva_receta: nuevaReceta });
     } catch (error) {
         console.error('Error: ', error.message);
-        return response(res, 500, `Error interno del servidor: ${error.message}`);
+        response(res, 500, `Internal Server Error: , ${error.message}`);
     }
 };
