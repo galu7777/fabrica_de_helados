@@ -17,9 +17,7 @@ module.exports = (sequelize) => {
             cantidad: {
                 type: DataTypes.FLOAT,
             },
-            precio: {
-                type: DataTypes.FLOAT,
-            },
+       
             monto: {
                 type: DataTypes.FLOAT,
             },
