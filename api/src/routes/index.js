@@ -71,6 +71,7 @@ router.post('/inventory/create_entry', RawMaterialsInventory)
 
 // rutas de receta
 router.get('/recipe/get_recipe', getRecipe)
+router.get('/recipe/detail/:id', getRecipe)
 router.delete('/recipe/delete/:id', deleteRecipe)
 router.put('/recipe/update/:id', updateRecipe)
 router.post('/recipe/create_recipe', createRecipe)
