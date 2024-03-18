@@ -28,6 +28,9 @@ module.exports = (sequelize) => {
             tipo_paleta: {
                 type: DataTypes.STRING,
             },
+            precio: {
+                type: DataTypes.FLOAT,
+            },
 
         },
         {
