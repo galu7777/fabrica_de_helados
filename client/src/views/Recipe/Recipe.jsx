@@ -14,67 +14,62 @@ import Swal from "sweetalert2";
 
 const Recipe = () => {
   const dispatch = useDispatch();
-  const ingredients = useSelector((state) => state.ingredients);
+
   const recipes = useSelector((state) => state.recipes);
   const detail = useSelector((state) => state.recipeDetail);
-  const  data = recipes.data;
-   const dataIng = ingredients.data;
-  const detailData = detail.data;
-    const [isEditing, setIsEditing] = useState(false);
-    const [editingId, setEditingId] = useState(null);
+  const data = recipes.data;
 
-    useEffect(() => {
-      if (isEditing && detailData) {
-        showEditDialog();
-      }
-    }, [isEditing, detailData]);
+  const detailData = detail.data;
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
+  useEffect(() => {
+    if (isEditing && detailData) {
+      showEditDialog();
+    }
+  }, [isEditing, detailData]);
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
 
+  const refrescarPagina = () => {
+    window.location.reload();
+  };
 
+  const handleDelete = (id) => {
+    // Mostrar un cuadro de diálogo de confirmación con SweetAlert
+    Swal.fire({
+      title: "¿Estás seguro de que quieres Eliminarlo?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Registro Exitoso!", "", "success");
+        dispatch(deleteRecipe(id));
+        setTimeout(() => {
+          refrescarPagina();
+        }, "1000");
+      }
+    });
+  };
 
-    const refrescarPagina = () => {
-      window.location.reload();
-    };
+  const handleEdit = (id) => {
+    dispatch(detailRecipe(id));
+    setIsEditing(true);
+    setEditingId(id);
+  };
 
-    const handleDelete = (id) => {
-      // Mostrar un cuadro de diálogo de confirmación con SweetAlert
-      Swal.fire({
-        title: "¿Estás seguro de que quieres Eliminarlo?",
-        text: "Esta acción no se puede deshacer",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarlo",
-        cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch( deleteRecipe(id));
-          setTimeout(() => {
-            refrescarPagina();
-          }, "1000");
-        }
-      });
-    };
-
-
-      const handleEdit = (id) => {
-
-        dispatch(detailRecipe(id));
-        setIsEditing(true);
-        setEditingId(id);
-      };
-
- const showEditDialog = () => {
-   const {  nombre, Ingredientes } = detailData;
-  console.log(dataIng)
-   // Crear una plantilla HTML con entradas de texto para cada ingrediente
-   const ingredientesHTML = Ingredientes.map((ingrediente, index) => {
-     const { nombre, RecipeIngrediente } = ingrediente;
-     const { cantidad, unidad_medida } = RecipeIngrediente;
+  const showEditDialog = () => {
+    const { nombre, Ingredientes } = detailData;
+    // Crear una plantilla HTML con entradas de texto para cada ingrediente
+    const ingredientesHTML = Ingredientes.map((ingrediente, index) => {
+      const { nombre, RecipeIngrediente } = ingrediente;
+      const { cantidad, unidad_medida } = RecipeIngrediente;
       return `
          <div key="ingredient-${index}">
                 <h1 class='text-2xl font-bold text-blue-600 mt-5'>Editar Ingrediente</h1>
@@ -99,81 +94,80 @@ const Recipe = () => {
                 </select>
             </div>
       `;
-   }).join("");
+    }).join("");
 
-   Swal.fire({
-     title: "Editar Ingrediente",
-     icon: "warning",
-     confirmButtonColor: "#3085d6",
-     cancelButtonColor: "#d33",
-     confirmButtonText: "Editar",
-     cancelButtonText: "Cancelar",
-     showCancelButton: true,
-     customClass: {
-       popup: "w-2/4", // Establece el ancho deseado utilizando las clases de Tailwind
-     },
-     html: `
+    Swal.fire({
+      title: "Editar Ingrediente",
+      icon: "warning",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Editar",
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+      customClass: {
+        popup: "w-2/4", // Establece el ancho deseado utilizando las clases de Tailwind
+      },
+      html: `
       <div>
                        <h1 class='text-2xl font-bold text-indigo-800 mt-5'>Nombre de la Receta</h1>
         <input id="swal-nombre" class="swal2-input" value="${nombre}" placeholder="Nombre">
         ${ingredientesHTML}
       </div>
     `,
-     preConfirm: () => {
-       const newNombre = Swal.getPopup()
-         .querySelector("#swal-nombre")
-         .value.trim();
-       if (!newNombre) {
-         Swal.showValidationMessage("Por favor, ingrese un nombre válido.");
-       }
+      preConfirm: () => {
+        const newNombre = Swal.getPopup()
+          .querySelector("#swal-nombre")
+          .value.trim();
+        if (!newNombre) {
+          Swal.showValidationMessage("Por favor, ingrese un nombre válido.");
+        }
 
-       const newIngredientes = Ingredientes.map((ingrediente, index) => {
-         const cantidadInput = Swal.getPopup().querySelector(
-           `#swal-cantidad-${index}`
-         );
-         const unidadInput = Swal.getPopup().querySelector(
-           `#swal-unidad-${index}`
-         );
-         return {
-           ...ingrediente,
-           RecipeIngrediente: {
-             cantidad: cantidadInput.value.trim(),
-             unidad_medida: unidadInput.value.trim(),
-           },
-         };
-       });
+        const newIngredientes = Ingredientes.map((ingrediente, index) => {
+          const cantidadInput = Swal.getPopup().querySelector(
+            `#swal-cantidad-${index}`
+          );
+          const unidadInput = Swal.getPopup().querySelector(
+            `#swal-unidad-${index}`
+          );
+          return {
+            ...ingrediente,
+            RecipeIngrediente: {
+              cantidad: cantidadInput.value.trim(),
+              unidad_medida: unidadInput.value.trim(),
+            },
+          };
+        });
 
-       return { nombre: newNombre, Ingredientes: newIngredientes };
-     },
-   }).then((result) => {
-     if (result.isConfirmed) {
-       // Transformar result.value al formato esperado
-       const { nombre, Ingredientes } = result.value;
-       const ingredientesTransformados = Ingredientes.map(
-         ({ id, RecipeIngrediente }) => ({
-           id,
-           cantidad: RecipeIngrediente.cantidad,
-           unidad_medida: RecipeIngrediente.unidad_medida,
-         })
-       );
-       const dataTransformada = {
-         nombre,
-         ingredientes: ingredientesTransformados,
-       };
+        return { nombre: newNombre, Ingredientes: newIngredientes };
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Transformar result.value al formato esperado
+        const { nombre, Ingredientes } = result.value;
+        const ingredientesTransformados = Ingredientes.map(
+          ({ id, RecipeIngrediente }) => ({
+            id,
+            cantidad: RecipeIngrediente.cantidad,
+            unidad_medida: RecipeIngrediente.unidad_medida,
+          })
+        );
+        const dataTransformada = {
+          nombre,
+          ingredientes: ingredientesTransformados,
+        };
 
-       // Dispatch con el formato transformado
-       dispatch(editRecipe(editingId, dataTransformada));
-         Swal.fire("Editado con Exito!", "", "success");
-          setTimeout(() => {
-            refrescarPagina();
-          }, "1000");
-     }
+        // Dispatch con el formato transformado
+        dispatch(editRecipe(editingId, dataTransformada));
+        Swal.fire("Editado con Exito!", "", "success");
+        setTimeout(() => {
+          refrescarPagina();
+        }, "1000");
+      }
 
-     setIsEditing(false);
-     setEditingId(null);
-   });
-
- };
+      setIsEditing(false);
+      setEditingId(null);
+    });
+  };
 
   const columns = [
     {
