@@ -2,7 +2,7 @@ const { Venta, Cliente, InventarioPaleta } = require('../../db')
 const response = require('../../utils/response')
 
 module.exports = async (req, res) => {
-    const { id_cliente, id_inventario_paleta, cantidad, precio, monto, tasa  } = req.body;
+    const { id_cliente, id_inventario_paleta, cantidad, monto, tasa  } = req.body;
     try {
         const foundClient = await Cliente.findOne({
             where: { id_cliente }
@@ -18,16 +18,16 @@ module.exports = async (req, res) => {
                 tipo_paleta: foundPopsicle.tipo_paleta,
                 cantidad: -cantidad,
                 peso_unitario: foundPopsicle.peso_unitario,
+                precio: foundPopsicle.precio,
                 unidad_medida: "GRS",
                 tipo: "SALIDA POR VENTA",
                 BatidaDeHeladoId: foundPopsicle.BatidaDeHeladoId,
-                TipoDePaletumId: foundPopsicle.TipoDePaletumId
+                TipoDePaletumId: foundPopsicle.tipo_paleta
             })
 
             const venta = await Venta.create({
                 nombre_paleta: foundPopsicle.nombre_paleta,
                 cantidad,
-                precio,
                 monto,
                 tasa,
                 ClienteId: id_cliente
