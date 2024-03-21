@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { getInventoryPopsicle } from "../../redux/actions/actions";
+import { getPopsicle } from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import PropTypes from "prop-types";
 import { getMonitor } from "consulta-dolar-venezuela";
 export default function SalesTable({ onSelectedPopsiclesChange }) {
   const dispatch = useDispatch();
-  const popInventory = useSelector((state) => state.inventoryPopsicle);
-  const { data: dataPopInv } = popInventory;
+  const popsicle = useSelector((state) => state.popsicles);
+  const { data: dataPopInv } = popsicle;
+  console.log(dataPopInv);
   const [rows, setRows] = useState([]);
   const [showTextField, setShowTextField] = useState({});
   const [totalOfTotals, setTotalOfTotals] = useState(0);
@@ -26,17 +27,17 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
 
 
   useEffect(() => {
-    dispatch(getInventoryPopsicle());
+    dispatch(getPopsicle());
   }, [dispatch]);
 
   useEffect(() => {
     if (dataPopInv) {
       const updatedRows = dataPopInv.map((item) => ({
         id: item.id,
-        nombre_paleta: item.nombre_paleta,
+        nombre: item.nombre,
         peso_unitario: item.peso_unitario,
         cantidad: 0,
-        precio: 0,
+        precio: item.precio,
         tasa: 35,
         total: 0,
         select: false,
@@ -84,7 +85,7 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
   const calculateTotals = (updatedRows) => {
     const updatedRowsWithTotals = updatedRows.map((row) => ({
       ...row,
-      total: row.cantidad * row.peso_unitario || 0,
+      total: row.cantidad * row.precio || 0,
     }));
     setRows(updatedRowsWithTotals);
 
@@ -98,7 +99,7 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
 
   const columns = [
     {
-      field: "nombre_paleta",
+      field: "nombre",
       headerName: "Nombre de Paleta",
       width: 250,
       headerAlign: "center",
@@ -115,8 +116,17 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
           <TextField
             type="number"
             value={params.row.cantidad}
-            content="center"
             onChange={(event) => handleQuantityChange(event, params.id)}
+            InputProps={{
+              style: {
+                textAlign: "center",
+              },
+            }}
+            inputProps={{
+              style: {
+                textAlign: "center",
+              },
+            }}
           />
         ) : (
           <Button
@@ -129,9 +139,9 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
         ),
     },
     {
-      field: "peso_unitario",
-      headerName: "Peso",
-      width: 140,
+      field: "precio",
+      headerName: "Precio",
+      width: 130,
       headerAlign: "center",
       align: "center",
     },
@@ -148,7 +158,8 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
     <div className="mt-8 mx-auto max-w-3xl rounded-lg bg-white shadow-lg">
       {dataPopInv ? (
         <>
-          <div className="p-4">
+          <div className="p-4 w-full">
+
             <DataGrid
               rows={rows}
               columns={columns}
