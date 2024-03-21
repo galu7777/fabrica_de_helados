@@ -12,13 +12,10 @@ export default function CreateInvPopsicles() {
   const dispatch = useDispatch();
     const navigate = useNavigate();
   const [selectedSmoothie, setSelectedSmoothie] = useState("");
-  const [selectedPopsiclesType, setSelectedPopsiclesType] = useState("");
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
   const smoothie = useSelector((state) => state.smoothies);
-  const typePopsicles = useSelector((state) => state.typePopsicles);
   const popsicles = useSelector((state) => state.popsicles);
   const dataSmoo = smoothie.data;
-  const dataPopType = typePopsicles.data;
   const dataPopsicles = popsicles.data;
 
   useEffect(() => {
@@ -31,7 +28,6 @@ export default function CreateInvPopsicles() {
     e.preventDefault();
     if (
       !selectedSmoothie ||
-      !selectedPopsiclesType ||
       !selectedPopsicle
     ) {
       // Muestra una alerta indicando el error
@@ -54,7 +50,6 @@ export default function CreateInvPopsicles() {
           dispatch(
             createInventoryPopsicle({
               id_batida: selectedSmoothie,
-              id_tipo_de_paleta: selectedPopsiclesType,
               id_paleta: selectedPopsicle,
             })
           );
@@ -107,28 +102,6 @@ export default function CreateInvPopsicles() {
                   </Select>
                 </div>
               </div>
-              <div className="w-full px-3 mb-10">
-                <InputLabel id="demo-simple-select-helper-label">
-                  Seleccione un Tipo de Paleta
-                </InputLabel>
-                <Select
-                  required
-                  labelId="provider-select-label"
-                  id="provider-select"
-                  value={selectedPopsiclesType}
-                  onChange={(e) => setSelectedPopsiclesType(e.target.value)}
-                  className="w-full"
-                >
-                  <MenuItem value="">Seleccione un Tipo de Paleta</MenuItem>
-                  {dataPopType &&
-                    dataPopType.map((poptype) => (
-                      <MenuItem key={poptype.id} value={poptype.id}>
-                        {poptype.nombre}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </div>
-
               <div className="w-full px-3 mb-10">
                 <InputLabel id="demo-simple-select-helper-label">
                   Seleccione una Paleta
