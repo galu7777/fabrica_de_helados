@@ -137,7 +137,7 @@ export default function CreateProvider() {
                 </div>
                 <div className="w-3/4">
                   <TextField
-                    label="Cedula de Identidad"
+                    label="RIF"
                     variant="outlined"
                     type="number"
                     fullWidth
