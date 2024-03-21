@@ -123,7 +123,7 @@ const Ingredient = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-      
+
         Swal.fire("Registro Exitoso!", "", "success");
         dispatch(deleteIngredient(id));
         setTimeout(() => {
@@ -240,7 +240,6 @@ const Ingredient = () => {
                 },
               }}
               pageSizeOptions={[5]}
-              checkboxSelection
               disableRowSelectionOnClick
             />
           ) : (
