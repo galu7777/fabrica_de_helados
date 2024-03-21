@@ -28,11 +28,14 @@
 
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
+const helpers = require('./src/helpers/index.js');
 
 // Syncing all the models at once.
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: false }).then(async () => {
   server.listen(3001, () => {
     console.log(`🍦🍧 Tony Gelati 🍧🍦`);
     console.log(`🚀 listening on port: 3001 🚀`);
   });
+  await helpers.chargeMaterials()
+  await helpers.chargePopsicleType()
 });
