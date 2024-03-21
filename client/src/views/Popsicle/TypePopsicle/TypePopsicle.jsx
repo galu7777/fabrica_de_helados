@@ -109,7 +109,7 @@ export default function TypePopsicle() {
           <Box
             sx={{
               height: 400,
-              width: "30%",
+              width: "27%",
               backgroundColor: "white",
               boxShadow: 24,
               borderRadius: 2,
@@ -127,7 +127,6 @@ export default function TypePopsicle() {
                   },
                 }}
                 pageSizeOptions={[5]}
-                checkboxSelection
                 disableRowSelectionOnClick
               />
             ) : (
