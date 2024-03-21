@@ -11,6 +11,9 @@ import {
     DETAIL_RECIPES,
     ADD_PROVIDER,
     GET_PROVIDERS,
+    EDIT_PROVIDER,
+    DELETE_PROVIDER,
+    DETAIL_PROVIDER,
     GET_INVENTORY,
     ADD_INVENTORY,
     GET_SMOOTHIES,
@@ -39,6 +42,7 @@ const initialState = {
     recipeDetail: {},
     providers: {},
     newProvider:{},
+    providerDetail: {},
     inventory:{},
     newInventory:{},
     smoothies: {},
@@ -140,10 +144,10 @@ export const reducer = (state = initialState, {type,payload} ) => {
 
             };
         case DELETE_RECIPES: {
-            const { [payload.id]: _, ...remainingIngredients } = state.ingredients;
+            const { [payload.id]: _, ...remainingRecipes } = state.ingredients;
             return {
                 ...state,
-                recipes: remainingIngredients,
+                recipes: remainingRecipes,
                 error: null,
             };
         }
@@ -162,6 +166,32 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 newProvider: payload
             }
         }
+
+
+        case EDIT_PROVIDER: {
+            return {
+                ...state,
+                providers: {
+                    ...state.ingredients,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_PROVIDER:
+            return {
+                ...state,
+                providerDetail: payload,
+
+            };
+        case DELETE_PROVIDER: {
+            const { [payload.id]: _, ...remainProvider } = state.ingredients;
+            return {
+                ...state,
+                providers: remainProvider,
+                error: null,
+            };
+        }
+
         case GET_INVENTORY: {
             return {
                 ...state,
