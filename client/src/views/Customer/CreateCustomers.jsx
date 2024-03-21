@@ -138,7 +138,7 @@ export default function CreateCustomers() {
                 </div>
                 <div className="w-3/4">
                   <TextField
-                    label="Cedula de Identidad"
+                    label="RIF O CEDULA DE IDENTIDAD"
                     variant="outlined"
                     type="number"
                     fullWidth
