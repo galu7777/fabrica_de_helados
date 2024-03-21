@@ -100,7 +100,7 @@ export default function Inventory() {
           <Box
             sx={{
               height: 400,
-              width: "70%",
+              width: "80%",
               backgroundColor: "white",
               boxShadow: 24,
               borderRadius: 2,
@@ -113,12 +113,12 @@ export default function Inventory() {
                 initialState={{
                   pagination: {
                     paginationModel: {
-                      pageSize: 5,
+                      pageSize: 10,
                     },
                   },
                 }}
-                pageSizeOptions={[5]}
-                checkboxSelection
+                pageSizeOptions={[10]}
+
                 disableRowSelectionOnClick
               />
             ) : (
