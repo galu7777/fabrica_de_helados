@@ -48,7 +48,9 @@ const {
   Recipe,
   TipoDePaleta,
   Venta,
-  User
+  User,
+  StockMateriaPrima,
+  StockPaleta,
 } = sequelize.models;
 
 // Aca vendrian las relaciones
@@ -63,7 +65,7 @@ Recipe.belongsToMany(Ingrediente, {through: RecipeIngrediente, constraints: fals
 //Relacion entre receta y batido
 Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
 BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
-// Relacion entre batido y paleta
+// Relacion entre inventario paleta, batido y paleta
 InventarioPaleta.belongsTo(BatidaDeHelado)
 InventarioPaleta.belongsTo(TipoDePaleta)
 //Relacion entre devolucion inventario paleta
@@ -76,6 +78,12 @@ Cliente.hasMany(Devolucion)
 Devolucion.belongsTo(Cliente)
 // Relacion entre devolucion y venta
 Devolucion.belongsTo(Venta)
+// Relacion entre stock, proveedores e ingredientes
+StockMateriaPrima.belongsTo(Ingrediente);
+StockMateriaPrima.belongsTo(Proveedor);
+// Relacion entre stock paleta, batido y paleta
+StockPaleta.belongsTo(BatidaDeHelado)
+StockPaleta.belongsTo(TipoDePaleta)
 
 // Product.hasMany(Reviews);
 
