@@ -24,13 +24,7 @@ module.exports = (sequelize) => {
             },
             descripcion: {
                 type: DataTypes.STRING,
-            },
-            tipo_paleta: {
-                type: DataTypes.STRING,
-            },
-            precio: {
-                type: DataTypes.FLOAT,
-            },
+            }
 
         },
         {
