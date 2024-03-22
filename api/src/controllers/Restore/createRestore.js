@@ -2,7 +2,7 @@ const { Devolucion, Cliente, Venta, InventarioPaleta } = require('../../db')
 const response = require('../../utils/response')
 
 module.exports = async (req, res) => {
-    const { id_cliente, id_venta, id_paleta, id_inventario_paleta, concepto, cantidad  } = req.body;
+    const { id_cliente, id_venta, id_inventario_paleta, concepto, cantidad  } = req.body;
     try {
         const foundClient = await Cliente.findOne({
             where: { id_cliente }
