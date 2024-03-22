@@ -11,6 +11,9 @@ import {
     DETAIL_RECIPES,
     GET_PROVIDERS,
     ADD_PROVIDER,
+    EDIT_PROVIDER,
+    DELETE_PROVIDER,
+    DETAIL_PROVIDER,
     ADD_INVENTORY,
     GET_INVENTORY,
     ADD_SMOOTHIE,
@@ -233,6 +236,56 @@ export const createProvider = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/provider/create_provider', nombre)
         dispatch({
             type: ADD_PROVIDER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+
+export const editProvider = (id, nombre) => async (dispatch) => {
+
+    try {
+
+        const { data } = await axios.put(`http://localhost:3001/provider/update/${id}`, nombre)
+
+
+        dispatch({
+            type: EDIT_PROVIDER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+export const detailProvider = (ingredientId, nombre) => async (dispatch) => {
+    try {
+        const name = { nombre }
+        const { data } = await axios.get(`http://localhost:3001/provider/detail/${ingredientId}`, name)
+
+        dispatch({
+            type: DETAIL_PROVIDER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+export const deleteProvider = (id) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.delete(`http://localhost:3001/provider/delete/${id}`)
+        console.log(data)
+        dispatch({
+            type: DELETE_PROVIDER,
             payload: data,
         });
     } catch (error) {

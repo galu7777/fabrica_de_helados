@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import { getProviders } from "../../redux/actions/actions";
+import { getProviders, deleteProvider } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
 import CircularIndeterminate from "../../components/spinner/Spinner";
+import Swal from "sweetalert2";
 
 export default function Provider() {
   const dispatch = useDispatch();
@@ -15,7 +16,31 @@ export default function Provider() {
     dispatch(getProviders());
   }, [dispatch]);
 
+  const refrescarPagina = () => {
+    window.location.reload();
+  };
 
+  const handleDelete = (id) => {
+    // Mostrar un cuadro de diálogo de confirmación con SweetAlert
+    Swal.fire({
+      title: "¿Estás seguro de que quieres Eliminarlo?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Registro Exitoso!", "", "success");
+        dispatch(deleteProvider(id));
+        setTimeout(() => {
+          refrescarPagina();
+        }, "1000");
+      }
+    });
+  };
   const columns = [
     {
       field: "razon_social",
@@ -52,19 +77,37 @@ export default function Provider() {
       headerAlign: "center",
       align: "center",
     },
+    {
+      field: "Eliminar",
+      headerName: "Eliminar",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => handleDelete(params.row.id)}
+          >
+            Eliminar
+          </Button>
+        </div>
+      ),
+    },
   ];
-  console.log(data)
- const rows =
-   data && data.length > 0
-     ? data.slice(1).map((item) => ({
-         id: item.id,
-         razon_social: item.razon_social,
-         direccion: item.direccion,
-         cod_dni: item.cod_dni,
-         cedula_rif: item.cedula_rif,
-         telefono: item.telefono,
-       }))
-     : [];
+  console.log(data);
+  const rows =
+    data && data.length > 0
+      ? data.slice(1).map((item) => ({
+          id: item.id,
+          razon_social: item.razon_social,
+          direccion: item.direccion,
+          cod_dni: item.cod_dni,
+          cedula_rif: item.cedula_rif,
+          telefono: item.telefono,
+        }))
+      : [];
 
   return (
     <div
@@ -90,7 +133,7 @@ export default function Provider() {
         <Box
           sx={{
             height: 400,
-            width: "50%",
+            width: "70%",
             backgroundColor: "white",
             boxShadow: 24,
             borderRadius: 2,

@@ -35,7 +35,7 @@ export default function Customers() {
       {
         field: "cod_dni",
         headerName: "DNI",
-        width: 200,
+        width: 50,
         headerAlign: "center",
         align: "center",
       },
@@ -54,7 +54,7 @@ export default function Customers() {
         align: "center",
       },
     ];
-    console.log(data)
+
 
     const rows =
       data &&
@@ -115,7 +115,7 @@ export default function Customers() {
                   },
                 }}
                 pageSizeOptions={[5]}
-                checkboxSelection
+
                 disableRowSelectionOnClick
               />
             ) : (

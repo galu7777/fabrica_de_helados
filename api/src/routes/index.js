@@ -60,6 +60,7 @@ router.post('/ingredient/create_ingredient', createIngredient)
 
 // rutas de proveedor
 router.get('/provider/get_allproviders', getProvider)
+router.get('/provider/detail/:id', getProvider)
 router.delete('/provider/delete/:id', deleteProvider)
 router.put('/provider/update/:id', updateProvider)
 router.post('/provider/create_provider', createProvider)

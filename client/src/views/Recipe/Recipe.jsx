@@ -264,7 +264,6 @@ const Recipe = () => {
                 },
               }}
               pageSizeOptions={[5]}
-              checkboxSelection
               disableRowSelectionOnClick
             />
           ) : (

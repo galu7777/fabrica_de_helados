@@ -73,7 +73,7 @@ console.log(data)
           <Box
             sx={{
               height: 400,
-              width: "60%",
+              width: "65%",
               backgroundColor: "white",
               boxShadow: 24,
               borderRadius: 2,
@@ -91,7 +91,7 @@ console.log(data)
                   },
                 }}
                 pageSizeOptions={[5]}
-                checkboxSelection
+
                 disableRowSelectionOnClick
               />
             ) : (

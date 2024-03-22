@@ -70,7 +70,7 @@ export default function Popsicles() {
         tipo_paleta: item.tipo_paleta,
         unidad_medida: item.unidad_medida,
         descripcion: item.descripcion,
-        precio: item.precio,
+        precio: `${item.precio} $`,
       })
     );
   return (
@@ -98,7 +98,7 @@ export default function Popsicles() {
           <Box
             sx={{
               height: 400,
-              width: "50%",
+              width: "60%",
               backgroundColor: "white",
               boxShadow: 24,
               borderRadius: 2,
@@ -116,7 +116,7 @@ export default function Popsicles() {
                   },
                 }}
                 pageSizeOptions={[5]}
-                checkboxSelection
+
                 disableRowSelectionOnClick
               />
             ) : (

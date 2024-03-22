@@ -27,13 +27,7 @@ const dispatch = useDispatch();
          headerAlign: "center",
          align: "center",
        },
-       {
-         field: "tipo_paleta",
-         headerName: "Tipo de Paleta",
-         width: 150,
-         headerAlign: "center",
-         align: "center",
-       },
+
        {
          field: "tipo",
          headerName: "Tipo",
@@ -70,7 +64,6 @@ const dispatch = useDispatch();
           ({
             id: item.id,
             nombre_paleta: item.nombre_paleta,
-            tipo_paleta: item.tipo_paleta,
             tipo: item.tipo,
             peso_unitario: item.peso_unitario,
             unidad_medida: item.unidad_medida,
@@ -101,7 +94,7 @@ const dispatch = useDispatch();
         <Box
           sx={{
             height: 400,
-            width: "70%",
+            width: "60%",
             backgroundColor: "white",
             boxShadow: 24,
             borderRadius: 2,
@@ -119,7 +112,7 @@ const dispatch = useDispatch();
                 },
               }}
               pageSizeOptions={[5]}
-              checkboxSelection
+
               disableRowSelectionOnClick
             />
           ) : (

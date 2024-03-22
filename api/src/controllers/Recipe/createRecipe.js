@@ -3,7 +3,7 @@ const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
     const { nombre, ingredientes } = req.body;
-    console.log(ingredientes)
+ 
 
     try {
         // Crear la receta

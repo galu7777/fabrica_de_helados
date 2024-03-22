@@ -1,14 +1,14 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { createProvider } from "../../redux/actions/actions";
+import { editProvider } from "../../redux/actions/actions";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateProvider() {
+export default function EditProvider() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -61,16 +61,18 @@ export default function CreateProvider() {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
+
           dispatch(
-            createProvider({
+            editProvider({
               razon_social: form.razon_social,
               direccion: form.direccion,
               telefono: form.telefono,
               cod_dni: form.cod_dni,
               cedula_rif: form.cedula_rif,
-            }));
-              navigate("/proveedores");
+            })
+          );
+          navigate("/proveedores");
+            Swal.fire("editado Exitoso!", "", "success");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -137,7 +139,7 @@ export default function CreateProvider() {
                 </div>
                 <div className="w-3/4">
                   <TextField
-                    label="RIF"
+                    label="Cedula de Identidad"
                     variant="outlined"
                     type="number"
                     fullWidth
