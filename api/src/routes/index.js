@@ -45,6 +45,7 @@ const updatePopsicle = require('../controllers/Popsicle/NewPopsicle/updatePopsic
 const updateTypePopsicle = require('../controllers/Popsicle/TypePopsicle/updateTypePopsicle');
 const deleteTypePopsicle = require('../controllers/Popsicle/TypePopsicle/deleteTypePopsicle');
 const getStockMaterialsInventory = require('../controllers/Inventory/StockMateriaPrima/getStockMaterialsInventory');
+const getStockPopsicle = require('../controllers/Popsicle/StockPopsicle/getStockPopsicle');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -123,6 +124,7 @@ router.post('/auth/signin', auth)
 
 // rutas del stock
 router.get('/stock/get_allstock', getStockMaterialsInventory)
+router.get('/stock/get_allstock_popsicle', getStockPopsicle)
 
 // rutas de devolucion
 router.get('/restore/get_restore', getRestore)
