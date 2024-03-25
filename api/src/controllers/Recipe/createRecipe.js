@@ -3,8 +3,6 @@ const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
     const { nombre, ingredientes } = req.body;
- 
-
     try {
         // Crear la receta
         const nuevaReceta = await Recipe.create({
@@ -15,6 +13,9 @@ module.exports = async (req, res) => {
             const { id: ingredienteId, cantidad, unidad_medida  } = ingredienteData;
 
             const cnt = cantidad
+            if(cnt <= 0){
+                response(res, 400, 'quantities cannot be equal to or less than 0')
+            }
             const unit = unidad_medida
             // Obtener el modelo del ingrediente basado en el ID
             const ingrediente = await Ingrediente.findByPk(ingredienteId);
@@ -32,9 +33,8 @@ module.exports = async (req, res) => {
 
 
             if (existingRecipeIngrediente) {
-                console.log('Este registro ya existe en RecipeIngredientes.');
+                console.log('This record already exists in the database.');
             } else {
-                console.log('No existe, creando nuevo registro en RecipeIngredientes.');
                 await RecipeIngrediente.create({
                     RecipeId: nuevaReceta.id,
                     IngredienteId: ingredienteId,
