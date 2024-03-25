@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
                 defaultValue: 0,
             },
             unidad_medida: {
-                type: DataTypes.ENUM("KG", "GR", "L", "ML", "OZ"),
+                type: DataTypes.ENUM("KG", "GRS", "L", "ML", "OZ"),
                 defaultValue: 'KG'
             },
         },
