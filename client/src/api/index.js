@@ -37,3 +37,7 @@ export {
 export {
     getSales as getSalesApi
 } from "./sales"
+
+export {
+    getStockMateriaPrima as getStockMateriaPrimaApi
+} from "./stockMateriaPrima"
