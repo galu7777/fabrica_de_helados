@@ -29,7 +29,9 @@ import {
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
     GET_SALES,
-    ADD__SALE
+    ADD__SALE,
+    GET_STOCK_MP,
+    GET_STOCK_POPSICLES
 
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
@@ -484,6 +486,36 @@ export const createSales = (nombre) => async (dispatch) => {
         const { data } = await axios.post('http://localhost:3001/sale/create_sale', nombre)
         dispatch({
             type: ADD__SALE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+export const getStockMateriaPrima = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.get('http://localhost:3001/stock/get_allstock', nombre)
+        dispatch({
+            type: GET_STOCK_MP,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.message)
+        throw error
+    }
+}
+
+
+export const getStockPopsicle = (nombre) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.get('http://localhost:3001/stock/get_allstock_popsicle', nombre)
+        dispatch({
+            type: GET_STOCK_POPSICLES,
             payload: data,
         });
     } catch (error) {

@@ -2,8 +2,8 @@ const { Paleta } = require('../../../db')
 const response = require('../../../utils/response')
 
 module.exports = async (req, res) => {
-    const { nombre, peso, precio, descripcion, id_tipo_paleta } = req.body;    
-    try {        
+    const { nombre, peso, precio,  descripcion, id_tipo_paleta } = req.body;
+    try {
         const newPaleta = await Paleta.create({
             nombre,
             peso,
