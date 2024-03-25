@@ -30,5 +30,6 @@ export const SIGNIN = 'SIGNIN'
 export const GET_SALES = 'GET_SALES'
 export const ADD__SALE = 'ADD__SALE'
 export const GET_STOCK_MP = 'GET_STOCK_MP'
+export const GET_STOCK_POPSICLES = 'GET_STOCK_POPSICLES'
 
 
