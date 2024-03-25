@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
     const { cantidad, unidad_medida, tipo, IngredienteId, ProveedorId } = req.body;
     try {    
         if(cantidad == 0 || cantidad <= 0){
-            return response(res, 500, {message: 'quantity must be a positive number.'})
+            return response(res, 500, {message: 'The quantity must be a positive number and greater than zero.'})
         }
         const foundIngredient = await StockMateriaPrima.findOne({
             where: {IngredienteId}
