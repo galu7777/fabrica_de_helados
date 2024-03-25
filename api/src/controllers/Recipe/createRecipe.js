@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
 
 
             if (existingRecipeIngrediente) {
-                console.log('This record already exists in the database.');
+                return response(res, 400, {message: 'This record already exists in the database.'})
             } else {
                 await RecipeIngrediente.create({
                     RecipeId: nuevaReceta.id,
