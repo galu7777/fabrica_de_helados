@@ -22,6 +22,7 @@ import CreateInvPopsicles from "./views/Popsicle/Inventory/CreateInvPopsicles";
 import Sales from "./views/Sales/Sales.jsx";
 import CreateSale from "./views/Sales/CreateSale";
 import StockMateriaPrima from "./views/Stock/StockMateriaPrima";
+import StockPopsicles from "./views/Stock/StockPopsicles";
 
 function App() {
   const location = useLocation();
@@ -54,6 +55,7 @@ function App() {
         <Route path="/Ventas" element={<Sales />} />
         <Route path="/crear_ventas" element={<CreateSale />} />
         <Route path="/stock_mp" element={<StockMateriaPrima />} />
+        <Route path="/stock_popsicle" element={<StockPopsicles />} />
       </Routes>
     </div>
   );
