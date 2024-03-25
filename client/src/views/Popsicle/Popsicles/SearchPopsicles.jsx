@@ -51,8 +51,3 @@ SearchPopsicles.propTypes = {
 };
 
 
-// Validación de las props esperadas
-SearchPopsicles.propTypes = {
-  onPopsicleTypeSelect: PropTypes.func.isRequired,
-};
-
