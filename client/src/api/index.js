@@ -41,3 +41,7 @@ export {
 export {
     getStockMateriaPrima as getStockMateriaPrimaApi
 } from "./stockMateriaPrima"
+
+export {
+    getStockPopsicle as getStockPopsicleApi
+} from "./stockPopsicle"
