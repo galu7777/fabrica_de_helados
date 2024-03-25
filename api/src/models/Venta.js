@@ -17,8 +17,13 @@ module.exports = (sequelize) => {
             cantidad: {
                 type: DataTypes.FLOAT,
             },
-       
-            monto: {
+            precio: {
+                type: DataTypes.FLOAT
+            },
+            monto_usd: {
+                type: DataTypes.FLOAT,
+            },
+            monto_bs: {
                 type: DataTypes.FLOAT,
             },
             tasa: {
