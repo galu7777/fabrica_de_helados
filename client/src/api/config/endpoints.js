@@ -40,6 +40,9 @@ export const Endpoints = {
         GetSales: createUrl({ base: "sale", endpoint: "get_allsales" }),
     },
     StockMateriaPrima: {
-        GetStockMateriaPrima: createUrl({ base: "stock", endpoint: "get_allstock_popsicle" }),
+        GetStockMateriaPrima: createUrl({ base: "stock", endpoint: "get_allstock" }),
+    },
+    StockPopsicle: {
+        GetStockPopsicle: createUrl({ base: "stock", endpoint: "get_allstock_popsicle" }),
     },
 }
