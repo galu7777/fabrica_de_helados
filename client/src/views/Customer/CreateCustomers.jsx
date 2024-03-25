@@ -13,12 +13,12 @@ export default function CreateCustomers() {
   const [form, setForm] = useState({
     razon_social: "",
     direccion: "",
-    cod_dni: "",
+    cod_dni: "V",
     cedula_rif: "",
     telefono: "",
   });
   const [telSelect, setTelSelect] = useState({
-    uno: "",
+    uno: "0414",
     dos: "",
   });
   const handleTel = (e) => {
@@ -160,7 +160,7 @@ export default function CreateCustomers() {
                     defaultValue={""}
                     onChange={handleTel}
                     name="uno"
-                    value={form.uno}
+                    value={telSelect.uno}
                     required
                   >
                     <MenuItem value={"0414"}>0414</MenuItem>
@@ -178,7 +178,7 @@ export default function CreateCustomers() {
                     type="number"
                     onChange={handleTel}
                     name="dos"
-                    value={form.dos}
+                    value={telSelect.dos}
                     required
                   />
                 </div>
