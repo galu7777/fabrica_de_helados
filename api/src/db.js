@@ -66,6 +66,7 @@ Recipe.belongsToMany(Ingrediente, {through: RecipeIngrediente, constraints: fals
 Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
 BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
 // Relacion entre inventario paleta, batido y paleta
+InventarioPaleta.belongsTo(Paleta)
 InventarioPaleta.belongsTo(BatidaDeHelado)
 InventarioPaleta.belongsTo(TipoDePaleta)
 //Relacion entre devolucion inventario paleta
@@ -82,6 +83,7 @@ Devolucion.belongsTo(Venta)
 StockMateriaPrima.belongsTo(Ingrediente);
 StockMateriaPrima.belongsTo(Proveedor);
 // Relacion entre stock paleta, batido y paleta
+StockPaleta.belongsTo(Paleta)
 StockPaleta.belongsTo(BatidaDeHelado)
 StockPaleta.belongsTo(TipoDePaleta)
 
