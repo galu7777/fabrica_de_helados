@@ -28,8 +28,10 @@ const navItems = [
   "Clientes",
   "TipoPaletas",
   "Paletas",
+  "stock_popsicle",
   "InventarioPaletas",
   "Ventas",
+
 ];
 
 function DrawerAppBar(props) {
