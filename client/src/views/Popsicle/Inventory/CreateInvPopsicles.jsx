@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSmoothies, getTypePopsicle, getPopsicle, createInventoryPopsicle } from "../../../redux/actions/actions";
-import InputLabel from "@mui/material/InputLabel";
 import Swal from "sweetalert2";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 export default function CreateInvPopsicles() {
   const dispatch = useDispatch();
@@ -24,8 +23,20 @@ export default function CreateInvPopsicles() {
     dispatch(getPopsicle());
   }, [dispatch]);
 
+
+  const handlePopsicleSelect = (event, value) => {
+    setSelectedPopsicle(value);
+  };
+
+  const handleSmooSelect = (event, value) => {
+    setSelectedSmoothie(value);
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(selectedPopsicle.id);
+    console.log(selectedSmoothie.id);
     if (
       !selectedSmoothie ||
       !selectedPopsicle
@@ -49,8 +60,8 @@ export default function CreateInvPopsicles() {
           Swal.fire("Registro Exitoso!", "", "success");
           dispatch(
             createInventoryPopsicle({
-              id_batida: selectedSmoothie,
-              id_paleta: selectedPopsicle,
+              id_batida: selectedSmoothie.id,
+              id_paleta: selectedPopsicle.id,
             })
           );
           navigate("/InventarioPaletas");
@@ -81,47 +92,42 @@ export default function CreateInvPopsicles() {
             <div className=" -mx-3 mb-6 py-10">
               <div className="w-full px-3 mb-10">
                 <div className="w-full mr-4">
-                  <InputLabel id="demo-simple-select-helper-label">
-                    Seleccione un Batido
-                  </InputLabel>
-                  <Select
-                    labelId="ingredient-select-label"
-                    id="ingredient-select"
-                    required
-                    value={selectedSmoothie}
-                    onChange={(e) => setSelectedSmoothie(e.target.value)}
-                    fullWidth
-                  >
-                    <MenuItem value=""> Seleccione un Batido</MenuItem>
-                    {dataSmoo &&
-                      dataSmoo.map((smoothie) => (
-                        <MenuItem key={smoothie.id} value={smoothie.id}>
-                          {smoothie.Recipe.nombre}
-                        </MenuItem>
-                      ))}
-                  </Select>
+                  {dataSmoo && (
+                    <Autocomplete
+                      options={dataSmoo}
+                      fullWidth
+                      getOptionLabel={(option) => option.Recipe.nombre}
+                      getOptionSelected={(option) => option.Recipe.nombre} // Usar la misma función para obtener y seleccionar la opción
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Seleccione un Batido"
+                          variant="outlined"
+                          required
+                        />
+                      )}
+                      onChange={handleSmooSelect}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full px-3 mb-10">
-                <InputLabel id="demo-simple-select-helper-label">
-                  Seleccione una Paleta
-                </InputLabel>
-                <Select
-                  required
-                  labelId="provider-select-label"
-                  id="provider-select"
-                  value={selectedPopsicle}
-                  onChange={(e) => setSelectedPopsicle(e.target.value)}
-                  className="w-full"
-                >
-                  <MenuItem value="">Seleccione una Paleta</MenuItem>
-                  {dataPopsicles &&
-                    dataPopsicles.map((popsicles) => (
-                      <MenuItem key={popsicles.id} value={popsicles.id}>
-                        {popsicles.nombre}
-                      </MenuItem>
-                    ))}
-                </Select>
+                {dataPopsicles && ( // Verificación de nulidad para data
+                  <Autocomplete
+                    options={dataPopsicles}
+                    fullWidth
+                    getOptionLabel={(option) => option.nombre}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Seleccione una Paleta"
+                        variant="outlined"
+                        required
+                      />
+                    )}
+                    onChange={handlePopsicleSelect}
+                  />
+                )}
               </div>
             </div>
 
