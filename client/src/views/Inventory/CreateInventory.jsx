@@ -12,11 +12,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import Autocomplete from "@mui/material/Autocomplete";
+
 
 export default function CreateInventory() {
   const [selectedIngredient, setSelectedIngredient] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("ENTREGA");
   const navigate = useNavigate();
   const [cantidad, setCantidad] = useState("");
   const [unidad, setUnidad] = useState("");
@@ -31,9 +33,23 @@ export default function CreateInventory() {
   }, [dispatch]);
 
 
+ const handleIngredSelect = (event, value) => {
+   setSelectedIngredient(value);
+ }
+
+
+  const handleProviderSelect = (event, value) => {
+    setSelectedProvider(value);
+
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!selectedIngredient || !selectedProvider || !cantidad || !unidad) {
+    if (
+     
+      !cantidad ||
+      !unidad
+    ) {
       // Muestra una alerta indicando el error
       Swal.fire({
         title: "Verifica la informacion.",
@@ -55,12 +71,12 @@ export default function CreateInventory() {
             createInventory({
               cantidad: cantidad,
               tipo: type,
-              IngredienteId: selectedIngredient,
-              ProveedorId: selectedProvider,
-              unidad_medida: unidad
+              IngredienteId: selectedIngredient.id,
+              ProveedorId: selectedProvider.id,
+              unidad_medida: unidad,
             })
           );
-           navigate("/Inventario");
+          navigate("/Inventario");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -88,47 +104,42 @@ export default function CreateInventory() {
           <div className=" -mx-3 mb-6 py-10">
             <div className="w-full px-3 mb-10">
               <div className="w-full mr-4">
-                <InputLabel id="demo-simple-select-helper-label">
-                  Seleccione un Ingrediente
-                </InputLabel>
-                <Select
-                  labelId="ingredient-select-label"
-                  id="ingredient-select"
-                  required
-                  value={selectedIngredient}
-                  onChange={(e) => setSelectedIngredient(e.target.value)}
-                  fullWidth
-                >
-                  <MenuItem value="">Seleccione un ingrediente</MenuItem>
-                  {dataIng &&
-                    dataIng.map((ingredient) => (
-                      <MenuItem key={ingredient.id} value={ingredient.id}>
-                        {ingredient.nombre}
-                      </MenuItem>
-                    ))}
-                </Select>
+                {dataIng && ( // Verificación de nulidad para data
+                  <Autocomplete
+                    options={dataIng}
+                    fullWidth
+                    getOptionLabel={(option) => option.nombre}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Buscar Tipo de Paleta"
+                        variant="outlined"
+                        required
+                      />
+                    )}
+                    onChange={handleIngredSelect}
+                  />
+                )}
               </div>
             </div>
             <div className="w-full px-3 mb-10">
-              <InputLabel id="demo-simple-select-helper-label">
-                Seleccione un Proveedor
-              </InputLabel>
-              <Select
-                required
-                labelId="provider-select-label"
-                id="provider-select"
-                value={selectedProvider}
-                onChange={(e) => setSelectedProvider(e.target.value)}
-                className="w-full"
-              >
-                <MenuItem value="">Seleccione un proveedor</MenuItem>
-                {dataProv &&
-                  dataProv.slice(1).map((provider) => (
-                    <MenuItem key={provider.id} value={provider.id}>
-                      {provider.razon_social}
-                    </MenuItem>
-                  ))}
-              </Select>
+
+              {dataProv && ( // Verificación de nulidad para data
+                <Autocomplete
+                  options={dataProv.slice(1)}
+                  fullWidth
+                  getOptionLabel={(option) => option.razon_social}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Buscar Proveedor"
+                      variant="outlined"
+                      required
+                    />
+                  )}
+                  onChange={handleProviderSelect}
+                />
+              )}
             </div>
             <div className="w-full px-3 mb-10">
               <InputLabel id="demo-simple-select-helper-label">
