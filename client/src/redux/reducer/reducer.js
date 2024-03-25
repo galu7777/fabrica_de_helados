@@ -29,7 +29,9 @@ import {
     REGISTER,
     SIGNIN,
     GET_SALES,
-    ADD__SALE
+    ADD__SALE,
+    GET_STOCK_MP,
+    GET_STOCK_POPSICLES
 
 } from "../actions/actionsTypes"
 
@@ -58,7 +60,9 @@ const initialState = {
     user: {},
     newUser: {},
     sales: {},
-    newsale: {}
+    newsale: {},
+    stockMP: {},
+    stockPop: {},
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -287,7 +291,18 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 sales: payload
             }
         }
-
+        case GET_STOCK_MP: {
+            return {
+                ...state,
+                stockMP: payload
+            }
+        }
+        case GET_STOCK_POPSICLES: {
+            return {
+                ...state,
+                stockPop: payload
+            }
+        }
 
         default:
             return {
