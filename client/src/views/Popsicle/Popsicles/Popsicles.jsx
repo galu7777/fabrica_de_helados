@@ -67,7 +67,7 @@ export default function Popsicles() {
         id: item.id,
         nombre: item.nombre,
         peso: item.peso,
-        tipo_paleta: item.tipo_paleta,
+        tipo_paleta: item.TipoDePaletum.nombre,
         unidad_medida: item.unidad_medida,
         descripcion: item.descripcion,
         precio: `${item.precio} $`,
