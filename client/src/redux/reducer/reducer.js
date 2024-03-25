@@ -30,7 +30,8 @@ import {
     SIGNIN,
     GET_SALES,
     ADD__SALE,
-    GET_STOCK_MP
+    GET_STOCK_MP,
+    GET_STOCK_POPSICLES
 
 } from "../actions/actionsTypes"
 
@@ -61,6 +62,7 @@ const initialState = {
     sales: {},
     newsale: {},
     stockMP: {},
+    stockPop: {},
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -293,6 +295,12 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 stockMP: payload
+            }
+        }
+        case GET_STOCK_POPSICLES: {
+            return {
+                ...state,
+                stockPop: payload
             }
         }
 
