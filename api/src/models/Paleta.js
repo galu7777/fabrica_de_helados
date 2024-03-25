@@ -18,6 +18,9 @@ module.exports = (sequelize) => {
             peso: {
                 type: DataTypes.FLOAT
             },
+            precio: {
+                type: DataTypes.FLOAT
+            },
             unidad_medida: {
                 type: DataTypes.STRING,
                 defaultValue: 'GRS'
