@@ -6,7 +6,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 
 export default function StockMateriaPrima() {
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
 const stockMp = useSelector((state) => state.stockMP);
   const data = stockMp.data;
 
