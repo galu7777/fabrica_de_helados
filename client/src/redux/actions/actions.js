@@ -155,10 +155,9 @@ export const getRecipes = () => async (dispatch) => {
     }
 }
 
-export const createRecipe = (nombre, ingredientes) => async (dispatch) => {
+export const createRecipe = (nombre) => async (dispatch) => {
     try {
-
-        const { data } = await axios.post('http://localhost:3001/recipe/create_recipe', nombre, ingredientes)
+        const { data } = await axios.post('http://localhost:3001/recipe/create_recipe', nombre)
         dispatch({
             type: ADD_RECIPE,
             payload: data,
@@ -170,7 +169,6 @@ export const createRecipe = (nombre, ingredientes) => async (dispatch) => {
 }
 
 export const editRecipe = (id, nombre) => async (dispatch) => {
-    console.log(nombre)
 
     try {
 
