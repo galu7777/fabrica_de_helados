@@ -59,7 +59,7 @@ export default function CreatePopsicles() {
              nombre: form.nombre.toUpperCase(),
              peso: form.peso,
              descripcion: form.descripcion.toUpperCase(),
-             id_tipo_de_paleta: selectedPopsicle.id,
+             id_tipo_paleta: selectedPopsicle.id,
              precio: form.precio,
            })
          );
