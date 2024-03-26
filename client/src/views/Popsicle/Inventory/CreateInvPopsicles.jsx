@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSmoothies, getTypePopsicle, getPopsicle, createInventoryPopsicle } from "../../../redux/actions/actions";
+import { getSmoothies, getIngredients, getPopsicle, createInventoryPopsicle } from "../../../redux/actions/actions";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +12,18 @@ export default function CreateInvPopsicles() {
     const navigate = useNavigate();
   const [selectedSmoothie, setSelectedSmoothie] = useState("");
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
+  const [selectedPacking, setSelectedPacking] = useState("");
   const smoothie = useSelector((state) => state.smoothies);
   const popsicles = useSelector((state) => state.popsicles);
+  const ingredients = useSelector((state) => state.ingredients);
   const dataSmoo = smoothie.data;
   const dataPopsicles = popsicles.data;
+  const dataIngred = ingredients.data;
+  console.log(selectedPacking);
 
   useEffect(() => {
     dispatch(getSmoothies());
-    dispatch(getTypePopsicle());
+    dispatch(getIngredients());
     dispatch(getPopsicle());
   }, [dispatch]);
 
@@ -30,6 +34,10 @@ export default function CreateInvPopsicles() {
 
   const handleSmooSelect = (event, value) => {
     setSelectedSmoothie(value);
+  };
+
+  const handlePacking = (event, value) => {
+    setSelectedPacking(value.id)
   };
 
 
@@ -126,6 +134,24 @@ export default function CreateInvPopsicles() {
                       />
                     )}
                     onChange={handlePopsicleSelect}
+                  />
+                )}
+              </div>
+              <div className="w-full px-3 mb-10">
+                {dataIngred && ( // Verificación de nulidad para data
+                  <Autocomplete
+                    options={dataIngred.slice(1, 3)}
+                    fullWidth
+                    getOptionLabel={(option) => option.nombre}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Seleccione empaque"
+                        variant="outlined"
+                        required
+                      />
+                    )}
+                    onChange={handlePacking}
                   />
                 )}
               </div>

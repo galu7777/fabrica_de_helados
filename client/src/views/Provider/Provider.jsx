@@ -151,7 +151,7 @@ export default function Provider() {
                 },
               }}
               pageSizeOptions={[5]}
-              checkboxSelection
+              
               disableRowSelectionOnClick
             />
           ) : (

@@ -3,15 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { getPopsicle } from "../../redux/actions/actions";
+import {  getStockPopsicle} from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import PropTypes from "prop-types";
 import { getMonitor } from "consulta-dolar-venezuela";
 export default function SalesTable({ onSelectedPopsiclesChange }) {
   const dispatch = useDispatch();
-  const popsicle = useSelector((state) => state.popsicles);
+  const popsicle = useSelector((state) => state.stockPop);
   const { data: dataPopInv } = popsicle;
-  console.log(dataPopInv);
   const [rows, setRows] = useState([]);
   const [showTextField, setShowTextField] = useState({});
   const [totalOfTotals, setTotalOfTotals] = useState(0);
@@ -27,16 +26,17 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
 
 
   useEffect(() => {
-    dispatch(getPopsicle());
+    dispatch(getStockPopsicle());
   }, [dispatch]);
 
   useEffect(() => {
     if (dataPopInv) {
       const updatedRows = dataPopInv.map((item) => ({
         id: item.id,
-        nombre: item.nombre,
+        nombre_paleta: item.nombre_paleta,
         peso_unitario: item.peso_unitario,
         cantidad: 0,
+        disponible: item.cantidad,
         precio: item.precio,
         tasa: 35,
         total: 0,
@@ -99,7 +99,7 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
 
   const columns = [
     {
-      field: "nombre",
+      field: "nombre_paleta",
       headerName: "Nombre de Paleta",
       width: 250,
       headerAlign: "center",
@@ -139,12 +139,20 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
         ),
     },
     {
+      field: "disponible",
+      headerName: "Disponible",
+      width: 130,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
       field: "precio",
       headerName: "Precio",
       width: 130,
       headerAlign: "center",
       align: "center",
     },
+
     {
       field: "total",
       headerName: "Total",

@@ -30,10 +30,10 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
 
   useEffect(() => {
     if (data) {
-      const updatedRows = data.map((item) => ({
+      const updatedRows = data.slice(3).map((item) => ({
         id: item.id,
         nombre: item.nombre,
-        unidad: item.unidad,
+        unidad_medida: item.unidad,
         cantidad: item.cantidad || "",
       }));
       setRows(updatedRows);
@@ -46,7 +46,7 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
     setSelectedIngredients(updatedSelectedIngredients);
   }, [rows]);
 
-  const units = ["", "KG", "GR", "L", "ML", "OZ"];
+  const units = ["", "KG", "GR", "L", "ML", "OZ",];
 
   const handleCheckboxChange = (event, id) => {
     const isChecked = event.target.checked;

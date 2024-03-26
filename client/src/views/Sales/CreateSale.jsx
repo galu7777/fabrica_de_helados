@@ -28,6 +28,7 @@ export default function CreateSale() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const filteredRows = selectedPopsicles
       .filter((row) => row.select === true)
       .map((row) => ({
@@ -38,7 +39,7 @@ export default function CreateSale() {
         tasa: row.tasa,
       }));
     const selectedCustomersIds = selectedCustomer.id;
-
+console.log(filteredRows);
     if (!filteredRows) {
       Swal.fire({
         title: "Verifica la información.",
@@ -78,7 +79,14 @@ export default function CreateSale() {
       if (result.isConfirmed) {
         Swal.fire("Venta registrada exitosamente!", "", "success");
         // Envía los datos al backend
-        dispatch(createSales({ selectedCustomersIds, filteredRows }));
+        dispatch(
+          createSales({
+            id_cliente: selectedCustomersIds,
+            id_stock_paleta: filteredRows,
+            cantidad: filteredRows,
+            tasa: filteredRows
+          })
+        );
       } else if (result.isDenied) {
         Swal.fire("La venta no se registró.", "", "info");
       }

@@ -46,7 +46,7 @@ export default function CreateInventory() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-     
+
       !cantidad ||
       !unidad
     ) {
@@ -123,7 +123,6 @@ export default function CreateInventory() {
               </div>
             </div>
             <div className="w-full px-3 mb-10">
-
               {dataProv && ( // Verificación de nulidad para data
                 <Autocomplete
                   options={dataProv.slice(1)}
@@ -190,6 +189,7 @@ export default function CreateInventory() {
                   <MenuItem value={"L"}>L</MenuItem>
                   <MenuItem value={"ML"}>ML</MenuItem>
                   <MenuItem value={"OZ"}>OZ</MenuItem>
+                  <MenuItem value={"UND"}>UND</MenuItem>
                 </Select>
               </div>
             </div>
