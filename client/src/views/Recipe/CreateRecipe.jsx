@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import TableRecipe from "./TableRecipe";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { createRecipe, getIngredients } from "../../redux/actions/actions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+
 export default function CreateRecipe() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,49 +15,49 @@ export default function CreateRecipe() {
     dispatch(getIngredients());
   }, [dispatch]);
 
- const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
 
- const handleSelectedIngredientsChange = (ingredients) => {
-   setSelectedIngredients(ingredients);
- };
-
+  const handleSelectedIngredientsChange = (ingredients) => {
+    setSelectedIngredients(ingredients);
+  };
 
   const [form, setForm] = useState({
-    nombre: ""
+    nombre: "",
   });
   // nombre de la receta
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  // Obtener solo los ingredientes seleccionados
-  const selectedIngredientesIds = selectedIngredients
-    .filter((ingredient) => ingredient.selected)
-    .map((ingredient) => ({
-      id: ingredient.id,
-      cantidad: ingredient.cantidad || 0,
-      unidad: ingredient.unidad || 0
-    }));
-    console.log(selectedIngredientesIds);
+    // Obtener solo los ingredientes seleccionados
+    const selectedIngredientesIds = selectedIngredients
+      .filter((ingredient) => ingredient.selected)
+      .map((ingredient) => ({
+        id: ingredient.id,
+        cantidad: ingredient.cantidad || 0,
+        unidad_medida: ingredient.unidad || 0,
+      }));
 
+    const nombre = form.nombre.toUpperCase();
+      const dataTransformada = {
+        nombre,
+        ingredientes: selectedIngredientesIds,
+      };
+      console.log(dataTransformada)
 
-  const nombre = form.nombre.toUpperCase();
-
-
-  // Verificar si form.cantidad y form.medida están definidos antes de llamar a trim()
+    // Verificar si form.cantidad y form.medida están definidos antes de llamar a trim()
     if (
       !nombre ||
       !nombre.trim() ||
       !selectedIngredientesIds ||
       !selectedIngredientesIds.length ||
       selectedIngredientesIds.some((ingrediente) => !ingrediente.cantidad) ||
-      selectedIngredientesIds.some((unidades) => !unidades.unidad)
+      selectedIngredientesIds.some((unidades) => !unidades.unidad_medida)
     ) {
       Swal.fire({
         title: "Verifica la información.",
@@ -74,26 +75,15 @@ const handleSubmit = (e) => {
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
           // Envía los datos al backend
-        dispatch(
-          createRecipe({
-            nombre: nombre,
-            ingredientes: selectedIngredientesIds.map((ingrediente) => ({
-              id: ingrediente.id,
-              cantidad: ingrediente.cantidad,
-              unidad_medida: ingrediente.unidad, // Aquí pasamos la unidad de medida
-            })),
-          })
-        );
+          dispatch(createRecipe(dataTransformada));
 
-           navigate("/Recetas");
+          navigate("/Recetas");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
       });
     }
-};
-
-
+  };
 
   return (
     <div
@@ -118,13 +108,7 @@ const handleSubmit = (e) => {
                 onChange={handleChange}
               />
             </div>
-            <Button
-              color="error"
-              variant="outlined"
-              fullWidth
-              type="submit"
-
-            >
+            <Button color="error" variant="outlined" fullWidth type="submit">
               Crear Receta
             </Button>
           </form>
