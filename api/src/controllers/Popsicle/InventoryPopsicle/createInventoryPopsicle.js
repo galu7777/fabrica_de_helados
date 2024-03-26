@@ -1,9 +1,9 @@
-const { 
-    InventarioPaleta, 
-    Paleta, 
-    TipoDePaleta, 
-    BatidaDeHelado, 
-    InventarioMateriaPrima, 
+const {
+    InventarioPaleta,
+    Paleta,
+    TipoDePaleta,
+    BatidaDeHelado,
+    InventarioMateriaPrima,
     StockMateriaPrima,
     StockPaleta
 } = require('../../../db')
@@ -47,22 +47,22 @@ module.exports = async (req, res) => {
                         cantidad: cntPw
                     })
                     await InventarioMateriaPrima.create({
-                        cantidad: -cantidad_paleta, 
-                        unidad_medida: foundPalletWood.unidad_medida, 
-                        tipo: "SALIDA", 
-                        IngredienteId: foundPalletWood.IngredienteId, 
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPalletWood.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPalletWood.IngredienteId,
                         ProveedorId: foundPalletWood.ProveedorId
                     })
 
-                    const cntP = foundPackaging.cantidad - cantidad_paleta             
+                    const cntP = foundPackaging.cantidad - cantidad_paleta
                     await foundPackaging.update({
                         cantidad: cntP
                     })
                     await InventarioMateriaPrima.create({
-                        cantidad: -cantidad_paleta, 
-                        unidad_medida: foundPackaging.unidad_medida, 
-                        tipo: "SALIDA", 
-                        IngredienteId: foundPackaging.IngredienteId, 
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPackaging.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPackaging.IngredienteId,
                         ProveedorId: foundPackaging.ProveedorId
                     })
 
@@ -71,6 +71,7 @@ module.exports = async (req, res) => {
                         tipo_paleta: typePopsicle.nombre,
                         cantidad: cantidad_paleta,
                         peso_unitario: popsicle.peso,
+                        precio: popsicle.precio,
                         unidad_medida: "GRS",
                         tipo: "ENTREGA",
                         PaletumId: popsicle.id,
@@ -84,35 +85,36 @@ module.exports = async (req, res) => {
 
                     return response(res, 201, {entry_stock_popsicle})
                 } else {
-                    const cntPw = foundPalletWood.cantidad - cantidad_paleta             
+                    const cntPw = foundPalletWood.cantidad - cantidad_paleta
                     await foundPalletWood.update({
                         cantidad: cntPw
                     })
                     await InventarioMateriaPrima.create({
-                        cantidad: -cantidad_paleta, 
-                        unidad_medida: foundPalletWood.unidad_medida, 
-                        tipo: "SALIDA", 
-                        IngredienteId: foundPalletWood.IngredienteId, 
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPalletWood.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPalletWood.IngredienteId,
                         ProveedorId: foundPalletWood.ProveedorId
                     })
 
-                    const cntP = foundPackaging.cantidad - cantidad_paleta             
+                    const cntP = foundPackaging.cantidad - cantidad_paleta
                     await foundPackaging.update({
                         cantidad: cntP
                     })
                     await InventarioMateriaPrima.create({
-                        cantidad: -cantidad_paleta, 
-                        unidad_medida: foundPackaging.unidad_medida, 
-                        tipo: "SALIDA", 
-                        IngredienteId: foundPackaging.IngredienteId, 
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPackaging.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPackaging.IngredienteId,
                         ProveedorId: foundPackaging.ProveedorId
                     })
-                    
+
                     await InventarioPaleta.create({
                         nombre_paleta: popsicle.nombre,
                         tipo_paleta: typePopsicle.nombre,
                         cantidad: cantidad_paleta,
                         peso_unitario: popsicle.peso,
+                        precio: popsicle.precio,
                         unidad_medida: "GRS",
                         tipo: "ENTREGA",
                         PaletumId: popsicle.id,
@@ -124,6 +126,7 @@ module.exports = async (req, res) => {
                         tipo_paleta: typePopsicle.nombre,
                         cantidad: cantidad_paleta,
                         peso_unitario: popsicle.peso,
+                        precio: popsicle.precio,
                         unidad_medida: "GRS",
                         tipo: "ENTREGA",
                         PaletumId: popsicle.id,
