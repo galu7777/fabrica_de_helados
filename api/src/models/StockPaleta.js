@@ -17,6 +17,9 @@ module.exports = (sequelize) => {
             cantidad: {
                 type: DataTypes.INTEGER,
             },
+            precio: {
+                type: DataTypes.FLOAT
+            },
             peso_unitario: {
                 type: DataTypes.INTEGER
             },
