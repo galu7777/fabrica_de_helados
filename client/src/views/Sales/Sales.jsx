@@ -19,7 +19,7 @@ export default function Sales() {
   useEffect(() => {
     dispatch(getsales());
   }, [dispatch]);
-  console.log(data);
+
     const columns = [
       {
         field: "id",
@@ -89,8 +89,9 @@ export default function Sales() {
           cantidad: item.cantidad,
           nombre_paleta: item.nombre_paleta,
           precio: item.precio,
-          monto: item.monto,
+          monto: `${item.monto_usd} $`,
           tasa: item.tasa,
+
           updatedAt: formatDateTime(item.updatedAt),
         })
       );
