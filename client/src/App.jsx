@@ -23,6 +23,7 @@ import Sales from "./views/Sales/Sales.jsx";
 import CreateSale from "./views/Sales/CreateSale";
 import StockMateriaPrima from "./views/Stock/StockMateriaPrima";
 import StockPopsicles from "./views/Stock/StockPopsicles";
+import EditProvider from "./views/Provider/EditProvider"
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
         <Route path="/recetas" element={<Recipe />} />
         <Route path="/crear_receta" element={<CreateRecipe />} />
         <Route path="/proveedores" element={<Provider />} />
+        <Route path="/Provider/:id" element={<EditProvider />} />
         <Route path="/crear_proveedore" element={<CreateProvider />} />
         <Route path="/Inventario" element={<Inventory />} />
         <Route path="/crear_inventario" element={<CreateInventory />} />
