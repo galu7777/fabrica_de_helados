@@ -59,7 +59,7 @@ export default function Provider() {
     {
       field: "cod_dni",
       headerName: "DNI",
-      width: 200,
+      width: 100,
       headerAlign: "center",
       align: "center",
     },
@@ -95,8 +95,27 @@ export default function Provider() {
         </div>
       ),
     },
+    {
+      field: "Editar",
+      headerName: "Editar",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="outlined"
+            color="primary"
+            href={`/Provider/${params.row.id}`}
+            //onClick={() => handleDelete(params.row.id)}
+          >
+            Editar
+          </Button>
+        </div>
+      ),
+    },
   ];
-  console.log(data);
+
   const rows =
     data && data.length > 0
       ? data.slice(1).map((item) => ({
@@ -151,7 +170,7 @@ export default function Provider() {
                 },
               }}
               pageSizeOptions={[5]}
-              
+
               disableRowSelectionOnClick
             />
           ) : (

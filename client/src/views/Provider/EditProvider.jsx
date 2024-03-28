@@ -1,93 +1,91 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { editProvider } from "../../redux/actions/actions";
+import  { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { editProvider, detailProvider } from "../../redux/actions/actions";
 import Swal from "sweetalert2";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 
-export default function EditProvider() {
+const EditProvider = () => {
+  const { id } = useParams();
+  const provider = useSelector((state) => state.providerDetail);
+  const { data } = provider;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     razon_social: "",
     direccion: "",
     cod_dni: "",
     cedula_rif: "",
     telefono: "",
   });
-  const [telSelect, setTelSelect] = useState({
-    uno: "",
-    dos: "",
-  });
-  const handleTel = (e) => {
-    const { name, value } = e.target;
-    setTelSelect({ ...telSelect, [name]: value });
-  };
 
   useEffect(() => {
-    const telefono = telSelect.uno + telSelect.dos;
-    setForm({ ...form, telefono });
-  }, [telSelect]);
+    dispatch(detailProvider(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (data) {
+      setFormData({
+        razon_social: data.razon_social,
+        direccion: data.direccion,
+        cod_dni: data.cod_dni,
+        cedula_rif: data.cedula_rif,
+        telefono: data.telefono,
+      });
+    }
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
-
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.razon_social.trim() || !isNaN(form.razon_social)) {
-      // Muestra una alerta indicando el error
-      Swal.fire({
-        title: "Verifica la informacion.",
-        text: "Por favor, ingresa un nombre de Proveedor válido.",
-        icon: "warning",
-      });
-    } else {
-      Swal.fire({
-        title: "Quieres registrar este Proveedor ?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Registrar",
-        denyButtonText: `No registrar`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
 
-          dispatch(
-            editProvider({
-              razon_social: form.razon_social,
-              direccion: form.direccion,
-              telefono: form.telefono,
-              cod_dni: form.cod_dni,
-              cedula_rif: form.cedula_rif,
-            })
-          );
-          navigate("/proveedores");
-            Swal.fire("editado Exitoso!", "", "success");
-        } else if (result.isDenied) {
-          Swal.fire("Los Cambios no se registraron.", "", "info");
-        }
-      });
-    }
+
+
+    Swal.fire({
+      title: "¿Quieres Editar este Proveedor?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Registrar",
+      denyButtonText: "No registrar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(
+          editProvider(id,{
+            razon_social: formData.razon_social,
+            direccion: formData.direccion,
+            telefono: formData.telefono,
+            cod_dni: formData.cod_dni,
+            cedula_rif: formData.cedula_rif,
+          })
+        );
+        navigate("/proveedores");
+        Swal.fire("Editado Exitoso!", "", "success");
+      } else if (result.isDenied) {
+        Swal.fire("Los Cambios no se registraron.", "", "info");
+      }
+    });
   };
+
   return (
     <div
-      className="bg-cover bg-center h-screen select-none "
+      className="bg-cover bg-center h-screen select-none"
       style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
     >
       <div className="flex flex-col items-center py-10">
         <div className="bg-white rounded-lg shadow-2xl p-6 w-1/3 mx-auto">
           <h2 className="text-2xl text-center font-bold mb-6 text-red-700">
-            Crea un Nuevo Proveedor
+            Editar Proveedor
           </h2>
           <form onSubmit={handleSubmit} className="w-full p-8 ">
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -97,7 +95,7 @@ export default function EditProvider() {
                   variant="outlined"
                   fullWidth
                   required
-                  value={form.razon_social}
+                  value={formData.razon_social}
                   onChange={handleChange}
                   name="razon_social"
                 />
@@ -108,7 +106,7 @@ export default function EditProvider() {
                 <TextField
                   label="Direccion"
                   variant="outlined"
-                  value={form.direccion}
+                  value={formData.direccion}
                   onChange={handleChange}
                   fullWidth
                   name="direccion"
@@ -125,7 +123,7 @@ export default function EditProvider() {
                     className="w-full"
                     required
                     defaultValue={"V"}
-                    value={form.cod_dni}
+                    value={formData.cod_dni}
                     onChange={handleChange}
                     name="cod_dni"
                   >
@@ -139,11 +137,11 @@ export default function EditProvider() {
                 </div>
                 <div className="w-3/4">
                   <TextField
-                    label="Cedula de Identidad"
+                    label="RIF"
                     variant="outlined"
                     type="number"
                     fullWidth
-                    value={form.cedula_rif}
+                    value={formData.cedula_rif}
                     onChange={handleChange}
                     name="cedula_rif"
                     required
@@ -158,10 +156,18 @@ export default function EditProvider() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     className="w-full"
-                    defaultValue={""}
-                    onChange={handleTel}
-                    name="uno"
-                    value={form.uno}
+                    value={formData.telefono.slice(0, 4)}
+                    onChange={(e) =>
+                      handleChange({
+                        target: {
+                          name: "telefono",
+                          value: `${e.target.value}${formData.telefono.slice(
+                            4
+                          )}`,
+                        },
+                      })
+                    }
+                    name="telefono"
                     required
                   >
                     <MenuItem value={"0414"}>0414</MenuItem>
@@ -177,9 +183,18 @@ export default function EditProvider() {
                     variant="outlined"
                     fullWidth
                     type="number"
-                    onChange={handleTel}
-                    name="dos"
-                    value={form.dos}
+                    value={formData.telefono.slice(4)}
+                    onChange={(e) =>
+                      handleChange({
+                        target: {
+                          name: "telefono",
+                          value: `${formData.telefono.slice(0, 4)}${
+                            e.target.value
+                          }`,
+                        },
+                      })
+                    }
+                    name="telefono"
                     required
                   />
                 </div>
@@ -193,4 +208,6 @@ export default function EditProvider() {
       </div>
     </div>
   );
-}
+};
+
+export default EditProvider;
