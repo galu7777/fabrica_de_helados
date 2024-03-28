@@ -10,7 +10,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 function Login() {
   const navigate = useNavigate();
-  const state = useSelector(state => state.user)
   const dispatch = useDispatch();
 
   // const [error, setError] = useState("");
