@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { signin } from "../../redux/actions/actions";
 import TextField from "@mui/material/TextField";
@@ -10,6 +10,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 function Login() {
   const navigate = useNavigate();
+  const state = useSelector(state => state.user)
   const dispatch = useDispatch();
 
   // const [error, setError] = useState("");
@@ -32,7 +33,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(cUser);
       await dispatch(signin(cUser));
       Swal.fire({
         width: "20em",
@@ -44,9 +44,11 @@ function Login() {
       });
       navigate("/home");
     } catch (error) {
+      const { response } = error
       Swal.fire({
         width: "20em",
-        title: "No se pudo iniciar sesion",
+        title: `${response.data.data}`,
+        text: "No se pudo iniciar sesion",
         icon: "error",
         showConfirmButton: false,
         timer: 1000,
