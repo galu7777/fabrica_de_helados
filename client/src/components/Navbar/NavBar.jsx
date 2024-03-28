@@ -1,131 +1,202 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { Link, useLocation } from "react-router-dom";
+import Drawer from "@mui/material/Drawer";
+import StyledButton from "./StyledButton";
+import MenuItems from "./MenuItems";
+import useMenu from "./useMenu";
+import Menu from "@mui/material/Menu";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 
 const drawerWidth = 240;
-const navItems = [
-  "home",
-  "ingredientes",
-  "Recetas",
-  "Proveedores",
-  "Inventario",
-  "stock_mp",
-  "Batidos",
-  "Clientes",
-  "TipoPaletas",
-  "Paletas",
-  "stock_popsicle",
-  "InventarioPaletas",
-  "Ventas",
 
-];
-
-function DrawerAppBar(props) {
-  const { window } = props;
+function DrawerAppBar({ window }) {
+  const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
+    setMobileOpen(!mobileOpen);
   };
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Tony Gelati
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-              <Link to={`/${item}`}>
-                <ListItemButton sx={{ textAlign: 'center' }}>
-                  <ListItemText primary={item} />
-                </ListItemButton>
-              </Link>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const sections = [
+    {
+      label: "Home",
+      path: "/home",
+    },
+    {
+      label: "Materia Prima",
+      path: "/stock_mp",
+      subMenuItems: [
+        { label: "Ingredientes", path: "/ingredientes" },
+        { label: "Receta", path: "/Recetas" },
+        { label: "Movimientos de Materia Prima", path: "/Inventario" },
+        { label: "Materia Prima Disponible", path: "/stock_mp" },
+      ],
+    },
+    {
+      label: "Paletas",
+      path: "/Paletas",
+      subMenuItems: [
+        { label: "Tipos de Paletas", path: "/TipoPaletas" },
+        { label: "Paletas Disponibles", path: "/stock_popsicle" },
+        { label: "Inventario de Paletas", path: "/InventarioPaletas" },
+        { label: "Lista de Paletas", path: "/Paletas" },
+      ],
+    },
+    {
+      label: "Proveedores",
+      path: "/Proveedores",
+    },
+    {
+      label: "Batidos",
+      path: "/Batidos",
+    },
+    {
+      label: "Clientes",
+      path: "/Clientes",
+    },
+    {
+      label: "Ventas",
+      path: "/Ventas",
+    },
+  ];
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box>
       <CssBaseline />
-      <AppBar component="nav" style={{ background: '#fa042c' }}>
+      <AppBar component="nav" sx={{ background: "#fa042c" }}>
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
             Tony Gelati
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Link key={item} to={`/${item}`}>
-                <Button sx={{ color: '#fff' }}>
-                  {item}
-                </Button>
-              </Link>
-            ))}
-          </Box>
+          {sections.map((section, index) => (
+            <React.Fragment key={index}>
+              {section.subMenuItems ? (
+                <MenuItemsWithSubMenu
+                  section={section}
+                  pathname={pathname}
+                  handleDrawerToggle={handleDrawerToggle}
+                />
+              ) : (
+                <Link to={section.path} style={{ textDecoration: "none" }}>
+                  <StyledButton
+                    color="inherit"
+                    sx={{
+                      color:
+                        pathname === section.path
+                          ? "red"
+                          : "rgba(255, 255, 255, 0.7)",
+                      backgroundColor:
+                        pathname === section.path ? "white" : "transparent",
+                    }}
+                  >
+                    {section.label}
+                  </StyledButton>
+                </Link>
+              )}
+            </React.Fragment>
+          ))}
         </Toolbar>
       </AppBar>
-      <nav className={{ color: '#fa042c' }}>
+      <nav>
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
-          {drawer}
+
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 1 }}>
+      <Box component="main" sx={{ p: 1, flexGrow: 1 }}>
         <Toolbar />
+      
       </Box>
     </Box>
   );
 }
 
 DrawerAppBar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window: PropTypes.func,
 };
 
 export default DrawerAppBar;
+
+function MenuItemsWithSubMenu({ section, pathname }) {
+  const { label, subMenuItems } = section;
+  const { anchorEl, open, handleClick, handleClose } = useMenu();
+
+  return (
+    <React.Fragment>
+      <StyledButton
+        onClick={handleClick}
+        size="small"
+        aria-controls={open ? `${label}-menu` : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        color="inherit"
+        sx={{
+          color: subMenuItems.some((item) => item.path === pathname)
+            ? "red"
+            : "rgba(255, 255, 255, 0.7)",
+          backgroundColor: subMenuItems.some((item) => item.path === pathname)
+            ? "white"
+            : "transparent",
+        }}
+      >
+        {label}
+        <ArrowDropDownOutlinedIcon />
+      </StyledButton>
+      <Menu
+        id={`${label}-menu`}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        {subMenuItems.map((item, index) => (
+          <MenuItems
+            key={index}
+            handleClose={handleClose}
+            path={item.path}
+            label={item.label}
+          />
+        ))}
+      </Menu>
+    </React.Fragment>
+  );
+}
+
+MenuItemsWithSubMenu.propTypes = {
+  section: PropTypes.object.isRequired,
+  pathname: PropTypes.string.isRequired,
+  handleDrawerToggle: PropTypes.func.isRequired,
+};
