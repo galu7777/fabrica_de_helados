@@ -1,4 +1,4 @@
-const { Recipe, Ingrediente, RecipeIngrediente } = require('../../db');
+const { Recipe, Ingrediente } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 
         // Iterar sobre cada ingrediente y asociarlo a la receta
         for (const ingredienteData of ingredientes) {
-            const { id: ingredienteId, cantidad, unidad_medida } = ingredienteData;
+            const { id: ingredienteId, cantidad } = ingredienteData;
 
             if (cantidad <= 0) {
                 return response(res, 400, 'Las cantidades no pueden ser iguales o menores que 0');
@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
             }
 
             // Asociar el ingrediente a la receta
-            await nuevaReceta.addIngrediente(ingrediente, { through: { cantidad, unidad_medida } });
+            await nuevaReceta.addIngrediente(ingrediente, { through: { cantidad, unidad_medida: ingrediente.unidad_medida } });
         }
 
         response(res, 201, { message: 'Receta creada con éxito', nueva_receta: nuevaReceta });
