@@ -2,10 +2,11 @@ const { Ingrediente } = require('../../db')
 const response = require('../../utils/response')
 
 module.exports = async (req, res) => {
-    const { nombre } = req.body;    
+    const { nombre, unidad_medida } = req.body;    
     try {        
         const ingredient = await Ingrediente.create({
-            nombre
+            nombre,
+            unidad_medida
         })
         response(res, 201, ingredient)
     } catch (error) {
