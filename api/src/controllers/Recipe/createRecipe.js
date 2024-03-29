@@ -1,4 +1,4 @@
-const { Recipe, Ingrediente,  RecipeIngrediente } = require('../../db');
+const { Recipe, Ingrediente, RecipeIngrediente } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
@@ -8,56 +8,29 @@ module.exports = async (req, res) => {
         const nuevaReceta = await Recipe.create({
             nombre,
         });
+
         // Iterar sobre cada ingrediente y asociarlo a la receta
         for (const ingredienteData of ingredientes) {
-            const { id: ingredienteId, cantidad, unidad_medida  } = ingredienteData;
+            const { id: ingredienteId, cantidad, unidad_medida } = ingredienteData;
 
-            const cnt = cantidad
-            if(cnt <= 0){
-                response(res, 400, 'quantities cannot be equal to or less than 0')
+            if (cantidad <= 0) {
+                return response(res, 400, 'Las cantidades no pueden ser iguales o menores que 0');
             }
-            const unit = unidad_medida
+
             // Obtener el modelo del ingrediente basado en el ID
             const ingrediente = await Ingrediente.findByPk(ingredienteId);
 
-            // Asociar el ingrediente a la receta
-            await nuevaReceta.addIngrediente(ingrediente);
-
-
-            const existingRecipeIngrediente = await RecipeIngrediente.findOne({
-                where: {
-                    RecipeId: nuevaReceta.id,
-                    IngredienteId: ingredienteId,
-                },
-            });
-
-
-            if (existingRecipeIngrediente) {
-                return response(res, 400, {message: 'This record already exists in the database.'})
-            } else {
-                await RecipeIngrediente.create({
-                    RecipeId: nuevaReceta.id,
-                    IngredienteId: ingredienteId,
-                });
+            if (!ingrediente) {
+                return response(res, 404, 'Ingrediente no encontrado');
             }
 
-            const foundRecipeIngrediente = await RecipeIngrediente.findOne({
-                where: {
-                    RecipeId: nuevaReceta.id,
-                    IngredienteId: ingredienteId,
-                },
-            });
-
-            foundRecipeIngrediente.update({
-                cantidad: cnt,
-                unidad_medida: unit
-
-            })
+            // Asociar el ingrediente a la receta
+            await nuevaReceta.addIngrediente(ingrediente, { through: { cantidad, unidad_medida } });
         }
 
-        response(res, 201, {message: 'success', nueva_receta: nuevaReceta});
+        response(res, 201, { message: 'Receta creada con éxito', nueva_receta: nuevaReceta });
     } catch (error) {
         console.error('Error: ', error.message);
-        response(res, 500, `Internal Server Error: , ${error.message}`);
+        response(res, 500, `Error interno del servidor: ${error.message}`);
     }
 };
