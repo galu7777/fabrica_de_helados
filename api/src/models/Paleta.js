@@ -15,6 +15,9 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 unique: true
             },
+            image: {
+                type: DataTypes.TEXT
+            },
             peso: {
                 type: DataTypes.FLOAT
             },
