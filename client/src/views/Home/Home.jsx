@@ -6,6 +6,22 @@ import CircularIndeterminate from "../../components/spinner/Spinner";
 const Home = () => {
   const stock = useSelector((state) => state.stockPop);
   const { data } = stock;
+  const paletas = data ? data.map((pop) => {
+    try {
+      return {
+        id: pop.id,
+        image: pop.Paletum.image,
+        nombre_paleta: pop.nombre_paleta,
+        descripcion: pop.Paletum.descripcion,
+        cantidad: pop.cantidad,
+        precio_unitario: pop.precio_unitario,
+        unidad_medida: pop.unidad_medida,
+        precio: pop.precio
+      };
+    } catch (error) {
+      console.error("Error decoding image data:", error);
+    }
+  }) : [];  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,15 +35,15 @@ const Home = () => {
           Paletas
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {data ? (
-            data.map((item) => (
+          {paletas ? (
+            paletas.map((item) => (
               <div
                 key={item.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-2xl hover:shadow-red-500 transition duration-300"
               >
                 <img
                   className="w-full h-64 object-cover"
-                  src="/rojo.jpg"
+                  src={`data:image/png;base64,${item.image}`}
                   alt="Imagen de ejemplo"
                 />
                 <div className="p-6">
@@ -35,7 +51,7 @@ const Home = () => {
                     {item.nombre_paleta}
                   </h3>
                   <p className="text-gray-700 mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    {item.descripcion}
                   </p>
 
                   <p className="text-gray-700 py-2">
