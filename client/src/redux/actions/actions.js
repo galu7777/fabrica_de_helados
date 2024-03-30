@@ -20,6 +20,9 @@ import {
     GET_SMOOTHIES,
     ADD_CUSTOMER,
     GET_CUSTOMERS,
+    EDIT_CUSTOMER,
+    DETAIL_CUSTOMER,
+    DELETE_CUSTOMER,
     REGISTER,
     SIGNIN,
     ADD_TYPE_POPSICLE,
@@ -364,6 +367,49 @@ export const getCustomers = () => async (dispatch) => {
         throw error
     }
 }
+
+export const detailCustomers = (id) => async (dispatch) => {
+    try {
+        const { data } = await axios.get(`http://localhost:3001/client/detail/${id}`)
+
+        dispatch({
+            type: DETAIL_CUSTOMER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.data.data)
+        throw error
+    }
+}
+
+export const editCustomers = (id, datos) => async (dispatch) => {
+    try {
+        const { data } = await axios.put(`http://localhost:3001/client/update_client/${id}`, datos)
+
+        dispatch({
+            type: EDIT_CUSTOMER,    
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.data.data)
+        throw error
+    }
+}
+
+export const deleteCustomers = (id) => async (dispatch) => {
+    try {
+        const { data } = await axios.delete(`http://localhost:3001/client/delete_client/${id}`)
+
+        dispatch({
+            type: DELETE_CUSTOMER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error.data.data)
+        throw error
+    }
+}
+
 
 export const createCustomer = (nombre) => async (dispatch) => {
     try {
