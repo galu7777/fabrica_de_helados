@@ -7,69 +7,82 @@ import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchPopsicles from "./SearchPopsicles";
+import { Input } from "@mui/material";
 
 export default function CreatePopsicles() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedPopsicle, setSelectedPopsicle] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [form, setForm] = useState({
     nombre: "",
+    image: "",
     peso: "",
     descripcion: "",
     precio: "",
   });
-    const handleChange = (e) => {
+  const handleChange = (e) => {
       const { name, value } = e.target;
       setForm({ ...form, [name]: value });
-    };
+  };
 
-      const handlePopsicleSelect = (popsicle) => {
+  const handlePopsicleSelect = (popsicle) => {
         setSelectedPopsicle(popsicle);
-      };
- const handleSubmit = (e) => {
-   e.preventDefault();
- console.log(selectedPopsicle.id);
-   if (
-     !form.nombre ||
-     !form.peso ||
-     !form.descripcion ||
-     !form.precio ||
-    (selectedPopsicle === null || selectedPopsicle.id === null)
-   ) {
-     // Muestra una alerta indicando el error
-     Swal.fire({
-       title: "Verifica la informacion.",
-       text: "Por favor, complete todos los campos",
-       icon: "warning",
-     });
-   } else {
-     Swal.fire({
-       title: "Quieres registrar esta Paleta ?",
-       showDenyButton: true,
-       showCancelButton: true,
-       confirmButtonText: "Registrar",
-       denyButtonText: `No registrar`,
-     }).then((result) => {
-       /* Read more about isConfirmed, isDenied below */
-       if (result.isConfirmed) {
-         Swal.fire("Registro Exitoso!", "", "success");
-         dispatch(
-           createPopsicle({
-             nombre: form.nombre.toUpperCase(),
-             peso: form.peso,
-             descripcion: form.descripcion.toUpperCase(),
-             id_tipo_paleta: selectedPopsicle.id,
-             precio: form.precio,
-           })
-         );
-         navigate("/Paletas");
-       } else if (result.isDenied) {
-         Swal.fire("Los Cambios no se registraron.", "", "info");
-       }
-     });
-   }
- };
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    if (
+      !form.nombre ||
+      !form.peso ||
+      !form.descripcion ||
+      !form.precio ||
+      selectedPopsicle === null ||
+      selectedPopsicle.id === null ||
+      selectedImage === null
+    ) {
+      // Muestra una alerta indicando el error
+      Swal.fire({
+        title: 'Verifica la informacion.',
+        text: 'Por favor, complete todos los campos',
+        icon: 'warning',
+      });
+    } else {
+      // Crea un objeto FormData para enviar al servidor
+      const formData = new FormData();
+      formData.append('nombre', form.nombre.toUpperCase());
+      formData.append('peso', form.peso);
+      formData.append('descripcion', form.descripcion.toUpperCase());
+      formData.append('id_tipo_paleta', selectedPopsicle.id);
+      formData.append('precio', form.precio);
+      formData.append('image', selectedImage); // Agrega la imagen al FormData
+  
+      Swal.fire({
+        title: '¿Quieres registrar esta Paleta?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Registrar',
+        denyButtonText: `No registrar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire('Registro Exitoso!', '', 'success');
+          // Ahora puedes enviar el formData al servidor
+          dispatch(createPopsicle(formData));
+          navigate('/Paletas');
+        } else if (result.isDenied) {
+          Swal.fire('Los Cambios no se registraron.', '', 'info');
+        }
+      });
+    }
+  };
+  
   return (
     <div
       className="bg-cover bg-center h-screen select-none "
@@ -92,6 +105,17 @@ export default function CreatePopsicles() {
                   onChange={handleChange}
                   name="nombre"
                 />
+              </div>
+            </div>
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full px-3 mb-6 md:mb-0">
+              <Input
+                id="file-input"
+                type="file"
+                inputProps={{ accept: '.png, .jpg, .jpeg, .gif' }} // Opcional: limitar tipos de archivos
+                onChange={handleImageChange}
+                // className={classes.input}
+              />
               </div>
             </div>
             <div className="flex flex-wrap -mx-3 mb-6">

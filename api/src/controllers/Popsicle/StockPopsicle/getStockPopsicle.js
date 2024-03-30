@@ -1,4 +1,4 @@
-const { StockPaleta,Paleta, TipoDePaleta } = require('../../../db')
+const { StockPaleta, Paleta, TipoDePaleta } = require('../../../db')
 const response = require('../../../utils/response')
 
 module.exports = async (req, res) => {
@@ -6,13 +6,13 @@ module.exports = async (req, res) => {
         const stock = await StockPaleta.findAll({
             include: [
                 {
-                    model: TipoDePaleta,
-                    attributes: ['id', 'nombre'],
-                },
-                 {
                     model: Paleta,
-                     attributes: ['id', 'nombre', 'descripcion'],
-                 }
+                    attributes: ["id", "nombre", "image", "descripcion"]
+                },
+                {
+                    model: TipoDePaleta,
+                    attributes: ["id", "nombre"]
+                }
             ]
         })
         response(res, 201, stock)

@@ -1,8 +1,8 @@
-const { InventarioMateriaPrima, StockMateriaPrima } = require('../../db')
+const { InventarioMateriaPrima, StockMateriaPrima, Ingrediente } = require('../../db')
 const response = require('../../utils/response')
 
 module.exports = async (req, res) => {
-    const { cantidad, unidad_medida, tipo, IngredienteId, ProveedorId } = req.body;
+    const { cantidad, tipo, IngredienteId, ProveedorId } = req.body;
     try {
         if(cantidad == 0 || cantidad <= 0){
             return response(res, 500, {message: 'The quantity must be a positive number and greater than zero.'})
@@ -10,6 +10,10 @@ module.exports = async (req, res) => {
         const foundIngredient = await StockMateriaPrima.findOne({
             where: {IngredienteId}
         })
+        const ingredientUM = await Ingrediente.findOne({
+            where: {id_ingrediente: IngredienteId}
+        })
+
         if(foundIngredient && tipo === "SALIDA") {
             if(foundIngredient.cantidad - cantidad <= 0 ){
                 return response(res, 400, {message: 'insufficient quantity in inventory.'})
@@ -19,7 +23,7 @@ module.exports = async (req, res) => {
                     cantidad: cnt
                 })
                 await InventarioMateriaPrima.create({
-                    cantidad: -cantidad, unidad_medida, tipo, IngredienteId, ProveedorId
+                    cantidad: -cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
                 })
                 return response(res, 201, {message: 'success', entry})
             }
@@ -30,16 +34,16 @@ module.exports = async (req, res) => {
                 cantidad: cnt
             })
             await InventarioMateriaPrima.create({
-                cantidad, unidad_medida, tipo, IngredienteId, ProveedorId
+                cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
             })
             return response(res, 201, {message: 'success', entry})
         }
         else {
             const entry = await StockMateriaPrima.create({
-                cantidad, unidad_medida, tipo, IngredienteId, ProveedorId
+                cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
             })
             await InventarioMateriaPrima.create({
-                cantidad, unidad_medida, tipo, IngredienteId, ProveedorId
+                cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
             })
             return response(res, 201, {message: 'success', entry})
         }

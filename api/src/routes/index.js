@@ -1,4 +1,9 @@
 const { Router } = require('express');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Agregar multer al endpoint donde necesitas manejar la carga de archivos
 const getIngredient = require('../controllers/Ingredient/getIngredient');
 const createIngredient = require('../controllers/Ingredient/createIngredient')
 const getProvider = require('../controllers/Provider/getProvider');
@@ -93,7 +98,7 @@ router.post('/popsicle/create_type_popsicle', createTypePopsicle)
 
 // rutas nuevas paletas
 router.get('/popsicle/get_popsicle', getNewPopsicle)
-router.post('/popsicle/create_popsicle', createNewPopsicle)
+router.post('/popsicle/create_popsicle', upload.single('image'), createNewPopsicle)
 router.delete('/popsicle/delete/:id', deletePopsicle)
 router.put('/popsicle/update/:id', updatePopsicle)
 

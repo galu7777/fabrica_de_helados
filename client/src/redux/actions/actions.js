@@ -49,7 +49,7 @@ export const registerNewUser = (newUser) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -63,7 +63,7 @@ export const signin = (user) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -77,7 +77,7 @@ export const getIngredients = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -91,7 +91,7 @@ export const createIngredient = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -108,7 +108,7 @@ export const editIngredient = (ingredientId,nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -123,7 +123,7 @@ export const detailIngredient = (ingredientId, nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -139,7 +139,7 @@ export const deleteIngredient = (id) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -153,7 +153,7 @@ export const getRecipes = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -166,7 +166,7 @@ export const createRecipe = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -182,7 +182,7 @@ export const editRecipe = (id, nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -198,7 +198,7 @@ export const detailRecipe = (id, nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -214,7 +214,7 @@ export const deleteRecipe = (id) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -228,7 +228,7 @@ export const getProviders = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -242,7 +242,7 @@ export const createProvider = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -261,7 +261,7 @@ export const editProvider = (id, nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -276,7 +276,7 @@ export const detailProvider = (ingredientId, nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -292,7 +292,7 @@ export const deleteProvider = (id) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -307,7 +307,7 @@ export const getInventory = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -321,7 +321,7 @@ export const createInventory = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -335,7 +335,7 @@ export const getSmoothies = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -349,7 +349,7 @@ export const createSmoothie = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -363,7 +363,7 @@ export const getCustomers = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -420,7 +420,7 @@ export const createCustomer = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -434,7 +434,7 @@ export const getTypePopsicle = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -448,7 +448,7 @@ export const createTypePopsicle = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -463,7 +463,7 @@ export const getPopsicle = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -477,7 +477,7 @@ export const createPopsicle = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -491,7 +491,7 @@ export const getInventoryPopsicle = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -505,7 +505,7 @@ export const createInventoryPopsicle = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -519,7 +519,7 @@ export const getsales = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -533,7 +533,7 @@ export const createSales = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -548,7 +548,7 @@ export const getStockMateriaPrima = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }
@@ -563,7 +563,7 @@ export const getStockPopsicle = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error.message)
+        console.log('Error: ', error)
         throw error
     }
 }

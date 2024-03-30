@@ -32,7 +32,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(cUser);
       await dispatch(signin(cUser));
       Swal.fire({
         width: "20em",
@@ -44,9 +43,11 @@ function Login() {
       });
       navigate("/home");
     } catch (error) {
+      const { response } = error
       Swal.fire({
         width: "20em",
-        title: "No se pudo iniciar sesion",
+        title: `${response.data.data}`,
+        text: "No se pudo iniciar sesion",
         icon: "error",
         showConfirmButton: false,
         timer: 1000,

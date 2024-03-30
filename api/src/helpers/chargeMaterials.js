@@ -11,13 +11,16 @@ module.exports = async (req, res) => {
             console.log("Loading of Materials ready.")
         } else {
             await Ingrediente.create({
-                nombre: "paletas"
+                nombre: "paletas",
+                unidad_medida: "UND"
             })
             await Ingrediente.create({
-                nombre: "empaques"
+                nombre: "empaques",
+                unidad_medida: "UND"
             })
             await Ingrediente.create({
-                nombre: "empaques especiales"
+                nombre: "empaques especiales",
+                unidad_medida: "UND"
             })
             console.log("🔨 Helper Charge Materials Successful ! 🔨")
         }        
