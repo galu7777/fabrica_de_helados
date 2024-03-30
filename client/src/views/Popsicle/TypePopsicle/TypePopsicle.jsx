@@ -22,7 +22,7 @@ export default function TypePopsicle() {
   useEffect(() => {
     dispatch(getTypePopsicle());
   }, [dispatch]);
-  console.log(data);
+
 
   const [form, setForm] = useState({ nombre: "" });
   const handleChange = (e) => {
@@ -30,7 +30,7 @@ export default function TypePopsicle() {
 
     setForm({ ...form, [name]: value });
   };
-  console.log(form.nombre);
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.nombre.trim() || !isNaN(form.nombre)) {
