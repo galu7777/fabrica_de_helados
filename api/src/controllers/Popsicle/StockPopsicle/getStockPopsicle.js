@@ -1,10 +1,19 @@
-const { StockPaleta, TipoDePaleta } = require('../../../db')
+const { StockPaleta,Paleta, TipoDePaleta } = require('../../../db')
 const response = require('../../../utils/response')
 
 module.exports = async (req, res) => {
-    try {        
+    try {
         const stock = await StockPaleta.findAll({
-            include: [TipoDePaleta]
+            include: [
+                {
+                    model: TipoDePaleta,
+                    attributes: ['id', 'nombre'],
+                },
+                 {
+                    model: Paleta,
+                     attributes: ['id', 'nombre', 'descripcion'],
+                 }
+            ]
         })
         response(res, 201, stock)
     } catch (error) {
