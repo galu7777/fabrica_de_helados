@@ -110,6 +110,7 @@ router.post('/inventory_popsicle/create_entry', createInventoryPopsicle)
 
 // rutas cliente
 router.get('/client/get_allclients', getAllClient)
+router.get('/client/detail/:id', getAllClient)
 router.post('/client/create_new_client', createClient)
 router.delete('/client/delete_client/:id', deleteCliente)
 router.put('/client/update_client/:id', updateCliente)

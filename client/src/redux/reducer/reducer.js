@@ -20,6 +20,9 @@ import {
     ADD_SMOOTHIE,
     GET_CUSTOMERS,
     ADD_CUSTOMER,
+    EDIT_CUSTOMER,
+    DETAIL_CUSTOMER,
+    DELETE_CUSTOMER,
     GET_TYPE_POPSICLE,
     ADD_TYPE_POPSICLE,
     ADD_POPSICLE,
@@ -51,6 +54,7 @@ const initialState = {
     newSmoothie: {},
     customers: {},
     newCustomers: {},
+    customerDetail: {},
     newTypePopsicles: {},
     typePopsicles: {},
     newPopsicles: {},
@@ -188,7 +192,7 @@ export const reducer = (state = initialState, {type,payload} ) => {
 
             };
         case DELETE_PROVIDER: {
-            const { [payload.id]: _, ...remainProvider } = state.ingredients;
+            const { [payload.id]: _, ...remainProvider } = state.providers;
             return {
                 ...state,
                 providers: remainProvider,
@@ -237,6 +241,30 @@ export const reducer = (state = initialState, {type,payload} ) => {
             }
         }
 
+
+        case EDIT_CUSTOMER: {
+            return {
+                ...state,
+                customers: {
+                    ...state.customers,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_CUSTOMER:
+            return {
+                ...state,
+                customerDetail: payload,
+
+            };
+        case DELETE_CUSTOMER: {
+            const { [payload.id]: _, ...remainingcustomers } = state.customers;
+            return {
+                ...state,
+                customers: remainingcustomers,
+                error: null,
+            };
+        }
         case GET_TYPE_POPSICLE: {
             return {
                 ...state,
