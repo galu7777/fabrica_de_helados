@@ -40,7 +40,6 @@ export default function CreateRecipe() {
       .map((ingredient) => ({
         id: ingredient.id,
         cantidad: ingredient.cantidad || 0,
-        unidad_medida: ingredient.unidad || 0,
       }));
 
     const nombre = form.nombre.toUpperCase();
@@ -48,7 +47,7 @@ export default function CreateRecipe() {
         nombre,
         ingredientes: selectedIngredientesIds,
       };
-      console.log(dataTransformada)
+      console.log(selectedIngredientesIds);
 
     // Verificar si form.cantidad y form.medida están definidos antes de llamar a trim()
     if (
@@ -56,8 +55,7 @@ export default function CreateRecipe() {
       !nombre.trim() ||
       !selectedIngredientesIds ||
       !selectedIngredientesIds.length ||
-      selectedIngredientesIds.some((ingrediente) => !ingrediente.cantidad) ||
-      selectedIngredientesIds.some((unidades) => !unidades.unidad_medida)
+      selectedIngredientesIds.some((ingrediente) => !ingrediente.cantidad)
     ) {
       Swal.fire({
         title: "Verifica la información.",

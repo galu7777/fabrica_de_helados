@@ -84,8 +84,8 @@ export const getIngredients = () => async (dispatch) => {
 
 export const createIngredient = (nombre) => async (dispatch) => {
     try {
-        const name = { nombre }
-        const { data } = await axios.post('http://localhost:3001/ingredient/create_ingredient', name)
+
+        const { data } = await axios.post('http://localhost:3001/ingredient/create_ingredient', nombre)
         dispatch({
             type: ADD_INGREDIENT,
             payload: data,
@@ -147,7 +147,7 @@ export const deleteIngredient = (id) => async (dispatch) => {
 export const getRecipes = () => async (dispatch) => {
     try {
         const { data } = await axios.get('http://localhost:3001/recipe/get_recipe')
-        console.log(data)
+      
         dispatch({
             type: GET_RECIPES,
             payload: data,
@@ -172,6 +172,7 @@ export const createRecipe = (nombre) => async (dispatch) => {
 }
 
 export const editRecipe = (id, nombre) => async (dispatch) => {
+
 
     try {
 
@@ -387,7 +388,7 @@ export const editCustomers = (id, datos) => async (dispatch) => {
         const { data } = await axios.put(`http://localhost:3001/client/update_client/${id}`, datos)
 
         dispatch({
-            type: EDIT_CUSTOMER,    
+            type: EDIT_CUSTOMER,
             payload: data,
         });
     } catch (error) {
