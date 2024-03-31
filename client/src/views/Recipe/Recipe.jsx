@@ -64,7 +64,7 @@ const Recipe = () => {
     setEditingId(id);
   };
 
-  const showEditDialog = () => {
+  const showEditDialog = async () => {
     const { nombre, Ingredientes } = detailData;
     // Crear una plantilla HTML con entradas de texto para cada ingrediente
     const ingredientesHTML = Ingredientes.map((ingrediente, index) => {
@@ -75,23 +75,8 @@ const Recipe = () => {
                 <h1 class='text-2xl font-bold text-blue-600 mt-5'>Editar Ingrediente</h1>
                 <input id="swal-nombre" class="swal2-input" value="${nombre}" placeholder="Nombre" readonly>
                 <input id="swal-cantidad-${index}" type="number" class="swal2-input "  style="width: 15%; display: inline-block;" value="${cantidad}" placeholder="Cantidad" >
-                <select id="swal-unidad-${index}" class="swal2-input" style="width: 20%; display: inline-block; margin-left: 2%; border: 1px solid #ced4da; border-radius: 4px; padding: 6px;">
-                    <option value="KG" ${
-                      unidad_medida === "KG" ? "selected" : ""
-                    }>KG</option>
-                    <option value="GR" ${
-                      unidad_medida === "GR" ? "selected" : ""
-                    }>GR</option>
-                    <option value="L" ${
-                      unidad_medida === "L" ? "selected" : ""
-                    }>L</option>
-                    <option value="ML" ${
-                      unidad_medida === "ML" ? "selected" : ""
-                    }>ML</option>
-                    <option value="OZ" ${
-                      unidad_medida === "OZ" ? "selected" : ""
-                    }>OZ</option>
-                </select>
+                <input id="swal-cantidad-${index}" type="text" class="swal2-input "  style="width: 15%; display: inline-block;" value="${unidad_medida}" placeholder="unidad_medida" readonly >
+
             </div>
       `;
     }).join("");
@@ -126,42 +111,70 @@ const Recipe = () => {
           const cantidadInput = Swal.getPopup().querySelector(
             `#swal-cantidad-${index}`
           );
-          const unidadInput = Swal.getPopup().querySelector(
-            `#swal-unidad-${index}`
-          );
+
+
           return {
             ...ingrediente,
             RecipeIngrediente: {
               cantidad: cantidadInput.value.trim(),
-              unidad_medida: unidadInput.value.trim(),
+
             },
           };
         });
 
         return { nombre: newNombre, Ingredientes: newIngredientes };
       },
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        // Transformar result.value al formato esperado
-        const { nombre, Ingredientes } = result.value;
-        const ingredientesTransformados = Ingredientes.map(
-          ({ id, RecipeIngrediente }) => ({
-            id,
-            cantidad: RecipeIngrediente.cantidad,
-            unidad_medida: RecipeIngrediente.unidad_medida,
-          })
-        );
-        const dataTransformada = {
-          nombre,
-          ingredientes: ingredientesTransformados,
-        };
 
-        // Dispatch con el formato transformado
-        dispatch(editRecipe(editingId, dataTransformada));
-        Swal.fire("Editado con Exito!", "", "success");
-        setTimeout(() => {
-          refrescarPagina();
-        }, "1000");
+         try {
+           // Transformar result.value al formato esperado
+           const { nombre, Ingredientes } = result.value;
+
+           const ingredientesTransformados = Ingredientes.map(
+             ({ id, RecipeIngrediente }) => ({
+               id,
+               cantidad: RecipeIngrediente.cantidad,
+               unidad_medida: RecipeIngrediente.unidad_medida,
+             })
+           );
+
+           const dataTransformada = {
+             nombre,
+             ingredientes: ingredientesTransformados,
+           };
+
+           // Dispatch con el formato transformado
+          await dispatch(editRecipe(editingId, dataTransformada));
+           Swal.fire("Editado con Exito!", "", "success");
+           setTimeout(() => {
+             refrescarPagina();
+           }, "1000");
+
+           // Muestra una alerta de éxito
+           Swal.fire({
+             title: "Registro Exitoso!",
+             icon: "success",
+           });
+
+           // Refresca la página después de un segundo
+           setTimeout(() => {
+             refrescarPagina();
+           }, 1000);
+         } catch (error) {
+          // Captura cualquier error que ocurra durante el envío de datos
+          const { response } = error;
+          Swal.fire({
+            width: "20em",
+            title: `${response.data.data}`,
+            text: "No se pudo Guardar la Receta",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 4000,
+          });
+
+        }
+
       }
 
       setIsEditing(false);
