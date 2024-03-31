@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 import {
   createIngredient,
   getIngredients,
@@ -24,6 +27,7 @@ const Ingredient = () => {
   const detailData = detail.data;
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [unidad, setUnidad] = useState("Seleccionar unidad");
   useEffect(() => {
     if (isEditing && detailData) {
       showEditDialog();
@@ -37,43 +41,78 @@ const Ingredient = () => {
     nombre: "",
   });
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.nombre.trim() || !isNaN(form.nombre)) {
-      // Muestra una alerta indicando el error
-      Swal.fire({
-        title: "Verifica la informacion.",
-        text: "Por favor, ingresa un nombre de ingrediente válido.",
-        icon: "warning",
-      });
-    } else {
-      Swal.fire({
-        title: "Quieres registrar este Ingrediente ?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Registrar",
-        denyButtonText: `No registrar`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(createIngredient(form.nombre.toUpperCase()));
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const unidadTrimmed = unidad.trim();
+
+  if (
+    !form.nombre.trim() ||
+    !isNaN(form.nombre) ||
+    !unidadTrimmed ||
+    unidadTrimmed === "Seleccionar unidad"
+  ) {
+    // Muestra una alerta indicando el error
+    Swal.fire({
+      title: "Verifica la informacion.",
+      text: "Por favor, ingresa una unidad de medida",
+      icon: "warning",
+    });
+  } else {
+    Swal.fire({
+      title: "Quieres registrar este Ingrediente ?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Registrar",
+      denyButtonText: "No registrar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Envía los datos al despachador createIngredient
+          await dispatch(
+            createIngredient({
+              nombre: form.nombre.toUpperCase(),
+              unidad_medida: unidadTrimmed,
+            })
+          );
+
+          // Muestra una alerta de éxito
+          Swal.fire({
+            title: "Registro Exitoso!",
+            icon: "success",
+          });
+
+          // Refresca la página después de un segundo
           setTimeout(() => {
             refrescarPagina();
-          }, "1000");
-        } else if (result.isDenied) {
-          Swal.fire("Los Cambios no se registraron.", "", "info");
+          }, 1000);
+        } catch (error) {
+          // Captura cualquier error que ocurra durante el envío de datos
+          const { response } = error;
+          Swal.fire({
+            width: "20em",
+            title: `${response.data.data}`,
+            text: "No se pudo Guardar El Ingrediente",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 4000,
+          });
+
         }
-      });
-    }
-  };
+      } else if (result.isDenied) {
+        Swal.fire("Los Cambios no se registraron.", "", "info");
+      }
+    });
+  }
+};
+
+
   const handleEdit = (id) => {
     dispatch(detailIngredient(id));
     setIsEditing(true);
@@ -123,7 +162,6 @@ const Ingredient = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-
         Swal.fire("Registro Exitoso!", "", "success");
         dispatch(deleteIngredient(id));
         setTimeout(() => {
@@ -142,6 +180,13 @@ const Ingredient = () => {
       field: "nombre",
       headerName: "Nombre del Ingrediente",
       width: 400,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "unidad_medida",
+      headerName: "Medida",
+      width: 100,
       headerAlign: "center",
       align: "center",
     },
@@ -187,7 +232,7 @@ const Ingredient = () => {
     data &&
     data.map((item) =>
       //bg-[#fae9ee]
-      ({ id: item.id, nombre: item.nombre })
+      ({ id: item.id, nombre: item.nombre, unidad_medida: item.unidad_medida })
     );
 
   return (
@@ -201,17 +246,42 @@ const Ingredient = () => {
             Crea un Nuevo Ingrediente
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <TextField
-                fullWidth
-                type="text"
-                name="nombre"
-                label="Escribe el nuevo ingrediente a registrar"
-                variant="standard"
-                value={form.nombre}
-                onChange={handleChange}
-              />
+            <div className="flex justify-between">
+              <div className="flex-grow mr-2 py-1">
+                <TextField
+                  fullWidth
+                  type="text"
+                  name="nombre"
+                  required
+                  label="Escribe el nuevo ingrediente"
+                  variant="standard"
+                  value={form.nombre}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-2/4 py-5">
+                <Select
+                  required
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={unidad}
+                  variant="standard"
+                  fullWidth
+                  onChange={(e) => setUnidad(e.target.value)}
+                >
+                  <MenuItem value="Seleccionar unidad">
+                    <em>Seleccionar unidad</em>
+                  </MenuItem>
+                  <MenuItem value={"KG"}>KG</MenuItem>
+                  <MenuItem value={"GR"}>GR</MenuItem>
+                  <MenuItem value={"L"}>L</MenuItem>
+                  <MenuItem value={"ML"}>ML</MenuItem>
+                  <MenuItem value={"OZ"}>OZ</MenuItem>
+                  <MenuItem value={"UND"}>UND</MenuItem>
+                </Select>
+              </div>
             </div>
+
             <Button color="error" variant="outlined" fullWidth type="submit">
               Aceptar
             </Button>
