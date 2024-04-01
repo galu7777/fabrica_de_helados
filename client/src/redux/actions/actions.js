@@ -33,6 +33,7 @@ import {
     GET_INVENTORY_POPSICLE,
     GET_SALES,
     ADD__SALE,
+    DETAIL_SALE,
     GET_STOCK_MP,
     GET_STOCK_POPSICLES
 
@@ -147,7 +148,7 @@ export const deleteIngredient = (id) => async (dispatch) => {
 export const getRecipes = () => async (dispatch) => {
     try {
         const { data } = await axios.get('http://localhost:3001/recipe/get_recipe')
-      
+
         dispatch({
             type: GET_RECIPES,
             payload: data,
@@ -267,10 +268,10 @@ export const editProvider = (id, nombre) => async (dispatch) => {
     }
 }
 
-export const detailProvider = (ingredientId, nombre) => async (dispatch) => {
+export const detailProvider = (id, nombre) => async (dispatch) => {
     try {
         const name = { nombre }
-        const { data } = await axios.get(`http://localhost:3001/provider/detail/${ingredientId}`, name)
+        const { data } = await axios.get(`http://localhost:3001/provider/detail/${id}`, name)
 
         dispatch({
             type: DETAIL_PROVIDER,
@@ -341,10 +342,11 @@ export const getSmoothies = () => async (dispatch) => {
     }
 }
 
-export const createSmoothie = (nombre) => async (dispatch) => {
+export const createSmoothie = (smoothie) => async (dispatch) => {
     try {
 
-        const { data } = await axios.post('http://localhost:3001/smoothie/create_smoothie', nombre)
+        const { data } = await axios.post('http://localhost:3001/smoothie/create_smoothie', smoothie)
+       
         dispatch({
             type: ADD_SMOOTHIE,
             payload: data,
@@ -499,8 +501,9 @@ export const getInventoryPopsicle = () => async (dispatch) => {
 
 export const createInventoryPopsicle = (nombre) => async (dispatch) => {
     try {
-
+        console.log(nombre)
         const { data } = await axios.post('http://localhost:3001/inventory_popsicle/create_entry', nombre)
+        console.log(data)
         dispatch({
             type: ADD_INVENTORY_POPSICLE,
             payload: data,
@@ -524,6 +527,20 @@ export const getsales = () => async (dispatch) => {
         throw error
     }
 }
+export const detailsales = (id) => async (dispatch) => {
+    try {
+        const { data } = await axios.get(`http://localhost:3001/sale/detail/${id}`)
+
+        dispatch({
+            type: DETAIL_SALE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
 
 export const createSales = (nombre) => async (dispatch) => {
     try {
