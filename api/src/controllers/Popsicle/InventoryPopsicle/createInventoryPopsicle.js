@@ -46,6 +46,9 @@ module.exports = async (req, res) => {
                     await foundPalletWood.update({
                         cantidad: cntPw
                     })
+                    await foundedSmoothie.update({
+                        status: "USADO"
+                    })
                     await InventarioMateriaPrima.create({
                         cantidad: -cantidad_paleta,
                         unidad_medida: foundPalletWood.unidad_medida,
@@ -88,6 +91,9 @@ module.exports = async (req, res) => {
                     const cntPw = foundPalletWood.cantidad - cantidad_paleta
                     await foundPalletWood.update({
                         cantidad: cntPw
+                    })
+                    await foundedSmoothie.update({
+                        status: "USADO"
                     })
                     await InventarioMateriaPrima.create({
                         cantidad: -cantidad_paleta,
