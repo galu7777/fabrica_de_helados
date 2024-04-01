@@ -117,6 +117,7 @@ router.put('/client/update_client/:id', updateCliente)
 
 // rutas de ventas
 router.get('/sale/get_allsales', getSales)
+router.get('/sale/detail/:id', getSales)
 router.put('/sale/update/:id', updateSale)
 router.delete('/sale/delete/:id', deleteSale)
 router.post('/sale/create_sale', createSale)
