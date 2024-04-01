@@ -17,6 +17,20 @@ export default function Popsicles() {
 
   const columns = [
     {
+      field: "image",
+      headerName: "Imagen",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <img
+          src={`data:image/jpeg;base64,${params.value}`}
+          alt="imagen"
+          style={{ width: "100%" }}
+        />
+      ),
+    },
+    {
       field: "nombre",
       headerName: "Nombre de la Paleta",
       width: 200,
@@ -59,12 +73,15 @@ export default function Popsicles() {
       align: "center",
     },
   ];
+
+ 
   const rows =
     data &&
     data.map((item) =>
       //bg-[#fae9ee]
       ({
         id: item.id,
+        image: item.image,
         nombre: item.nombre,
         peso: item.peso,
         tipo_paleta: item.TipoDePaletum.nombre,

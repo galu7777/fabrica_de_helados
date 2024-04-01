@@ -2,7 +2,7 @@ const { StockPaleta, Paleta, TipoDePaleta } = require('../../../db')
 const response = require('../../../utils/response')
 
 module.exports = async (req, res) => {
-    try {        
+    try {
         const stock = await StockPaleta.findAll({
             include: [
                 {

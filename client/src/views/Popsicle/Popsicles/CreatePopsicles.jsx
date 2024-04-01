@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchPopsicles from "./SearchPopsicles";
-import { Input } from "@mui/material";
+import UploadFile from "./UploadFile";
 
 export default function CreatePopsicles() {
   const dispatch = useDispatch();
@@ -35,10 +35,10 @@ export default function CreatePopsicles() {
     const file = event.target.files[0];
     setSelectedImage(file);
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     if (
       !form.nombre ||
       !form.peso ||
@@ -63,7 +63,7 @@ export default function CreatePopsicles() {
       formData.append('id_tipo_paleta', selectedPopsicle.id);
       formData.append('precio', form.precio);
       formData.append('image', selectedImage); // Agrega la imagen al FormData
-  
+
       Swal.fire({
         title: '¿Quieres registrar esta Paleta?',
         showDenyButton: true,
@@ -82,7 +82,7 @@ export default function CreatePopsicles() {
       });
     }
   };
-  
+
   return (
     <div
       className="bg-cover bg-center h-screen select-none "
@@ -94,6 +94,9 @@ export default function CreatePopsicles() {
             Crea una Nueva Paleta
           </h2>
           <form onSubmit={handleSubmit} className="w-full p-8 ">
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <UploadFile handleImageChange={handleImageChange} />
+            </div>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
                 <TextField
@@ -109,20 +112,10 @@ export default function CreatePopsicles() {
             </div>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
-              <Input
-                id="file-input"
-                type="file"
-                inputProps={{ accept: '.png, .jpg, .jpeg, .gif' }} // Opcional: limitar tipos de archivos
-                onChange={handleImageChange}
-                // className={classes.input}
-              />
-              </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3 mb-6 md:mb-0">
                 <SearchPopsicles onPopsicleTypeSelect={handlePopsicleSelect} />
               </div>
             </div>
+
             <div className="flex -mx-3 mb-6">
               <div className="w-full px-3 flex">
                 <div className="w-3/4 mr-4">

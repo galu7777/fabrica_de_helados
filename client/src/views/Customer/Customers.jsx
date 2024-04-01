@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCustomers } from "../../redux/actions/actions";
+import { getCustomers, deleteCustomers } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import Button from "@mui/material/Button";
+import Swal from "sweetalert2";
+
+
 export default function Customers() {
   const dispatch = useDispatch();
   const customers = useSelector((state) => state.customers);
@@ -12,7 +15,33 @@ export default function Customers() {
   useEffect(() => {
     dispatch(getCustomers());
   }, [dispatch]);
-  console.log(data);
+
+    const refrescarPagina = () => {
+      window.location.reload();
+    };
+
+    const handleDelete = (id) => {
+      // Mostrar un cuadro de diálogo de confirmación con SweetAlert
+      Swal.fire({
+        title: "¿Estás seguro de que quieres Eliminarlo?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarlo",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Registro Exitoso!", "", "success");
+          dispatch(deleteCustomers(id));
+          setTimeout(() => {
+            refrescarPagina();
+          }, "1000");
+        }
+      });
+    };
+
   const formatDateTime = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
@@ -47,11 +76,41 @@ export default function Customers() {
         align: "center",
       },
       {
-        field: "updatedAt",
-        headerName: "Fecha",
-        width: 300,
+        field: "Eliminar",
+        headerName: "Eliminar",
+        width: 200,
         headerAlign: "center",
         align: "center",
+        renderCell: (params) => (
+          <div>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              Eliminar
+            </Button>
+          </div>
+        ),
+      },
+      {
+        field: "Editar",
+        headerName: "Editar",
+        width: 200,
+        headerAlign: "center",
+        align: "center",
+        renderCell: (params) => (
+          <div>
+            <Button
+              variant="outlined"
+              color="primary"
+              href={`/Cliente/${params.row.id}`}
+              //onClick={() => handleDelete(params.row.id)}
+            >
+              Editar
+            </Button>
+          </div>
+        ),
       },
     ];
 

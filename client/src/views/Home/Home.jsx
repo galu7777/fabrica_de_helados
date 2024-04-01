@@ -13,15 +13,17 @@ const Home = () => {
         image: pop.Paletum.image,
         nombre_paleta: pop.nombre_paleta,
         descripcion: pop.Paletum.descripcion,
+        Tipo: pop.TipoDePaletum.nombre,
         cantidad: pop.cantidad,
         precio_unitario: pop.precio_unitario,
+        peso_unitario: pop.peso_unitario,
         unidad_medida: pop.unidad_medida,
-        precio: pop.precio
+        precio: pop.precio,
       };
     } catch (error) {
       console.error("Error decoding image data:", error);
     }
-  }) : [];  
+  }) : [];
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <div className="w-full bg-white py-16">
+    <div className="w-full bg-white py-16 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-4xl font-bold mb-8 text-center text-gray-500">
           Paletas
@@ -50,17 +52,22 @@ const Home = () => {
                   <h3 className="text-xl font-semibold mb-2">
                     {item.nombre_paleta}
                   </h3>
-                  <p className="text-gray-700 mb-4">
-                    {item.descripcion}
-                  </p>
+                  <p className="text-gray-700 mb-4">{item.descripcion}</p>
 
                   <p className="text-gray-700 py-2">
                     ({item.cantidad} Disponibles)
                   </p>
-                  <div className="py-2 mb-5">
-                    <span className="bg-gray-200 rounded-full px-3 text-sm font-semibold text-gray-700 py-3">
-                      Peso {item.peso_unitario} {item.unidad_medida}
-                    </span>
+                  <div className="flex justify-between">
+                    <div className="py-2 mb-5">
+                      <span className="bg-gray-200 rounded-full px-3 text-sm font-semibold text-gray-700 py-3">
+                        Peso {item.peso_unitario} {item.unidad_medida}
+                      </span>
+                    </div>
+                    <div className="py-2 mb-5">
+                      <span className="bg-gray-200 rounded-full px-3 text-sm font-semibold text-gray-700 py-3">
+                        {item.Tipo}
+                      </span>
+                    </div>
                   </div>
 
                   <p className="text-2xl mb-5 text-center font-bold text-gray-800">

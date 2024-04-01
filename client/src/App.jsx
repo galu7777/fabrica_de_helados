@@ -24,6 +24,7 @@ import CreateSale from "./views/Sales/CreateSale";
 import StockMateriaPrima from "./views/Stock/StockMateriaPrima";
 import StockPopsicles from "./views/Stock/StockPopsicles";
 import EditProvider from "./views/Provider/EditProvider"
+import EditCustomers from "./views/Customer/EditCustomers";
 
 function App() {
   const location = useLocation();
@@ -47,6 +48,7 @@ function App() {
         <Route path="/batidos" element={<Smoothie />} />
         <Route path="/Clientes" element={<Customers />} />
         <Route path="/crear_clientes" element={<CreateCustomers />} />
+        <Route path="/Cliente/:id" element={<EditCustomers />} />
         <Route path="/TipoPaletas" element={<TypePopsicle />} />
         <Route path="/Paletas" element={<Popsicles />} />
         <Route path="/crear_paletas" element={<CreatePopsicles />} />

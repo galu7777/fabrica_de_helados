@@ -10,13 +10,27 @@ export default function StockPopsicles() {
   const dispatch = useDispatch();
   const stockPop = useSelector((state) => state.stockPop);
   const data = stockPop.data;
-  console.log(data);
+ 
 
   useEffect(() => {
     dispatch(getStockPopsicle());
   }, [dispatch]);
 
   const columns = [
+    {
+      field: "image",
+      headerName: "Imagen",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <img
+          src={`data:image/jpeg;base64,${params.value}`}
+          alt="imagen"
+          style={{ width: "100%" }}
+        />
+      ),
+    },
     {
       field: "nombre_paleta",
       headerName: "Nombre del Ingrediente",
@@ -53,6 +67,7 @@ export default function StockPopsicles() {
       //bg-[#fae9ee]
       ({
         id: item.id,
+        image: item.Paletum.image,
         nombre_paleta: item.nombre_paleta,
         cantidad: item.cantidad,
         peso_unitario: item.peso_unitario,
