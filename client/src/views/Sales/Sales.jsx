@@ -1,18 +1,23 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getsales } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import { DataGrid } from "@mui/x-data-grid";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
 
 export default function Sales() {
   const dispatch = useDispatch();
   const sales = useSelector((state) => state.sales);
   const { data } = sales;
+
+  console.log(data);
     const formatDateTime = (dateTimeString) => {
       const dateTime = new Date(dateTimeString);
-      return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
+      return dateTime.toLocaleString();
     };
 
 
@@ -37,25 +42,12 @@ export default function Sales() {
       },
       {
         field: "cantidad",
-        headerName: "Cantidad",
+        headerName: "Cantidad de paletas",
         width: 200,
         headerAlign: "center",
         align: "center",
       },
-      {
-        field: "nombre_paleta",
-        headerName: "Nombre de la paleta",
-        width: 200,
-        headerAlign: "center",
-        align: "center",
-      },
-      {
-        field: "precio",
-        headerName: "Precio",
-        width: 200,
-        headerAlign: "center",
-        align: "center",
-      },
+
       {
         field: "monto",
         headerName: "Monto",
@@ -64,11 +56,21 @@ export default function Sales() {
         align: "center",
       },
       {
-        field: "tasa",
-        headerName: "Tasa",
+        field: "Detalle",
+        headerName: "Detalle",
         width: 200,
         headerAlign: "center",
         align: "center",
+        renderCell: (params) => (
+          <div>
+            <Link to={`/Venta/${params.row.id}`}>
+              <VisibilityIcon
+                color="primary"
+                className="cursor-pointer"
+              />
+            </Link>
+          </div>
+        ),
       },
       {
         field: "updatedAt",
@@ -105,14 +107,15 @@ export default function Sales() {
           <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
             Lista de Ventas
           </div>
-          <Button
-            color="error"
-            variant="outlined"
-            fullWidth
-            href="/crear_ventas"
-          >
-            Crear Ventas
-          </Button>
+          <Link to={`/crear_ventas`}>
+            <Button
+              color="error"
+              variant="outlined"
+              fullWidth
+            >
+              Crear Ventas
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="mt-8 justify-center flex">
@@ -137,7 +140,6 @@ export default function Sales() {
                 },
               }}
               pageSizeOptions={[5]}
-              checkboxSelection
               disableRowSelectionOnClick
             />
           ) : (
