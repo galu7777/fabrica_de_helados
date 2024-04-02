@@ -25,15 +25,25 @@ import StockMateriaPrima from "./views/Stock/StockMateriaPrima";
 import StockPopsicles from "./views/Stock/StockPopsicles";
 import EditProvider from "./views/Provider/EditProvider"
 import EditCustomers from "./views/Customer/EditCustomers";
+import DetailSale from "./views/Sales/DetailSale";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { signin } from "./redux/actions/actions";
 
 function App() {
   const location = useLocation();
-
+   const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    const { data } = user;
+    console.log(data)
+  useEffect(() => {
+    dispatch(signin);
+  }, [dispatch]);
   return (
     <div>
-      {location.pathname !== "/register" && location.pathname !== "/login" && (
-        <NavBar />
-      )}
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        !location.pathname.startsWith("/Venta/") && <NavBar />}
       <Routes>
         <Route path="*" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -57,6 +67,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/Ventas" element={<Sales />} />
+        <Route path="/Venta/:id" element={<DetailSale />} />
         <Route path="/crear_ventas" element={<CreateSale />} />
         <Route path="/stock_mp" element={<StockMateriaPrima />} />
         <Route path="/stock_popsicle" element={<StockPopsicles />} />

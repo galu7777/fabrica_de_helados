@@ -6,18 +6,17 @@ import { DataGrid } from "@mui/x-data-grid";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import CreateSmoothie from "./CreateSmoothie";
 export default function Smoothie() {
-
   const dispatch = useDispatch();
   const smoothies = useSelector((state) => state.smoothies);
-    const { data } = smoothies;
-    useEffect(() => {
-      dispatch(getSmoothies());
-    }, [dispatch]);
-console.log(data)
-      const formatDateTime = (dateTimeString) => {
-        const dateTime = new Date(dateTimeString);
-        return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
-      };
+  const { data } = smoothies;
+  useEffect(() => {
+    dispatch(getSmoothies());
+  }, [dispatch]);
+ 
+  const formatDateTime = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+    return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
+  };
 
   const columns = [
     {
@@ -29,7 +28,7 @@ console.log(data)
     },
     {
       field: "cantidad",
-      headerName: "cantidad total de ingredientes",
+      headerName: "Peso del Batido",
       width: 400,
       headerAlign: "center",
       align: "center",
@@ -43,17 +42,18 @@ console.log(data)
     },
   ];
 
-  const rows =
-    data &&
-    data.map((item) =>
-      //bg-[#fae9ee]
-      ({
-        id: item.id,
-        nombre: item.Recipe.nombre,
-        cantidad: item.cantidad,
-        updatedAt: formatDateTime(item.updatedAt),
-      })
-    );
+const rows =
+  data &&
+  data.map((item) => {
+    const total = item.cantidad / 1000;
+    return {
+      id: item.id,
+      nombre: item.Recipe.nombre,
+      cantidad: `${total} KG`,
+      updatedAt: formatDateTime(item.updatedAt),
+    };
+  });
+
 
   return (
     <>
@@ -91,7 +91,6 @@ console.log(data)
                   },
                 }}
                 pageSizeOptions={[5]}
-
                 disableRowSelectionOnClick
               />
             ) : (

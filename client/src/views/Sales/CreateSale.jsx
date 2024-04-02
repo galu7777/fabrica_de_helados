@@ -26,72 +26,74 @@ export default function CreateSale() {
     setSelectedPopsicles(selectedRows);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-    const filteredRows = selectedPopsicles
-      .filter((row) => row.select === true)
-      .map((row) => ({
-        id: row.id,
-        cantidad: row.cantidad || 0,
-        precio: row.peso_unitario || 0,
-        monto: row.total || 0,
-        tasa: row.tasa,
-      }));
-    const selectedCustomersIds = selectedCustomer.id;
-console.log(filteredRows);
-    if (!filteredRows) {
-      Swal.fire({
-        title: "Verifica la información.",
-        text: "Por favor, selecciona un cliente.",
-        icon: "warning",
-      });
-      return;
-    }
+  const filteredRows = selectedPopsicles
+    .filter((row) => row.select === true)
+    .map((row) => ({
+      id_stock_paleta: row.id, // Solo envía el ID del stock de paleta
+      cantidad: row.cantidad || 0,
+      tasa: row.tasa,
+    }));
+    console.log(filteredRows);
 
-    const popsiclesWithZeroQuantity = filteredRows.filter(
-      (popsicle) => popsicle.cantidad === 0
+
+  const selectedCustomerId = selectedCustomer.id;
+
+
+  if (filteredRows.length === 0) {
+    // Verifica si no hay elementos seleccionados
+    Swal.fire({
+      title: "Verifica la información.",
+      text: "Por favor, selecciona al menos una paleta.",
+      icon: "warning",
+    });
+    return;
+  }
+
+  const popsiclesWithZeroQuantity = filteredRows.filter(
+    (popsicle) => popsicle.cantidad === 0
+  );
+
+  if (popsiclesWithZeroQuantity.length > 0) {
+    const popsicleNames = popsiclesWithZeroQuantity.map(
+      (popsicle) => popsicle.nombre_paleta
     );
-
-    if (popsiclesWithZeroQuantity.length > 0) {
-      const popsicleNames = popsiclesWithZeroQuantity.map(
-        (popsicle) => popsicle.nombre_paleta
-      );
-      const message = `La cantidad de las siguientes paletas es 0: ${popsicleNames.join(
-        ", "
-      )}`;
-
-      Swal.fire({
-        title: "Verifica la información.",
-        text: message,
-        icon: "warning",
-      });
-      return;
-    }
+    const message = `La cantidad de las siguientes paletas es 0: ${popsicleNames.join(
+      ", "
+    )}`;
 
     Swal.fire({
-      title: "¿Quieres registrar esta venta?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Registrar",
-      denyButtonText: `No registrar`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Venta registrada exitosamente!", "", "success");
-        // Envía los datos al backend
-        dispatch(
-          createSales({
-            id_cliente: selectedCustomersIds,
-            id_stock_paleta: filteredRows,
-            cantidad: filteredRows,
-            tasa: filteredRows
-          })
-        );
-      } else if (result.isDenied) {
-        Swal.fire("La venta no se registró.", "", "info");
-      }
+      title: "Verifica la información.",
+      text: message,
+      icon: "warning",
     });
-  };
+    return;
+  }
+
+  Swal.fire({
+    title: "¿Quieres registrar esta venta?",
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: "Registrar",
+    denyButtonText: `No registrar`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Venta registrada exitosamente!", "", "success");
+      // Envía los datos al backend
+      const salesData = {
+        id_cliente: selectedCustomerId,
+        id_stock_paleta: filteredRows[0].id_stock_paleta, // Selecciona solo el primer ID de stock de paleta
+        cantidad: filteredRows.reduce((acc, curr) => acc + curr.cantidad, 0), // Suma todas las cantidades
+        tasa: filteredRows[0].tasa, // Selecciona solo la primera tasa
+      };
+      dispatch(createSales(salesData));
+    } else if (result.isDenied) {
+      Swal.fire("La venta no se registró.", "", "info");
+    }
+  });
+};
 
   return (
     <div className="bg-cover bg-center h-screen select-none bg-gray-100 ">

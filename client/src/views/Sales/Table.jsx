@@ -24,7 +24,6 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
       fetchData();
     }, []);
 
-
   useEffect(() => {
     dispatch(getStockPopsicle());
   }, [dispatch]);
@@ -38,7 +37,7 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
         cantidad: 0,
         disponible: item.cantidad,
         precio: item.precio,
-        tasa: 35,
+        tasa: BCV.price,
         total: 0,
         select: false,
       }));
