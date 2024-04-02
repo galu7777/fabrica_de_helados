@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
             cantidad: {
                 type: DataTypes.FLOAT,
                 defaultValue: 0
+            },
+            status: {
+                type: DataTypes.ENUM("CREADO","USADO"),
+                defaultValue: "CREADO"
             }
         },
         {
