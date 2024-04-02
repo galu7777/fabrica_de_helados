@@ -70,9 +70,10 @@ export default function CreateInvPopsicles() {
             createInventoryPopsicle({
               id_batida: selectedSmoothie.id,
               id_paleta: selectedPopsicle.id,
+              id_empaque: selectedPacking
             })
           );
-          navigate("/InventarioPaletas");
+         navigate("/InventarioPaletas");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
