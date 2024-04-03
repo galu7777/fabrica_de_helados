@@ -14,6 +14,7 @@ export default function CreateSale() {
   //const navigate = useNavigate();
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedPopsicles, setSelectedPopsicles] = useState([]);
+  const [tasa, setTasa] = useState(0);
 
   useEffect(() => {
     dispatch(getCustomers());
@@ -22,25 +23,23 @@ export default function CreateSale() {
   const handleCustomerSelect = (customer) => {
     setSelectedCustomer(customer);
   };
-  const handleSelectedPopsiclesChange = (selectedRows) => {
+  const handleSelectedPopsiclesChange = (selectedRows, BCV) => {
     setSelectedPopsicles(selectedRows);
+   setTasa(BCV);
   };
 
 const handleSubmit = (e) => {
   e.preventDefault();
+  console.log(selectedPopsicles);
 
   const filteredRows = selectedPopsicles
     .filter((row) => row.select === true)
     .map((row) => ({
       id_stock_paleta: row.id, // Solo envía el ID del stock de paleta
       cantidad: row.cantidad || 0,
-      tasa: row.tasa,
     }));
-    console.log(filteredRows);
-
 
   const selectedCustomerId = selectedCustomer.id;
-
 
   if (filteredRows.length === 0) {
     // Verifica si no hay elementos seleccionados
@@ -63,7 +62,6 @@ const handleSubmit = (e) => {
     const message = `La cantidad de las siguientes paletas es 0: ${popsicleNames.join(
       ", "
     )}`;
-
     Swal.fire({
       title: "Verifica la información.",
       text: message,
@@ -81,13 +79,13 @@ const handleSubmit = (e) => {
   }).then((result) => {
     if (result.isConfirmed) {
       Swal.fire("Venta registrada exitosamente!", "", "success");
-      // Envía los datos al backend
+      // Envía los datos al backend en el formato esperado
       const salesData = {
         id_cliente: selectedCustomerId,
-        id_stock_paleta: filteredRows[0].id_stock_paleta, // Selecciona solo el primer ID de stock de paleta
-        cantidad: filteredRows.reduce((acc, curr) => acc + curr.cantidad, 0), // Suma todas las cantidades
-        tasa: filteredRows[0].tasa, // Selecciona solo la primera tasa
+        tasa: tasa, // Supongo que `tasa` es una variable que ya tienes
+        ventas: filteredRows,
       };
+      console.log(salesData);
       dispatch(createSales(salesData));
     } else if (result.isDenied) {
       Swal.fire("La venta no se registró.", "", "info");
@@ -97,7 +95,7 @@ const handleSubmit = (e) => {
 
   return (
     <div className="bg-cover bg-center h-screen select-none bg-gray-100 ">
-      <div className="flex flex-col h-screen rounded-lg shadow-xl items-center select-none bg-white mx-auto my-auto w-2/4">
+      <div className="flex flex-col h-screen rounded-lg shadow-xl items-center select-none bg-white mx-auto my-auto w-3/4">
         <div className="p-6 w-3/4">
           <div className="flex items-center text-center justify-center">
             <img
