@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSmoothies, getIngredients, getPopsicle, createInventoryPopsicle } from "../../../redux/actions/actions";
+import {
+  getSmoothies,
+  getIngredients,
+  getPopsicle,
+  createInventoryPopsicle,
+} from "../../../redux/actions/actions";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +14,7 @@ import TextField from "@mui/material/TextField";
 
 export default function CreateInvPopsicles() {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [selectedSmoothie, setSelectedSmoothie] = useState("");
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
   const [selectedPacking, setSelectedPacking] = useState("");
@@ -19,14 +24,13 @@ export default function CreateInvPopsicles() {
   const dataSmoo = smoothie.data;
   const dataPopsicles = popsicles.data;
   const dataIngred = ingredients.data;
-  console.log(selectedPacking);
+ 
 
   useEffect(() => {
     dispatch(getSmoothies());
     dispatch(getIngredients());
     dispatch(getPopsicle());
   }, [dispatch]);
-
 
   const handlePopsicleSelect = (event, value) => {
     setSelectedPopsicle(value);
@@ -37,18 +41,14 @@ export default function CreateInvPopsicles() {
   };
 
   const handlePacking = (event, value) => {
-    setSelectedPacking(value.id)
+    setSelectedPacking(value.id);
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(selectedPopsicle.id);
     console.log(selectedSmoothie.id);
-    if (
-      !selectedSmoothie ||
-      !selectedPopsicle
-    ) {
+    if (!selectedSmoothie || !selectedPopsicle) {
       // Muestra una alerta indicando el error
       Swal.fire({
         title: "Verifica la informacion.",
@@ -62,18 +62,18 @@ export default function CreateInvPopsicles() {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async (result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(
+          await dispatch(
             createInventoryPopsicle({
               id_batida: selectedSmoothie.id,
               id_paleta: selectedPopsicle.id,
-              id_empaque: selectedPacking
+              id_empaque: selectedPacking,
             })
           );
-         navigate("/InventarioPaletas");
+          navigate("/InventarioPaletas");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -81,88 +81,88 @@ export default function CreateInvPopsicles() {
     }
   };
 
-    return (
-      <div
-        className="bg-cover bg-center h-screen select-none "
-        style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
-      >
-        <div className="w-full flex flex-col items-center select-none py-10">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
-            <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
-              Agregar Inventario de Paleta
-            </div>
+  return (
+    <div
+      className="bg-cover bg-center h-screen select-none "
+      style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
+    >
+      <div className="w-full flex flex-col items-center select-none py-10">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+          <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
+            Agregar Inventario de Paleta
           </div>
         </div>
-        <div className="mt-8 justify-center flex">
-          <form
-            onSubmit={handleSubmit}
-            className="w-2/4 p-8 bg-white rounded-lg shadow-2xl"
-          >
-            <div className=" -mx-3 mb-6 py-10">
-              <div className="w-full px-3 mb-10">
-                <div className="w-full mr-4">
-                  {dataSmoo && (
-                    <Autocomplete
-                      options={dataSmoo}
-                      fullWidth
-                      getOptionLabel={(option) => option.Recipe.nombre}
-                      getOptionSelected={(option) => option.Recipe.nombre} // Usar la misma función para obtener y seleccionar la opción
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Seleccione un Batido"
-                          variant="outlined"
-                          required
-                        />
-                      )}
-                      onChange={handleSmooSelect}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="w-full px-3 mb-10">
-                {dataPopsicles && ( // Verificación de nulidad para data
+      </div>
+      <div className="mt-8 justify-center flex">
+        <form
+          onSubmit={handleSubmit}
+          className="w-2/4 p-8 bg-white rounded-lg shadow-2xl"
+        >
+          <div className=" -mx-3 mb-6 py-10">
+            <div className="w-full px-3 mb-10">
+              <div className="w-full mr-4">
+                {dataSmoo && (
                   <Autocomplete
-                    options={dataPopsicles}
+                    options={dataSmoo}
                     fullWidth
-                    getOptionLabel={(option) => option.nombre}
+                    getOptionLabel={(option) => option.Recipe.nombre}
+                    getOptionSelected={(option) => option.Recipe.nombre} // Usar la misma función para obtener y seleccionar la opción
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Seleccione una Paleta"
+                        label="Seleccione un Batido"
                         variant="outlined"
                         required
                       />
                     )}
-                    onChange={handlePopsicleSelect}
-                  />
-                )}
-              </div>
-              <div className="w-full px-3 mb-10">
-                {dataIngred && ( // Verificación de nulidad para data
-                  <Autocomplete
-                    options={dataIngred.slice(1, 3)}
-                    fullWidth
-                    getOptionLabel={(option) => option.nombre}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Seleccione empaque"
-                        variant="outlined"
-                        required
-                      />
-                    )}
-                    onChange={handlePacking}
+                    onChange={handleSmooSelect}
                   />
                 )}
               </div>
             </div>
+            <div className="w-full px-3 mb-10">
+              {dataPopsicles && ( // Verificación de nulidad para data
+                <Autocomplete
+                  options={dataPopsicles}
+                  fullWidth
+                  getOptionLabel={(option) => option.nombre}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Seleccione una Paleta"
+                      variant="outlined"
+                      required
+                    />
+                  )}
+                  onChange={handlePopsicleSelect}
+                />
+              )}
+            </div>
+            <div className="w-full px-3 mb-10">
+              {dataIngred && ( // Verificación de nulidad para data
+                <Autocomplete
+                  options={dataIngred.slice(1, 3)}
+                  fullWidth
+                  getOptionLabel={(option) => option.nombre}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Seleccione empaque"
+                      variant="outlined"
+                      required
+                    />
+                  )}
+                  onChange={handlePacking}
+                />
+              )}
+            </div>
+          </div>
 
-            <Button color="error" variant="outlined" fullWidth type="submit">
-              Aceptar
-            </Button>
-          </form>
-        </div>
+          <Button color="error" variant="outlined" fullWidth type="submit">
+            Aceptar
+          </Button>
+        </form>
       </div>
-    );
+    </div>
+  );
 }
