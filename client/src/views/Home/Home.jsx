@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getStockPopsicle, signin } from "../../redux/actions/actions";
+import { getStockPopsicle } from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 
 const Home = () => {
@@ -8,13 +8,7 @@ const Home = () => {
   const stock = useSelector((state) => state.stockPop);
   const { data } = stock;
 
-  const user = useSelector((state) => state.user);
-  const userdata = user.data;
-  localStorage.setItem("usuario", JSON.stringify(userdata.foundUser));
 
-  useEffect(() => {
-    dispatch(signin);
-  }, [dispatch]);
   const paletas = data
     ? data.map((pop) => {
         try {
