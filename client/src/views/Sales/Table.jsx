@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {  getStockPopsicle} from "../../redux/actions/actions";
+import { getStockPopsicle } from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import PropTypes from "prop-types";
 import { getMonitor } from "consulta-dolar-venezuela";
@@ -14,15 +14,16 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
   const [rows, setRows] = useState([]);
   const [showTextField, setShowTextField] = useState({});
   const [totalOfTotals, setTotalOfTotals] = useState(0);
-    const [BCV, setBCV] = useState("");
-    useEffect(() => {
-      const fetchData = async () => {
-        const response = await getMonitor("BCV", "lastUpdate");
-        setBCV(response.bcv);
-      };
+  const [BCV, setBCV] = useState("");
 
-      fetchData();
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getMonitor("BCV", "lastUpdate");
+      setBCV(response.bcv.price);
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     dispatch(getStockPopsicle());
@@ -37,7 +38,6 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
         cantidad: 0,
         disponible: item.cantidad,
         precio: item.precio,
-        tasa: BCV.price,
         total: 0,
         select: false,
       }));
@@ -45,33 +45,31 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
     }
   }, [dataPopInv]);
 
-
-
   useEffect(() => {
-    onSelectedPopsiclesChange(rows);
-  }, [rows, onSelectedPopsiclesChange]);
+    onSelectedPopsiclesChange(rows, BCV);
+  }, [rows, BCV, onSelectedPopsiclesChange]);
 
-const handleQuantityChange = (event, rowId) => {
-  const { value } = event.target;
-  const newValue = value === "" ? 1 : Number(value);
-  if (!isNaN(newValue) && newValue >= 0) {
-    const updatedRows = rows.map((row) =>
-      row.id === rowId
-        ? {
-            ...row,
-            cantidad: newValue,
-            select: newValue !== 0,
-          }
-        : row
-    );
-    setRows(updatedRows);
-    calculateTotals(updatedRows);
-    if (newValue === 0) {
-      setShowTextField((prevState) => ({ ...prevState, [rowId]: false }));
+  const handleQuantityChange = (event, rowId) => {
+    const { value } = event.target;
+    const newValue = value === "" ? 1 : Number(value);
+    if (!isNaN(newValue) && newValue >= 0) {
+      const updatedRows = rows.map((row) =>
+        row.id === rowId
+          ? {
+              ...row,
+              cantidad: newValue,
+              select: newValue !== 0,
+            }
+          : row
+      );
+      setRows(updatedRows);
+      calculateTotals(updatedRows);
+      if (newValue === 0) {
+        setShowTextField((prevState) => ({ ...prevState, [rowId]: false }));
+      }
     }
-  }
-};
-const totalEnBSCalculado = totalOfTotals * BCV.price;
+  };
+  const totalEnBSCalculado = totalOfTotals * BCV;
   const handleAddButtonClick = (rowId) => {
     setShowTextField((prevState) => ({ ...prevState, [rowId]: true }));
 
@@ -162,11 +160,10 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
   ];
 
   return (
-    <div className="mt-8 mx-auto max-w-3xl rounded-lg bg-white shadow-lg">
+    <div className="mt-8 rounded-lg bg-white shadow-lg w-full">
       {dataPopInv ? (
         <>
           <div className="p-4 w-full">
-
             <DataGrid
               rows={rows}
               columns={columns}
@@ -186,7 +183,7 @@ const totalEnBSCalculado = totalOfTotals * BCV.price;
             </div>
             <div className="h-px bg-gray-300 my-4"></div>
             <div className="flex justify-between items-center">
-              <p className="text-gray-500">Tasa {BCV.price}:</p>
+              <p className="text-gray-500">Tasa {BCV}:</p>
               <div className="text-right">
                 <p className="text-gray-500">Total a pagar en BS:</p>
                 <p className="text-lg font-medium text-gray-600">
