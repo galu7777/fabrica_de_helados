@@ -1,30 +1,40 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getStockPopsicle } from "../../redux/actions/actions";
+import { getStockPopsicle, signin } from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const stock = useSelector((state) => state.stockPop);
   const { data } = stock;
-  const paletas = data ? data.map((pop) => {
-    try {
-      return {
-        id: pop.id,
-        image: pop.Paletum.image,
-        nombre_paleta: pop.nombre_paleta,
-        descripcion: pop.Paletum.descripcion,
-        Tipo: pop.TipoDePaletum.nombre,
-        cantidad: pop.cantidad,
-        precio_unitario: pop.precio_unitario,
-        peso_unitario: pop.peso_unitario,
-        unidad_medida: pop.unidad_medida,
-        precio: pop.precio,
-      };
-    } catch (error) {
-      console.error("Error decoding image data:", error);
-    }
-  }) : [];
-  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user);
+  const userdata = user.data;
+  localStorage.setItem("usuario", JSON.stringify(userdata.foundUser));
+
+  useEffect(() => {
+    dispatch(signin);
+  }, [dispatch]);
+  const paletas = data
+    ? data.map((pop) => {
+        try {
+          return {
+            id: pop.id,
+            image: pop.Paletum.image,
+            nombre_paleta: pop.nombre_paleta,
+            descripcion: pop.Paletum.descripcion,
+            Tipo: pop.TipoDePaletum.nombre,
+            cantidad: pop.cantidad,
+            precio_unitario: pop.precio_unitario,
+            peso_unitario: pop.peso_unitario,
+            unidad_medida: pop.unidad_medida,
+            precio: pop.precio,
+          };
+        } catch (error) {
+          console.error("Error decoding image data:", error);
+        }
+      })
+    : [];
 
   useEffect(() => {
     dispatch(getStockPopsicle());
