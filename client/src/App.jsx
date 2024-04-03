@@ -23,22 +23,16 @@ import Sales from "./views/Sales/Sales.jsx";
 import CreateSale from "./views/Sales/CreateSale";
 import StockMateriaPrima from "./views/Stock/StockMateriaPrima";
 import StockPopsicles from "./views/Stock/StockPopsicles";
-import EditProvider from "./views/Provider/EditProvider"
+import EditProvider from "./views/Provider/EditProvider";
 import EditCustomers from "./views/Customer/EditCustomers";
 import DetailSale from "./views/Sales/DetailSale";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { signin } from "./redux/actions/actions";
 
 function App() {
   const location = useLocation();
-   const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
-    const { data } = user;
-    console.log(data)
-  useEffect(() => {
-    dispatch(signin);
-  }, [dispatch]);
+  const user = JSON.parse(localStorage.getItem("usuario"));
+ const rol = user.rol;
+ console.log(rol);
+
   return (
     <div>
       {location.pathname !== "/register" &&
