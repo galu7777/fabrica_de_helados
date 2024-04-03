@@ -273,7 +273,7 @@ const handleSubmit = async (e) => {
                     <em>Seleccionar unidad</em>
                   </MenuItem>
                   <MenuItem value={"KG"}>KG</MenuItem>
-                  <MenuItem value={"GR"}>GR</MenuItem>
+                  <MenuItem value={"GRS"}>GRS</MenuItem>
                   <MenuItem value={"L"}>L</MenuItem>
                   <MenuItem value={"ML"}>ML</MenuItem>
                   <MenuItem value={"OZ"}>OZ</MenuItem>
