@@ -24,7 +24,7 @@ function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfimPassword] = useState(false);
     const [repitPassword, setrepitPassword] = useState('');
-
+console.log(repitPassword)
 
   // const [error, setError] = useState({
   //   nombre: "",
@@ -83,47 +83,58 @@ function Register() {
     // if (Object.keys(error).length === 0) {
        console.log(input);
     const newUser = { ...input };
-    try {
-      await dispatch(registerNewUser(newUser));
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "¡El usuario se registró exitosamente!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      setInput({
-        nombre: "",
-        apellido: "",
-        email: "",
-        password: "",
-        direction_shipping: "",
-      });
-      navigate("/login");
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Este usuario ya esta registrado.",
-      });
+    if (repitPassword !== input.password) {
+       Swal.fire({
+         title: "Verifica la informacion.",
+         text: "Por favor, verifique que las contraseñas sean iguales",
+         icon: "warning",
+       });
+
+    }else {
+        try {
+          await dispatch(registerNewUser(newUser));
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "¡El usuario se registró exitosamente!",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          setInput({
+            nombre: "",
+            apellido: "",
+            email: "",
+            password: "",
+            direction_shipping: "",
+          });
+          navigate("/login");
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Este usuario ya esta registrado.",
+          });
+        }
+
     }
+
   };
 
   return (
     <>
       <div
-        className="bg-cover bg-center h-screen"
+        className="bg-cover bg-center min-h-screen flex items-center justify-center select-none"
         style={{ backgroundImage: "url('/rosa.jpg')" }}
       >
-        <div className="flex">
-          <div className="flex-1">
-            <div className="flex justify-center items-center h-screen">
-              <div className="bg-white rounded-md shadow-md h-3/4 w-2/4 p-8">
-                <form className="w-full p-6 " onSubmit={handleSubmit}>
-                  <h1 className="text-pink-500 text-2xl font-bold text-center">
+        <div className="flex flex-col md:flex-row">
+          <div className="md:w-3/4 md:mb-0">
+            <div className="flex justify-center items-center">
+              <div className="bg-white rounded-md shadow-md p-8 max-w-md w-full">
+                <form className="w-full p-6" onSubmit={handleSubmit}>
+                  <h1 className="text-pink-500 text-2xl font-bold text-center mb-8">
                     Registrarse
                   </h1>
 
-                  <div className="mb-6 px-2 mt-10">
+                  <div className="mb-4">
                     <TextField
                       label="Nombre"
                       variant="outlined"
@@ -135,13 +146,11 @@ function Register() {
                       name="nombre"
                       id="nombre"
                     />
-
-                    {/* {error.nombre && <p className="error-inputs text-center">{error.nombre}</p>} */}
                   </div>
 
-                  <div className="mb-6 px-2">
+                  <div className="mb-4">
                     <TextField
-                      label="apellido"
+                      label="Apellido"
                       variant="outlined"
                       fullWidth
                       value={input.apellido}
@@ -151,29 +160,25 @@ function Register() {
                       name="apellido"
                       id="apellido"
                     />
-
-                    {/* {error.apellido && <p className="error-inputs text-center">{error.apellido}</p>} */}
                   </div>
 
-                  <div className="mb-6 px-2">
+                  <div className="mb-4">
                     <TextField
                       label="Email"
                       variant="outlined"
                       fullWidth
-                      alue={input.email}
+                      value={input.email}
                       onChange={handleChange}
                       type="text"
                       required
                       name="email"
                       id="email"
                     />
-
-                    {/* {error.email && <p className="error-inputs text-center">{error.email}</p>} */}
                   </div>
 
-                  <div className="mb-6 px-2">
+                  <div className="mb-4">
                     <TextField
-                      label="contraseña"
+                      label="Contraseña"
                       variant="outlined"
                       fullWidth
                       value={input.password}
@@ -193,17 +198,16 @@ function Register() {
                         ),
                       }}
                     />
-
-                    {/* {error.password && <p className="error-inputs text-center">{error.password}</p>} */}
                   </div>
-                  <div className="mb-6 px-2">
+
+                  <div className="mb-4">
                     <TextField
                       label="Repetir contraseña"
                       variant="outlined"
                       fullWidth
                       value={repitPassword}
                       required
-                      onChange={(e)=> setrepitPassword(e.target.value)}
+                      onChange={(e) => setrepitPassword(e.target.value)}
                       type={showConfirmPassword ? "text" : "password"}
                       name="repitPassword"
                       id="repitPassword"
@@ -220,33 +224,18 @@ function Register() {
                         ),
                       }}
                     />
-
-                    {/* {error.password && <p className="error-inputs text-center">{error.password}</p>} */}
                   </div>
 
-                  <hr className="espacio"></hr>
-                  <div className="flex justify-center content-center w-full">
+                  <div className="flex justify-center mt-10">
                     <button
                       type="submit"
-                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-gradient-to-r from-blue-500 to-pink-400 hover:from-pink-500 hover:to-wite "
+                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-gradient-to-r from-blue-500 to-pink-400 hover:from-pink-500 hover:to-white"
                     >
                       Registrarse
                     </button>
                   </div>
-                  {/* {Object.keys(error).length === 0 ? (
-            <div className='flex justify-center content-center w-full'>
-              <button type="submit" className="btn-register">
-                Registrarse
-              </button>
-            </div>
-          ) : (
-            <div className='flex justify-center content-center w-full'>
-              <button type="submit" className="btn-register-dis" disabled>
-                Registrarse
-              </button>
-            </div>
-          )} */}
                 </form>
+                <hr className="my-1" />
                 <p className="text-center">
                   Ya tienes una cuenta?{" "}
                   <Link to="/login" className="linkR text-center">
@@ -256,7 +245,7 @@ function Register() {
               </div>
             </div>
           </div>
-          <div className="flex-1">
+          <div className="md:w-1/4 hidden md:block">
             <div className="bg-white rounded-md shadow-md w-96"></div>
           </div>
         </div>
