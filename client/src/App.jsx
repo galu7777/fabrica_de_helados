@@ -33,12 +33,20 @@ function App() {
 
   return (
     <div>
+      
+
       {location.pathname !== "/register" &&
         location.pathname !== "/login" &&
         !location.pathname.startsWith("/Venta/") && <NavBar />}
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {user ? (
+          <Route path="/home" element={<Home />} />
+        ) : (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </>
+        )}
         <Route path="/home" element={<Home />} />
 
         {/* Proteger rutas según el rol */}
@@ -60,6 +68,12 @@ function App() {
                 <Route path="/TipoPaletas" element={<TypePopsicle />} />
                 <Route path="/Paletas" element={<Popsicles />} />
                 <Route path="/crear_paletas" element={<CreatePopsicles />} />
+                <Route path="/Ventas" element={<Sales />} />
+                <Route path="/Venta/:id" element={<DetailSale />} />
+                <Route path="/crear_ventas" element={<CreateSale />} />
+                <Route path="/Clientes" element={<Customers />} />
+                <Route path="/crear_clientes" element={<CreateCustomers />} />
+                <Route path="/Cliente/:id" element={<EditCustomers />} />
                 <Route
                   path="/InventarioPaletas"
                   element={<InventoryPopsicles />}
@@ -71,15 +85,11 @@ function App() {
               </>
             )}
 
-            {user.rol === "administrador" && (
+            {user.rol === "administrador," && (
               <>
-                <Route path="/recetas" element={<Recipe />} />
-                <Route path="/crear_receta" element={<CreateRecipe />} />
-                <Route path="/batidos" element={<Smoothie />} />
                 <Route path="/proveedores" element={<Provider />} />
                 <Route path="/Provider/:id" element={<EditProvider />} />
                 <Route path="/crear_proveedore" element={<CreateProvider />} />
-                <Route path="/Inventario" element={<Inventory />} />
                 <Route path="/crear_inventario" element={<CreateInventory />} />
                 <Route path="/Clientes" element={<Customers />} />
                 <Route path="/crear_clientes" element={<CreateCustomers />} />
@@ -87,6 +97,7 @@ function App() {
                 <Route path="/Ventas" element={<Sales />} />
                 <Route path="/Venta/:id" element={<DetailSale />} />
                 <Route path="/crear_ventas" element={<CreateSale />} />
+                <Route path="/stock_mp" element={<StockMateriaPrima />} />
               </>
             )}
 
@@ -95,6 +106,9 @@ function App() {
                 <Route path="/batidos" element={<Smoothie />} />
                 <Route path="/Inventario" element={<Inventory />} />
                 <Route path="/crear_inventario" element={<CreateInventory />} />
+                <Route path="/stock_mp" element={<StockMateriaPrima />} />
+                <Route path="/proveedores" element={<Provider />} />
+                <Route path="/Provider/:id" element={<EditProvider />} />
               </>
             )}
           </>
