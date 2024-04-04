@@ -30,7 +30,7 @@ export default function CreateSale() {
 
 const handleSubmit = (e) => {
   e.preventDefault();
-  console.log(selectedPopsicles);
+
 
   const filteredRows = selectedPopsicles
     .filter((row) => row.select === true)
@@ -82,7 +82,7 @@ const handleSubmit = (e) => {
       // Envía los datos al backend en el formato esperado
       const salesData = {
         id_cliente: selectedCustomerId,
-        tasa: tasa, // Supongo que `tasa` es una variable que ya tienes
+        tasa: tasa,
         ventas: filteredRows,
       };
       console.log(salesData);
