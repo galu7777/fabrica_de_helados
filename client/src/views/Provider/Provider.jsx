@@ -107,7 +107,6 @@ export default function Provider() {
             variant="outlined"
             color="primary"
             href={`/Provider/${params.row.id}`}
-            //onClick={() => handleDelete(params.row.id)}
           >
             Editar
           </Button>
