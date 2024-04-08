@@ -24,7 +24,7 @@ export default function CreateInvPopsicles() {
   const dataSmoo = smoothie.data;
   const dataPopsicles = popsicles.data;
   const dataIngred = ingredients.data;
- 
+
 
   useEffect(() => {
     dispatch(getSmoothies());
@@ -65,21 +65,37 @@ export default function CreateInvPopsicles() {
       }).then(async (result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          await dispatch(
-            createInventoryPopsicle({
-              id_batida: selectedSmoothie.id,
-              id_paleta: selectedPopsicle.id,
-              id_empaque: selectedPacking,
-            })
-          );
-          navigate("/InventarioPaletas");
+          try {
+            Swal.fire("Registro Exitoso!", "", "success");
+            await dispatch(
+              createInventoryPopsicle({
+                id_batida: selectedSmoothie.id,
+                id_paleta: selectedPopsicle.id,
+                id_empaque: selectedPacking,
+              })
+            );
+            navigate("/InventarioPaletas");
+          } catch (error) {
+            // Captura cualquier error que ocurra durante el envío de datos
+            const { response } = error;
+            Swal.fire({
+              width: "20em",
+              title: `${response.data.data}`,
+              text: "No se pudo Guardar El Ingrediente",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 4000,
+            });
+          }
+
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
       });
     }
   };
+
+
 
   return (
     <div
@@ -103,7 +119,9 @@ export default function CreateInvPopsicles() {
               <div className="w-full mr-4">
                 {dataSmoo && (
                   <Autocomplete
-                    options={dataSmoo}
+                    options={dataSmoo.filter(
+                      (option) => option.status === "CREADO"
+                    )}
                     fullWidth
                     getOptionLabel={(option) => option.Recipe.nombre}
                     getOptionSelected={(option) => option.Recipe.nombre} // Usar la misma función para obtener y seleccionar la opción
