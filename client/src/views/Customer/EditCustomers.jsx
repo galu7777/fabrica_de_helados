@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import {  detailCustomers, editCustomers } from "../../redux/actions/actions";
+import { detailCustomers, editCustomers } from "../../redux/actions/actions";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { validationNumber } from "../../validations/validationNumber";
+import { validatedValue } from "../../validations/validatedValue ";
 
 const EditCustomers = () => {
   const { id } = useParams();
   const customers = useSelector((state) => state.customerDetail);
-   const { data } = customers;
-   console.log(data);
+  const { data } = customers;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -24,10 +25,10 @@ const EditCustomers = () => {
     telefono: "",
   });
 
-   useEffect(() => {
-     dispatch(detailCustomers(id));
-   }, [dispatch, id]);
-   useEffect(() => {
+  useEffect(() => {
+    dispatch(detailCustomers(id));
+  }, [dispatch, id]);
+  useEffect(() => {
     if (data) {
       setFormData({
         razon_social: data.razon_social,
@@ -41,6 +42,12 @@ const EditCustomers = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+      if (name === "cedula_rif" && !validationNumber(value)) {
+        setFormData({ ...formData, [name]: validatedValue(value) });
+        return;
+      }
+
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -49,8 +56,6 @@ const EditCustomers = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
 
     Swal.fire({
       title: "¿Quieres Editar este Cliente?",
@@ -139,7 +144,7 @@ const EditCustomers = () => {
                   <TextField
                     label="RIF"
                     variant="outlined"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={formData.cedula_rif}
                     onChange={handleChange}
