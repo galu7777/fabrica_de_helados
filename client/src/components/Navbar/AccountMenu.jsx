@@ -8,7 +8,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import PropTypes from "prop-types";
 import Logout from "@mui/icons-material/Logout";
 
 export default function AccountMenu() {
@@ -26,7 +25,7 @@ export default function AccountMenu() {
   };
   const handleLogout = () => {
     localStorage.removeItem("usuario");
-     navigate("/login");
+    navigate("/login");
   };
   return (
     <React.Fragment>
@@ -97,6 +96,3 @@ export default function AccountMenu() {
     </React.Fragment>
   );
 }
-AccountMenu.propTypes = {
-  data: PropTypes.func.isRequired,
-};
