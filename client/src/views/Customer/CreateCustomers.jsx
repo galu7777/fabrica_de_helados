@@ -7,6 +7,9 @@ import { createCustomer } from "../../redux/actions/actions";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { validationNumber } from "../../validations/validationNumber";
+import { validatedValue } from "../../validations/validatedValue ";
+
 export default function CreateCustomers() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,8 +24,14 @@ export default function CreateCustomers() {
     uno: "0414",
     dos: "",
   });
+
   const handleTel = (e) => {
     const { name, value } = e.target;
+      if (name === "dos" && !validationNumber(value)) {
+        setForm({ ...form, [name]: validatedValue(value) });
+        return;
+      }
+
     setTelSelect({ ...telSelect, [name]: value });
   };
 
@@ -31,15 +40,18 @@ export default function CreateCustomers() {
     setForm({ ...form, telefono });
   }, [telSelect]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+ const handleChange = (e) => {
+  const { name, value } = e.target;
 
-  useEffect(() => {
+  // Si el nombre del campo es 'cedula_rif' y el valor no es un número, actualizamos el estado con el valor validado
+  if (name === "cedula_rif" && !validationNumber(value)) {
+    setForm({ ...form, [name]: validatedValue(value) });
+    return;
+  }
 
-  }, [form]);
-
+  setForm({ ...form, [name]: value });
+};
+  useEffect(() => {}, [form]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,20 +70,34 @@ export default function CreateCustomers() {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async (result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(
-            createCustomer({
-              razon_social: form.razon_social.toUpperCase(),
-              direccion: form.direccion.toUpperCase(),
-              telefono: form.telefono,
-              cod_dni: form.cod_dni,
-              cedula_rif: form.cedula_rif,
-            })
-          );
+          try {
+            Swal.fire("Registro Exitoso!", "", "success");
+            await dispatch(
+              createCustomer({
+                razon_social: form.razon_social.toUpperCase(),
+                direccion: form.direccion.toUpperCase(),
+                telefono: form.telefono,
+                cod_dni: form.cod_dni,
+                cedula_rif: form.cedula_rif,
+              })
+            );
             navigate("/Clientes");
+          } catch (error) {
+            // Captura cualquier error que ocurra durante el envío de datos
+            const { response } = error;
+
+            Swal.fire({
+              width: "40em",
+              title: `${response.data.data}`,
+              text: "No se pudo Guardar El Cliente",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 4000,
+            });
+          }
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -140,12 +166,13 @@ export default function CreateCustomers() {
                   <TextField
                     label="RIF O CEDULA DE IDENTIDAD"
                     variant="outlined"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={form.cedula_rif}
                     onChange={handleChange}
                     name="cedula_rif"
                     required
+                    maxLength={10}
                   />
                 </div>
               </div>
@@ -175,7 +202,7 @@ export default function CreateCustomers() {
                     label="Numero de Telefono"
                     variant="outlined"
                     fullWidth
-                    type="number"
+                    type="text"
                     onChange={handleTel}
                     name="dos"
                     value={telSelect.dos}

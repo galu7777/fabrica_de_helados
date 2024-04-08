@@ -39,18 +39,33 @@ console.log(selected)
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async(result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(
-            createSmoothie({
-              id_receta: selected.id,
-            })
-          );
-          setTimeout(() => {
-            refrescarPagina();
-          }, "1000");
+          try {
+            Swal.fire("Registro Exitoso!", "", "success");
+            await dispatch(
+              createSmoothie({
+                id_receta: selected.id,
+              })
+            );
+            setTimeout(() => {
+              refrescarPagina();
+            }, "1000");
+          } catch (error) {
+            // Captura cualquier error que ocurra durante el envío de datos
+            const { response } = error;
+            Swal.fire({
+              width: "40em",
+              title: `${response.data.data}`,
+              text: "No se pudo Realizar el Batido",
+              icon: "error",
+              showConfirmButton: true,
+
+
+            });
+          }
+
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }

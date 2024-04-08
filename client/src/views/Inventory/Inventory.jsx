@@ -92,7 +92,7 @@ export default function Inventory() {
               fullWidth
               href="/crear_inventario"
             >
-              Crear Movimiento de Mercancia
+             Agregar Mercancia
             </Button>
           </div>
         </div>

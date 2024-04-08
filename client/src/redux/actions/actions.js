@@ -58,7 +58,8 @@ export const registerNewUser = (newUser) => async (dispatch) => {
 export const signin = (user) => async (dispatch) => {
     try {
         const { data } = await axios.post('http://localhost:3001/auth/signin', user)
-        console.log(data)
+        localStorage.setItem("usuario", JSON.stringify(data.data.foundUser));
+
         dispatch({
             type: SIGNIN,
             payload: data,
@@ -346,7 +347,7 @@ export const createSmoothie = (smoothie) => async (dispatch) => {
     try {
 
         const { data } = await axios.post('http://localhost:3001/smoothie/create_smoothie', smoothie)
-       
+
         dispatch({
             type: ADD_SMOOTHIE,
             payload: data,

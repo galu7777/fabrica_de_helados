@@ -23,54 +23,98 @@ import Sales from "./views/Sales/Sales.jsx";
 import CreateSale from "./views/Sales/CreateSale";
 import StockMateriaPrima from "./views/Stock/StockMateriaPrima";
 import StockPopsicles from "./views/Stock/StockPopsicles";
-import EditProvider from "./views/Provider/EditProvider"
+import EditProvider from "./views/Provider/EditProvider";
 import EditCustomers from "./views/Customer/EditCustomers";
 import DetailSale from "./views/Sales/DetailSale";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { signin } from "./redux/actions/actions";
 
 function App() {
   const location = useLocation();
-   const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
-    const { data } = user;
-    console.log(data)
-  useEffect(() => {
-    dispatch(signin);
-  }, [dispatch]);
+  const user = JSON.parse(localStorage.getItem("usuario"));
+
   return (
     <div>
+      
+
       {location.pathname !== "/register" &&
         location.pathname !== "/login" &&
         !location.pathname.startsWith("/Venta/") && <NavBar />}
       <Routes>
-        <Route path="*" element={<Home />} />
+        {user ? (
+          <Route path="/home" element={<Home />} />
+        ) : (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </>
+        )}
         <Route path="/home" element={<Home />} />
-        <Route path="/ingredientes" element={<Ingredient />} />
-        <Route path="/recetas" element={<Recipe />} />
-        <Route path="/crear_receta" element={<CreateRecipe />} />
-        <Route path="/proveedores" element={<Provider />} />
-        <Route path="/Provider/:id" element={<EditProvider />} />
-        <Route path="/crear_proveedore" element={<CreateProvider />} />
-        <Route path="/Inventario" element={<Inventory />} />
-        <Route path="/crear_inventario" element={<CreateInventory />} />
-        <Route path="/batidos" element={<Smoothie />} />
-        <Route path="/Clientes" element={<Customers />} />
-        <Route path="/crear_clientes" element={<CreateCustomers />} />
-        <Route path="/Cliente/:id" element={<EditCustomers />} />
-        <Route path="/TipoPaletas" element={<TypePopsicle />} />
-        <Route path="/Paletas" element={<Popsicles />} />
-        <Route path="/crear_paletas" element={<CreatePopsicles />} />
-        <Route path="/InventarioPaletas" element={<InventoryPopsicles />} />
-        <Route path="/create_inven_Paletas" element={<CreateInvPopsicles />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/Ventas" element={<Sales />} />
-        <Route path="/Venta/:id" element={<DetailSale />} />
-        <Route path="/crear_ventas" element={<CreateSale />} />
-        <Route path="/stock_mp" element={<StockMateriaPrima />} />
-        <Route path="/stock_popsicle" element={<StockPopsicles />} />
+
+        {/* Proteger rutas según el rol */}
+        {user && (
+          <>
+            {user.rol === "superAdmi" && (
+              <>
+                <Route path="/ingredientes" element={<Ingredient />} />
+                <Route path="/recetas" element={<Recipe />} />
+                <Route path="/crear_receta" element={<CreateRecipe />} />
+                <Route path="/batidos" element={<Smoothie />} />
+                <Route path="/proveedores" element={<Provider />} />
+                <Route path="/Provider/:id" element={<EditProvider />} />
+                <Route path="/crear_proveedore" element={<CreateProvider />} />
+                <Route path="/Inventario" element={<Inventory />} />
+                <Route path="/crear_inventario" element={<CreateInventory />} />
+                <Route path="/stock_mp" element={<StockMateriaPrima />} />
+                <Route path="/stock_popsicle" element={<StockPopsicles />} />
+                <Route path="/TipoPaletas" element={<TypePopsicle />} />
+                <Route path="/Paletas" element={<Popsicles />} />
+                <Route path="/crear_paletas" element={<CreatePopsicles />} />
+                <Route path="/Ventas" element={<Sales />} />
+                <Route path="/Venta/:id" element={<DetailSale />} />
+                <Route path="/crear_ventas" element={<CreateSale />} />
+                <Route path="/Clientes" element={<Customers />} />
+                <Route path="/crear_clientes" element={<CreateCustomers />} />
+                <Route path="/Cliente/:id" element={<EditCustomers />} />
+                <Route
+                  path="/InventarioPaletas"
+                  element={<InventoryPopsicles />}
+                />
+                <Route
+                  path="/create_inven_Paletas"
+                  element={<CreateInvPopsicles />}
+                />
+              </>
+            )}
+
+            {user.rol === "administrador," && (
+              <>
+                <Route path="/proveedores" element={<Provider />} />
+                <Route path="/Provider/:id" element={<EditProvider />} />
+                <Route path="/crear_proveedore" element={<CreateProvider />} />
+                <Route path="/crear_inventario" element={<CreateInventory />} />
+                <Route path="/Clientes" element={<Customers />} />
+                <Route path="/crear_clientes" element={<CreateCustomers />} />
+                <Route path="/Cliente/:id" element={<EditCustomers />} />
+                <Route path="/Ventas" element={<Sales />} />
+                <Route path="/Venta/:id" element={<DetailSale />} />
+                <Route path="/crear_ventas" element={<CreateSale />} />
+                <Route path="/stock_mp" element={<StockMateriaPrima />} />
+              </>
+            )}
+
+            {user.rol === "empleado" && (
+              <>
+                <Route path="/batidos" element={<Smoothie />} />
+                <Route path="/Inventario" element={<Inventory />} />
+                <Route path="/crear_inventario" element={<CreateInventory />} />
+                <Route path="/stock_mp" element={<StockMateriaPrima />} />
+                <Route path="/proveedores" element={<Provider />} />
+                <Route path="/Provider/:id" element={<EditProvider />} />
+              </>
+            )}
+          </>
+        )}
+
+        <Route path="*" element={<Home />} />
       </Routes>
     </div>
   );

@@ -44,6 +44,7 @@ export default function CreateInventory() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(Number(cantidad));
     if (!cantidad) {
       // Muestra una alerta indicando el error
       Swal.fire({
@@ -63,9 +64,9 @@ export default function CreateInventory() {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           try {
-             dispatch(
+             await dispatch(
                createInventory({
-                 cantidad: cantidad,
+                 cantidad: Number(cantidad),
                  tipo: type,
                  IngredienteId: selectedIngredient.id,
                  ProveedorId: selectedProvider.id,

@@ -28,6 +28,7 @@ export default function DetailSale() {
 
   useEffect(() => {
     dispatch(detailsales(id));
+
   }, [dispatch, id]);
 
   const handlePrint = () => {
@@ -79,7 +80,10 @@ export default function DetailSale() {
               <span>Fecha {formatDate(data?.updatedAt)}</span>
             </div>
           </div>
-
+          <div className="text-lg font-semibold text-right">
+            <span>Numero de Factura:</span>
+            {data?.id}
+          </div>
           <div className="text-center">
             <h1 className="text-3xl font-bold text-black mb-2">
               Don Paleton, C.A.
@@ -146,7 +150,7 @@ export default function DetailSale() {
               <TableBody>
                 <TableRow>
                   <TableCell align="center">{data?.cantidad}</TableCell>
-                  <TableCell align="center">    {data?.nombre_paleta}</TableCell>
+                  <TableCell align="center">{data?.nombre_paleta}</TableCell>
                   <TableCell align="center">{data?.precio}</TableCell>
                   <TableCell align="center">{data?.monto_usd}</TableCell>
                 </TableRow>

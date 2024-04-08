@@ -14,7 +14,6 @@ export default function Sales() {
   const sales = useSelector((state) => state.sales);
   const { data } = sales;
 
-  console.log(data);
     const formatDateTime = (dateTimeString) => {
       const dateTime = new Date(dateTimeString);
       return dateTime.toLocaleString();
@@ -63,12 +62,12 @@ export default function Sales() {
         align: "center",
         renderCell: (params) => (
           <div>
-            <Link to={`/Venta/${params.row.id}`}>
-              <VisibilityIcon
-                color="primary"
-                className="cursor-pointer"
-              />
-            </Link>
+            <span
+              onClick={() => window.open(`/Venta/${params.row.id}`, "_blank")}
+              className="cursor-pointer"
+            >
+              <VisibilityIcon color="primary" />
+            </span>
           </div>
         ),
       },

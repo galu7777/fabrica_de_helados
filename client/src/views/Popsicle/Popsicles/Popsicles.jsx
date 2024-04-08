@@ -74,7 +74,7 @@ export default function Popsicles() {
     },
   ];
 
- 
+
   const rows =
     data &&
     data.map((item) =>
@@ -115,7 +115,7 @@ export default function Popsicles() {
           <Box
             sx={{
               height: 400,
-              width: "60%",
+              width: "70%",
               backgroundColor: "white",
               boxShadow: 24,
               borderRadius: 2,
