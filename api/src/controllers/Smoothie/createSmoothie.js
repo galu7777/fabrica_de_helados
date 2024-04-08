@@ -43,9 +43,13 @@ module.exports = async (req, res) => {
                 where: { IngredienteId: ingrediente.id }
             });
 
+            if (!stock) {
+                return response(res, 400, `No tienes cantidad de la materia prima ${ingrediente.nombre}`);
+            }
+
             const converCantidad = convertirUnidades(stock.cantidad, stock.unidad_medida);
 
-            if (!stock || converCantidad < cantidadEnGramos) {
+            if (converCantidad < cantidadEnGramos) {
                 return response(res, 400, `No hay suficiente stock para el ingrediente ${ingrediente.nombre}`);
             }
         }
