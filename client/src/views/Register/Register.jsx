@@ -24,7 +24,7 @@ function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfimPassword] = useState(false);
     const [repitPassword, setrepitPassword] = useState('');
-console.log(repitPassword)
+
 
 
   const handleChange = (event) => {
