@@ -12,7 +12,6 @@ const getMaterialsInventory = require('../controllers/Inventory/getMaterialsInve
 const RawMaterialsInventory = require('../controllers/Inventory/rawMaterialsInventory');
 const createRecipe = require('../controllers/Recipe/createRecipe');
 const getRecipe = require('../controllers/Recipe/getRecipe');
-const createSmoothie = require('../controllers/smoothie/createSmoothie');
 const getSmoothie = require('../controllers/Smoothie/getSmoothie');
 const createTypePopsicle = require('../controllers/Popsicle/TypePopsicle/createTypePopsicle');
 const getTypePopsicle = require('../controllers/Popsicle/TypePopsicle/getTypePopsicle');
@@ -51,6 +50,9 @@ const updateTypePopsicle = require('../controllers/Popsicle/TypePopsicle/updateT
 const deleteTypePopsicle = require('../controllers/Popsicle/TypePopsicle/deleteTypePopsicle');
 const getStockMaterialsInventory = require('../controllers/Inventory/StockMateriaPrima/getStockMaterialsInventory');
 const getStockPopsicle = require('../controllers/Popsicle/StockPopsicle/getStockPopsicle');
+const updateUser = require('../controllers/User/updateUser');
+const createSmoothie = require('../controllers/Smoothie/createSmoothie');
+
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -124,7 +126,9 @@ router.post('/sale/create_sale', createSale)
 
 // rutas de user
 router.get('/user/get_alluser', getAllUser)
+router.get('/user/detail/:id', getAllUser)
 router.post('/user/create_user', createUser)
+router.put('/user/update/:id', updateUser)
 
 // rutas de auth
 router.post('/auth/signin', auth)
