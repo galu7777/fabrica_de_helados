@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
                             monto_bs,
                             tasa,
                         });
-                        // Establece la relación entre la venta y el cliente utilizando setCliente
+                        
                         await ClienteVenta.create({
                             razon_social: foundClient.razon_social,
                             nombre_paleta: inventoryPopsicle.nombre_paleta,
