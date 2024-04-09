@@ -10,7 +10,7 @@ const {
 const response = require('../../../utils/response')
 
 module.exports = async (req, res) => {
-    const { id_batida, id_paleta, id_empaque} = req.body;
+    const { id_batida, id_paleta} = req.body;
     try {
         const foundSmoothie = await InventarioPaleta.findOne({
             where: { BatidaDeHeladoId: id_batida }
@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
         if(typePopsicle && smoothie && popsicle){
             const { id, cantidad } = smoothie
             const foundPalletWood = await StockMateriaPrima.findByPk(1)
-            const foundPackaging = await StockMateriaPrima.findByPk(id_empaque)
+            const foundPackaging = await StockMateriaPrima.findByPk(2)
             let cantidad_paleta = Math.floor(cantidad / popsicle.peso)
 
             if(foundPalletWood.cantidad - cantidad_paleta <= 0 && foundPackaging.cantidad - cantidad_paleta <= 0){
