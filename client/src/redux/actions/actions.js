@@ -25,6 +25,9 @@ import {
     DELETE_CUSTOMER,
     REGISTER,
     SIGNIN,
+    DETAIL_USER,
+    EDIT_USER,
+    GET_USER,
     ADD_TYPE_POPSICLE,
     GET_TYPE_POPSICLE,
     ADD_POPSICLE,
@@ -62,6 +65,53 @@ export const signin = (user) => async (dispatch) => {
 
         dispatch({
             type: SIGNIN,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const editUser = (id, nombre) => async (dispatch) => {
+
+    try {
+
+        const { data } = await axios.put(`http://localhost:3001/user/update/${id}`, nombre)
+
+
+        dispatch({
+            type: EDIT_USER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const detailUser = (id) => async (dispatch) => {
+
+    try {
+
+        const { data } = await axios.get(`http://localhost:3001/user/detail/${id}`)
+    
+        dispatch({
+            type: DETAIL_USER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const getUsers = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/user/get_alluser')
+
+        dispatch({
+            type: GET_USER,
             payload: data,
         });
     } catch (error) {
