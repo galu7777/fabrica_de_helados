@@ -1,4 +1,4 @@
-const { Recipe, Ingrediente, RecipeIngrediente } = require('../../db');
+const { Recipe, Ingrediente, RecipeIngrediente, Paleta } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
@@ -16,6 +16,10 @@ module.exports = async (req, res) => {
                             model: RecipeIngrediente,
                             attributes: ['cantidad', 'unidad_medida']
                         },
+                    },
+                    {
+                        model: Paleta,
+                        attributes: ['id', 'nombre', 'unidad_medida', 'peso', 'precio', 'descripcion']
                     },
                 ],
             });
@@ -37,6 +41,10 @@ module.exports = async (req, res) => {
                             model: RecipeIngrediente,
                             attributes: ['cantidad', 'unidad_medida']
                         },
+                    },
+                    {
+                        model: Paleta,
+                        attributes: ['id', 'nombre', 'unidad_medida', 'peso', 'precio', 'descripcion']
                     },
                 ],
             });
