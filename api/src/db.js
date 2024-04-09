@@ -33,6 +33,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 const {
   BatidaDeHelado,
   Cliente,
+  ClienteVenta,
   CuentasPorCobrar,
   DetallesDeVenta,
   DetallesDevolucion,
@@ -67,7 +68,7 @@ Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
 BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
 //Relacion entre receta y paleta
 Paleta.hasOne(Recipe, { foreignKey: 'id_paleta' });
-Recipe.belongsTo(Paleta, { foreignKey: 'id_paleta' });
+Recipe.belongsTo(Recipe, { foreignKey: 'id_paleta' });
 // Relacion entre inventario paleta, batido y paleta
 InventarioPaleta.belongsTo(Paleta)
 InventarioPaleta.belongsTo(BatidaDeHelado)
@@ -75,8 +76,7 @@ InventarioPaleta.belongsTo(TipoDePaleta)
 //Relacion entre devolucion inventario paleta
 Devolucion.belongsTo(InventarioPaleta)
 // Relacion entre cliente y venta
-Cliente.hasMany(Venta)
-Venta.belongsTo(Cliente)
+Cliente.belongsToMany(Venta, { through: ClienteVenta, constraints: false })
 // Relacion entre devolucion y cliente
 Cliente.hasMany(Devolucion)
 Devolucion.belongsTo(Cliente)
