@@ -84,7 +84,7 @@ function DrawerAppBar({ window }) {
      {
        label: "Proveedores",
        path: "/Proveedores",
-       roles: ["superAdmi", "administrador,", "empleado"],
+       roles: ["superAdmi", "admin", "empleado"],
      },
      {
        label: "Inventario Productos",
@@ -100,17 +100,22 @@ function DrawerAppBar({ window }) {
            path: "/crear_inventario",
          },
        ],
-       roles: [ "administrador,", "empleado"],
+       roles: ["admin", "empleado"],
      },
      {
        label: "Clientes",
        path: "/Clientes",
-       roles: ["superAdmi", "administrador,"],
+       roles: ["superAdmi", "admin"],
      },
      {
        label: "Ventas",
        path: "/Ventas",
-       roles: ["superAdmi", "administrador,"],
+       roles: ["superAdmi", "admin"],
+     },
+     {
+       label: "Usuarios",
+       path: "/users",
+       roles: ["superAdmi"],
      },
    ];
 
