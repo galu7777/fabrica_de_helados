@@ -15,10 +15,6 @@ module.exports = async (req, res) => {
                 unidad_medida: "UND"
             })
             await Ingrediente.create({
-                nombre: "empaques",
-                unidad_medida: "UND"
-            })
-            await Ingrediente.create({
                 nombre: "empaques especiales",
                 unidad_medida: "UND"
             })
