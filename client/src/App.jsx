@@ -26,6 +26,7 @@ import StockPopsicles from "./views/Stock/StockPopsicles";
 import EditProvider from "./views/Provider/EditProvider";
 import EditCustomers from "./views/Customer/EditCustomers";
 import DetailSale from "./views/Sales/DetailSale";
+import ListUser from "./views/User/ListUser";
 
 function App() {
   const location = useLocation();
@@ -33,8 +34,6 @@ function App() {
 
   return (
     <div>
-      
-
       {location.pathname !== "/register" &&
         location.pathname !== "/login" &&
         !location.pathname.startsWith("/Venta/") && <NavBar />}
@@ -54,6 +53,7 @@ function App() {
           <>
             {user.rol === "superAdmi" && (
               <>
+                <Route path="/users" element={<ListUser />} />
                 <Route path="/ingredientes" element={<Ingredient />} />
                 <Route path="/recetas" element={<Recipe />} />
                 <Route path="/crear_receta" element={<CreateRecipe />} />
@@ -85,7 +85,7 @@ function App() {
               </>
             )}
 
-            {user.rol === "administrador," && (
+            {user.rol === "admin" && (
               <>
                 <Route path="/proveedores" element={<Provider />} />
                 <Route path="/Provider/:id" element={<EditProvider />} />
