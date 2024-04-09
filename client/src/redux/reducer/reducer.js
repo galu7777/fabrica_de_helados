@@ -31,6 +31,9 @@ import {
     GET_INVENTORY_POPSICLE,
     REGISTER,
     SIGNIN,
+    DETAIL_USER,
+    EDIT_USER,
+    GET_USER,
     GET_SALES,
     ADD__SALE,
     DETAIL_SALE,
@@ -63,7 +66,9 @@ const initialState = {
     inventoryPopsicle: {},
     newinventoryPopsicles: {},
     user: {},
+    userList: {},
     newUser: {},
+    userDetail: {},
     sales: {},
     newsale: {},
     detailsale: {},
@@ -86,6 +91,30 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 user: payload
             }
         }
+
+        case GET_USER: {
+            return {
+                ...state,
+                userList: payload
+            }
+        }
+
+        case EDIT_USER: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    [payload.id]: payload,
+                },
+            };
+        }
+
+        case DETAIL_USER:
+            return {
+                ...state,
+                userDetail: payload,
+
+            };
 
         case GET_INGREDIENTS: {
             return {
@@ -116,6 +145,7 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 ingredientDetail: payload,
 
             };
+
         case DELETE_INGREDIENTS: {
             const { [payload.id]: _, ...remainingIngredients } = state.ingredients;
             return {
