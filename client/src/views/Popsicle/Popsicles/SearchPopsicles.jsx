@@ -1,34 +1,45 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import { getTypePopsicle } from "../../../redux/actions/actions";
 import Autocomplete from "@mui/material/Autocomplete";
-import PropTypes from "prop-types"; // Importar PropTypes
+import PropTypes from "prop-types";
 
-export default function SearchPopsicles({ onPopsicleTypeSelect }) {
+export default function SearchPopsicles({
+  onPopsicleTypeSelect,
+  defaultPopsicleData,
+}) {
   const dispatch = useDispatch();
   const popsicleType = useSelector((state) => state.typePopsicles);
   const { data } = popsicleType;
-  const [selectedPopsicle, setSelectedPopsicle] = useState(null);
+  const [selectedType, setSelectedType] = useState("");
 
   useEffect(() => {
-    dispatch(getTypePopsicle());
-  }, [dispatch]);
+    const fetchDefaultPopsicleData = async () => {
+      try {
+        await dispatch(getTypePopsicle());
+        setSelectedType(defaultPopsicleData || "");
+      } catch (error) {
+        console.error("Error fetching default popsicle data:", error);
+      }
+    };
+    fetchDefaultPopsicleData();
+  }, [dispatch, defaultPopsicleData]);
 
   const handlePopsicleSelect = (event, value) => {
-    setSelectedPopsicle(value);
+    setSelectedType(value);
     onPopsicleTypeSelect(value);
   };
-  console.log(selectedPopsicle)
 
   return (
     <div>
       <div className="mb-5 flex items-center justify-center">
-        {data && ( // Verificación de nulidad para data
+        {data && (
           <Autocomplete
             options={data}
             fullWidth
-            getOptionLabel={(option) => option.nombre}
+            getOptionLabel={(option) => option.nombre || selectedType}
+            isOptionEqualToValue={(option, value) => option.nombre === value}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -38,6 +49,7 @@ export default function SearchPopsicles({ onPopsicleTypeSelect }) {
               />
             )}
             onChange={handlePopsicleSelect}
+            value={selectedType}
           />
         )}
       </div>
@@ -45,9 +57,7 @@ export default function SearchPopsicles({ onPopsicleTypeSelect }) {
   );
 }
 
-// Validación de las props esperadas
 SearchPopsicles.propTypes = {
   onPopsicleTypeSelect: PropTypes.func.isRequired,
+  defaultPopsicleData: PropTypes.string,
 };
-
-

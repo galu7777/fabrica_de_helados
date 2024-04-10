@@ -49,10 +49,10 @@ const showEditDialog =  () => {
       cancelButtonText: "Cancelar",
       showCancelButton: true,
       customClass: {
-        popup: "w-2/4",
+        popup: "w-3/4 h-full",
       },
       html: `
-          <div class="flex flex-col select-none">
+          <div class="flex flex-col select-none h-full">
           <div class="flex justify-between gap-6">
               <div class="w-1/2">
               <label for="swal-nombre" class="block font-medium text-gray-700">Nombre</label>
@@ -115,21 +115,17 @@ const showEditDialog =  () => {
         };
       },
     }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(editUser(editingId, result.value));
+        Swal.fire(
+          "¡Actualización exitosa!",
+          "Los datos del usuario han sido actualizados.",
+          "success"
+        );
 
-
-       if (result.isConfirmed) {
-         dispatch(editUser(editingId, result.value));
-         Swal.fire(
-           "¡Actualización exitosa!",
-           "Los datos del usuario han sido actualizados.",
-           "success"
-         );
-
-         setTimeout(() => {
+        setTimeout(() => {
           refrescarPagina();
-         }, 3000);
-
-
+        }, 3000);
       }
     });
 };
