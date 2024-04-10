@@ -1,4 +1,4 @@
-const { Venta, Cliente } = require('../../db');
+const { Venta, Cliente, ClienteVenta } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
@@ -7,7 +7,17 @@ module.exports = async (req, res) => {
 
         if (id) {
             // Si se proporciona un ID, buscar la venta por su ID
-            const venta = await Venta.findByPk(id, { include: [Cliente] });
+            const venta = await Cliente.findByPk(id, { 
+                include: [
+                    {
+                        model: Venta,
+                        attributes: ['id', 'nombre_paleta'],
+                        through: {
+                            model: ClienteVenta,
+                        },
+                    },
+                ]
+            });
 
             if (!venta) {
                 return response(res, 404, 'Venta no encontrada');
@@ -17,7 +27,17 @@ module.exports = async (req, res) => {
             return response(res, 200, venta);
         } else {
             // Si no se proporciona un ID, obtener todas las ventas
-            const ventas = await Venta.findAll({ include: [{ model: Cliente, as: 'Cliente' }] });
+            const ventas = await Cliente.findAll({ 
+                include: [
+                    {
+                        model: Venta,
+                        attributes: ['id', 'nombre_paleta'],
+                        through: {
+                            model: ClienteVenta,
+                        },
+                    },
+                ]
+            });
 
             // Responder con todas las ventas encontradas
             return response(res, 200, ventas);
