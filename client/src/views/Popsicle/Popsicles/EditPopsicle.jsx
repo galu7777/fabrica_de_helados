@@ -3,9 +3,9 @@ import TextField from "@mui/material/TextField";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { Box, Typography, Input } from "@mui/material";
+import { Box, Input } from "@mui/material";
 import Button from "@mui/material/Button";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchPopsicles from "./SearchPopsicles";
 import { detailPopsicle, editPopsicle } from "../../../redux/actions/actions";
@@ -16,12 +16,13 @@ export default function EditPopsicle() {
   const navigate = useNavigate();
   const popsicle = useSelector((state) => state.popsicleDetail);
   const { data } = popsicle;
-  const [selectedPopsicle, setSelectedPopsicle] = useState(null);
+
   const [selectedImage, setSelectedImage] = useState(null);
 
   const [form, setForm] = useState({
     nombre: "",
     image: "",
+    tipo: "",
     peso: "",
     descripcion: "",
     precio: "",
@@ -30,6 +31,7 @@ export default function EditPopsicle() {
   useEffect(() => {
     dispatch(detailPopsicle(id));
   }, [dispatch, id]);
+ const [selectedPopsicle, setSelectedPopsicle] = useState(null);
 
   useEffect(() => {
     if (data) {
@@ -37,10 +39,14 @@ export default function EditPopsicle() {
         nombre: data.nombre,
         image: data.image,
         peso: data.peso,
+        tipo: data.TipoDePaletum.nombre,
         descripcion: data.descripcion,
         precio: data.precio,
       });
       setSelectedImage(data.image);
+       setSelectedPopsicle(data.TipoDePaletum);
+
+
     }
   }, [data]);
 
@@ -91,7 +97,7 @@ export default function EditPopsicle() {
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
           // Ahora puedes enviar el formData al servidor
-          dispatch(editPopsicle(formData));
+          dispatch(editPopsicle(id,formData));
           navigate("/Paletas");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
@@ -119,7 +125,7 @@ export default function EditPopsicle() {
       <div className="flex flex-col items-center py-10">
         <div className="bg-white rounded-lg shadow-2xl p-6 w-1/3 mx-auto">
           <h2 className="text-2xl text-center font-bold mb-6 text-red-700">
-            Crea una Nueva Paleta
+            Editar Paleta
           </h2>
           <form onSubmit={handleSubmit} className="w-full p-8 ">
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -177,7 +183,10 @@ export default function EditPopsicle() {
             </div>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
-                <SearchPopsicles onPopsicleTypeSelect={handlePopsicleSelect} />
+                <SearchPopsicles
+                  onPopsicleTypeSelect={handlePopsicleSelect}
+                  defaultPopsicleData={form.tipo}
+                />
               </div>
             </div>
 
