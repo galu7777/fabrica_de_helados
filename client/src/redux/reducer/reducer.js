@@ -27,6 +27,9 @@ import {
     ADD_TYPE_POPSICLE,
     ADD_POPSICLE,
     GET_POPSICLE,
+    EDIT_POPSICLE,
+    DETAIL_POPSICLE,
+    DELETE_POPSICLE,
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
     REGISTER,
@@ -62,6 +65,7 @@ const initialState = {
     newTypePopsicles: {},
     typePopsicles: {},
     newPopsicles: {},
+    popsicleDetail: {},
     popsicles: {},
     inventoryPopsicle: {},
     newinventoryPopsicles: {},
@@ -323,6 +327,32 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 ...state,
                 newPopsicles: payload
             }
+        }
+
+
+        case EDIT_POPSICLE: {
+            return {
+                ...state,
+                popsicles: {
+                    ...state.popsicles,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_POPSICLE:
+            return {
+                ...state,
+                popsicleDetail: payload,
+
+            };
+
+        case DELETE_POPSICLE: {
+            const { [payload.id]: _, ...remainingPopsicles } = state.ingredients;
+            return {
+                ...state,
+                popsicles: remainingPopsicles,
+                error: null,
+            };
         }
 
         case ADD_INVENTORY_POPSICLE: {
