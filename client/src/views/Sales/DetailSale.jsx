@@ -14,7 +14,6 @@ import {
   TableHead,
   TableRow,
   IconButton,
-
 } from "@mui/material";
 import PrintIcon from "@mui/icons-material/Print";
 
@@ -28,7 +27,6 @@ export default function DetailSale() {
 
   useEffect(() => {
     dispatch(detailsales(id));
-
   }, [dispatch, id]);
 
   const handlePrint = () => {
@@ -42,7 +40,19 @@ export default function DetailSale() {
     const day = String(dateTime.getDate()).padStart(2, "0");
     return `${day}/${month}/${year}`;
   };
+  // Calcular el total de monto USD y la tasa promedio
+  let totalMontoUSD = 0;
+  let totalCantidad = 0;
+  let tasaPromedio = 0;
+  data?.Venta.forEach((venta) => {
+    totalMontoUSD += venta.ClienteVenta.monto_usd;
+    totalCantidad += venta.ClienteVenta.cantidad;
+    tasaPromedio += venta.ClienteVenta.tasa;
+  });
+  tasaPromedio = tasaPromedio / data?.Venta.length;
 
+  // Calcular el total a pagar en bolívares
+  const totalPagarBS = totalMontoUSD * tasaPromedio;
 
   return (
     <>
@@ -106,14 +116,14 @@ export default function DetailSale() {
                 {" "}
                 Nombre o Razón Social:{" "}
               </span>
-              {data?.Cliente?.razon_social}
+              {data?.razon_social}
             </div>
             <div className="mb-2 mt-2 ">
               <span className="text-base font-semibold text-gray-900">
                 {" "}
                 Domicilio Fiscal:{" "}
               </span>{" "}
-              {data?.Cliente?.direccion}
+              {data?.direccion}
             </div>
 
             <div className="flex items-center justify-between">
@@ -124,7 +134,7 @@ export default function DetailSale() {
                     {" "}
                     Telefono:{" "}
                   </span>{" "}
-                  {data?.Cliente?.telefono}
+                  {data?.telefono}
                 </div>
               </div>
 
@@ -134,7 +144,7 @@ export default function DetailSale() {
                     {" "}
                     Cédula/RIF:{" "}
                   </span>{" "}
-                  {data?.Cliente?.cod_dni} {data?.Cliente?.cedula_rif}
+                  {data?.cod_dni} {data?.cedula_rif}
                 </div>
               </div>
             </div>
@@ -145,20 +155,62 @@ export default function DetailSale() {
                 <TableRow>
                   <TableCell align="center">Cantidad</TableCell>
                   <TableCell align="center">Nombre de la Paleta</TableCell>
-                  <TableCell align="center">Precio</TableCell>
+                  <TableCell align="center">Precio Unitario</TableCell>
                   <TableCell align="center">Monto USD</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell align="center">{data?.cantidad}</TableCell>
-                  <TableCell align="center">{data?.nombre_paleta}</TableCell>
-                  <TableCell align="center">{data?.precio}</TableCell>
-                  <TableCell align="center">{data?.monto_usd}</TableCell>
-                </TableRow>
+                {data?.Venta.map((venta, index) => (
+                  <TableRow key={index}>
+                    <TableCell align="center">
+                      {venta.ClienteVenta.cantidad}
+                    </TableCell>
+                    <TableCell align="center">{venta.nombre_paleta}</TableCell>
+                    <TableCell align="center">
+                      {venta.ClienteVenta.precio}
+                    </TableCell>
+                    <TableCell align="center">
+                      {venta.ClienteVenta.monto_usd}
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
+
+          <div className="p-4 border-t border-gray-200 bg-white shadow-md rounded-md">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                <p className="text-gray-500 font-medium">Total de paletas:</p>
+                <p className="text-lg font-bold text-amazon-orange ml-2">
+                  {totalCantidad}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <p className="text-gray-500 font-medium">Total a pagar:</p>
+                <p className="text-2xl font-bold text-amazon-orange ml-2">
+                  ${totalMontoUSD}
+                </p>
+              </div>
+            </div>
+            <div className="h-px bg-gray-200 my-4"></div>
+            <div className="flex justify-between items-center">
+              <p className="text-gray-500 font-medium">
+                Tasa: <strong className="text-black"> {tasaPromedio} </strong>
+              </p>
+              <div className="text-right">
+                <p className="text-gray-500 font-medium">
+                  Total a pagar en BS:{" "}
+                  <span className="text-lg font-bold text-black">
+                    {totalPagarBS.toLocaleString("es-VE", {
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    Bs
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
         </Paper>
       </Box>
     </>
