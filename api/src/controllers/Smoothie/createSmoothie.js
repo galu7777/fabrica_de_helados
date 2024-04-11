@@ -6,8 +6,8 @@ function convertirUnidades(cantidad, unidad_medida) {
     // Definir factores de conversión
     const conversion = {
         'KG': 1000,
-        'GRS': 1,
-        'L': 1000,
+        'GR': 1,
+        'LIT': 1000,
         'ML': 1,
         'OZ': 28.35 // Onza a gramos
     };
