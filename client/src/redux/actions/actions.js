@@ -31,6 +31,9 @@ import {
     ADD_TYPE_POPSICLE,
     GET_TYPE_POPSICLE,
     ADD_POPSICLE,
+    EDIT_POPSICLE,
+    DETAIL_POPSICLE,
+    DELETE_POPSICLE,
     GET_POPSICLE,
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
@@ -95,7 +98,7 @@ export const detailUser = (id) => async (dispatch) => {
     try {
 
         const { data } = await axios.get(`http://localhost:3001/user/detail/${id}`)
-    
+
         dispatch({
             type: DETAIL_USER,
             payload: data,
@@ -536,6 +539,53 @@ export const createPopsicle = (nombre) => async (dispatch) => {
     }
 }
 
+
+export const detailPopsicle = (id) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.get(`http://localhost:3001/popsicle/detail/${id}`)
+
+        dispatch({
+            type: DETAIL_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const editPopsicle = (id, datos) => async (dispatch) => {
+    console.log(id)
+
+    try {
+
+        const { data } = await axios.post(`http://localhost:3001/popsicle/update/${id}`, datos)
+console.log(data)
+        dispatch({
+            type: EDIT_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const deletePopsicle= (id) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.delete(`http://localhost:3001/popsicle/delete/${id}`)
+        console.log(data)
+        dispatch({
+            type: DELETE_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
 export const getInventoryPopsicle = () => async (dispatch) => {
     try {
         const { data } = await axios.get('http://localhost:3001/inventory_popsicle/get_inventory')

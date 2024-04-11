@@ -48,7 +48,7 @@ const UploadFile = ({ handleImageChange }) => {
             >
               <CloudUploadIcon sx={{ fontSize: 64, color: "red" }} />
               <Typography variant="body1" color="textSecondary" mb={2}>
-                <strong>Haz clic para subir</strong> o arrastra y suelta
+                <strong>Haz clic para subir</strong> 
               </Typography>
               <Typography variant="caption" color="textSecondary">
                 SVG, PNG, JPG o GIF (MAX. 800x400px)

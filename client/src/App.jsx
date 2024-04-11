@@ -16,6 +16,7 @@ import TypePopsicle from "./views/Popsicle/TypePopsicle/TypePopsicle";
 import Login from "./views/Login/Login";
 import Register from "./views/Register/Register";
 import Popsicles from "./views/Popsicle/Popsicles/Popsicles";
+import EditPopsicle from "./views/Popsicle/Popsicles/EditPopsicle";
 import CreatePopsicles from "./views/Popsicle/Popsicles/CreatePopsicles";
 import InventoryPopsicles from "./views/Popsicle/Inventory/InventoryPopsicles";
 import CreateInvPopsicles from "./views/Popsicle/Inventory/CreateInvPopsicles";
@@ -27,6 +28,7 @@ import EditProvider from "./views/Provider/EditProvider";
 import EditCustomers from "./views/Customer/EditCustomers";
 import DetailSale from "./views/Sales/DetailSale";
 import ListUser from "./views/User/ListUser";
+
 
 function App() {
   const location = useLocation();
@@ -67,6 +69,7 @@ function App() {
                 <Route path="/stock_popsicle" element={<StockPopsicles />} />
                 <Route path="/TipoPaletas" element={<TypePopsicle />} />
                 <Route path="/Paletas" element={<Popsicles />} />
+                <Route path="/Paleta/:id" element={<EditPopsicle />} />
                 <Route path="/crear_paletas" element={<CreatePopsicles />} />
                 <Route path="/Ventas" element={<Sales />} />
                 <Route path="/Venta/:id" element={<DetailSale />} />

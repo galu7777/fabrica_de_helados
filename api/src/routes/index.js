@@ -100,9 +100,10 @@ router.post('/popsicle/create_type_popsicle', createTypePopsicle)
 
 // rutas nuevas paletas
 router.get('/popsicle/get_popsicle', getNewPopsicle)
+router.get('/popsicle/detail/:id', getNewPopsicle)
 router.post('/popsicle/create_popsicle', upload.single('image'), createNewPopsicle)
+router.put('/popsicle/update/:id', upload.single('image'), updatePopsicle)
 router.delete('/popsicle/delete/:id', deletePopsicle)
-router.put('/popsicle/update/:id', updatePopsicle)
 
 // rutas inventario de paletas
 router.get('/inventory_popsicle/get_inventory', getInventoryPopsicle)

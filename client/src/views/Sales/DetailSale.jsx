@@ -55,7 +55,9 @@ export default function DetailSale() {
       >
         <Paper className="w-full" elevation={3} sx={{ p: 4 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h5">Factura de Venta</Typography>
+            <Typography className="text-red-600 font-extrabold" variant="h5">
+              NOTA DE ENTREGA
+            </Typography>
             <IconButton onClick={handlePrint}>
               <PrintIcon />
             </IconButton>
