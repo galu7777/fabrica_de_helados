@@ -34,8 +34,14 @@ module.exports = async (req, res) => {
             const foundPackaging = await StockMateriaPrima.findByPk(2)
             let cantidad_paleta = Math.floor(cantidad / popsicle.peso)
 
-            if(foundPalletWood.cantidad - cantidad_paleta <= 0 && foundPackaging.cantidad - cantidad_paleta <= 0){
-                return response(res, 400, {message: 'insufficient quantity in inventory.'})
+            if (foundPalletWood.cantidad - cantidad_paleta <= 0 && foundPackaging.cantidad - cantidad_paleta <= 0) {
+                let insufficientIngredient;
+                if (foundPalletWood.cantidad - cantidad_paleta <= 0) {
+                    insufficientIngredient = "Madera de paleta";
+                } else {
+                    insufficientIngredient = "Empaque";
+                }
+                return response(res, 400, { message: `Cantidad insuficiente en el inventario de ${insufficientIngredient}.` })
             } else {
                 const nombre_paleta = popsicle.nombre
                 const foundStock = await StockPaleta.findOne({
