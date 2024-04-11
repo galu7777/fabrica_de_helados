@@ -13,6 +13,7 @@ export default function Sales() {
   const dispatch = useDispatch();
   const sales = useSelector((state) => state.sales);
   const { data } = sales;
+  console.log(data);
 
     const formatDateTime = (dateTimeString) => {
       const dateTime = new Date(dateTimeString);
@@ -55,6 +56,13 @@ export default function Sales() {
         align: "center",
       },
       {
+        field: "tasa",
+        headerName: "Tasa",
+        width: 100,
+        headerAlign: "center",
+        align: "center",
+      },
+      {
         field: "Detalle",
         headerName: "Detalle",
         width: 200,
@@ -80,22 +88,37 @@ export default function Sales() {
       },
     ];
 
-    const rows =
-      data &&
-      data.map((item) =>
-        //bg-[#fae9ee]
-        ({
-          id: item.id,
-          Cliente: item.Cliente.razon_social,
-          cantidad: item.cantidad,
-          nombre_paleta: item.nombre_paleta,
-          precio: item.precio,
-          monto: `${item.monto_usd} $`,
-          tasa: item.tasa,
+const rows =
+  data &&
+  data.map((item) => {
+    // Sumar los montos en USD
+    const totalMontoUSD = item.Venta.reduce(
+      (total, venta) => total + venta.ClienteVenta.monto_usd,
+      0
+    );
 
-          updatedAt: formatDateTime(item.updatedAt),
-        })
-      );
+    // Sumar las cantidades de las ventas
+    const totalCantidad = item.Venta.reduce(
+      (total, venta) => total + venta.ClienteVenta.cantidad,
+      0
+    );
+
+    // Obtener la tasa del primer ítem en la lista de ventas
+    const primeraVenta = item.Venta[0];
+    const tasa = primeraVenta ? primeraVenta.ClienteVenta.tasa : "";
+
+    return {
+      id: item.id,
+      Cliente: item.razon_social,
+      cantidad: totalCantidad,
+      nombre_paleta: item.Venta[0].nombre_paleta, // Se asume que todas las ventas tienen el mismo nombre de paleta para el mismo cliente
+      precio: primeraVenta ? primeraVenta.ClienteVenta.precio : "",
+      monto: `${totalMontoUSD} $`,
+      tasa: tasa,
+      updatedAt: formatDateTime(item.updatedAt),
+    };
+  });
+
   return (
     <div
       className="bg-cover bg-center h-screen select-none "
