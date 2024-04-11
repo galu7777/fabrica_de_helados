@@ -28,7 +28,7 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
 
   useEffect(() => {
     if (data) {
-      const updatedRows = data.slice(3).map((item) => ({
+      const updatedRows = data.slice(2).map((item) => ({
         id: item.id,
         nombre: item.nombre,
         unidad_medida: item.unidad_medida,
