@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
             },
             unidad_medida: {
                 type: DataTypes.STRING,
-                defaultValue: 'GRS'
+                defaultValue: 'GR'
             },
             tipo: {
                 type: DataTypes.ENUM('ENTREGA','ENTREGA POR BATIDO','SALIDA', 'SALIDA POR VENTA'),
