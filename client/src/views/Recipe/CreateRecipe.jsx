@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TableRecipe from "./TableRecipe";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { createRecipe, getIngredients } from "../../redux/actions/actions";
+import {
+  createRecipe,
+  getIngredients,
+  getPopsicle,
+} from "../../redux/actions/actions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Autocomplete from "@mui/material/Autocomplete";
 
 export default function CreateRecipe() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const popsicles = useSelector((state) => state.popsicles);
+  const dataPopsicles = popsicles.data;
+  const [selectedPopsicle, setSelectedPopsicle] = useState("");
+  console.log(dataPopsicles)
   useEffect(() => {
     dispatch(getIngredients());
+    dispatch(getPopsicle());
   }, [dispatch]);
 
   const [selectedIngredients, setSelectedIngredients] = useState([]);
@@ -33,7 +42,7 @@ export default function CreateRecipe() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(selectedPopsicle.id);
     // Obtener solo los ingredientes seleccionados
     const selectedIngredientesIds = selectedIngredients
       .filter((ingredient) => ingredient.selected)
@@ -43,16 +52,18 @@ export default function CreateRecipe() {
       }));
 
     const nombre = form.nombre.toUpperCase();
-      const dataTransformada = {
-        nombre,
-        ingredientes: selectedIngredientesIds,
-      };
-      console.log(selectedIngredientesIds);
+    const dataTransformada = {
+      nombre,
+      id_paleta: selectedPopsicle.id,
+      ingredientes: selectedIngredientesIds,
+    };
+    console.log(selectedIngredientesIds);
 
     // Verificar si form.cantidad y form.medida están definidos antes de llamar a trim()
     if (
       !nombre ||
       !nombre.trim() ||
+      !selectedPopsicle.id ||
       !selectedIngredientesIds ||
       !selectedIngredientesIds.length ||
       selectedIngredientesIds.some((ingrediente) => !ingrediente.cantidad)
@@ -69,13 +80,28 @@ export default function CreateRecipe() {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async(result) => {
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          // Envía los datos al backend
-          dispatch(createRecipe(dataTransformada));
 
-          navigate("/Recetas");
+          try {
+            await dispatch(createRecipe(dataTransformada));
+            Swal.fire("Registro Exitoso!", "", "success");
+
+            navigate("/Recetas");
+          } catch (error) {
+
+            // Captura cualquier error que ocurra durante el envío de datos
+            const { response } = error;
+            Swal.fire({
+              width: "20em",
+              title: `${response.data.data}`,
+              text: "No se pudo Guardar la Receta",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 4000,
+            });
+          }
+
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -94,17 +120,39 @@ export default function CreateRecipe() {
             Crea una Nueva Receta
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <TextField
-                fullWidth
-                type="text"
-                name="nombre"
-                required
-                label="Escribe el nuevo ingrediente a registrar"
-                variant="standard"
-                value={form.nombre}
-                onChange={handleChange}
-              />
+            <div className="flex justify-between">
+              <div className="flex-grow mr-2 py-1">
+                <TextField
+                  fullWidth
+                  type="text"
+                  name="nombre"
+                  required
+                  label="Nombre de la receta"
+                  variant="standard"
+                  value={form.nombre}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-2/4 mt-1  ">
+                {dataPopsicles && ( // Verificación de nulidad para data
+                  <Autocomplete
+                    options={dataPopsicles.filter(
+                      (option) => option.status === "CREADO"
+                    )}
+                    fullWidth
+                    getOptionLabel={(option) => option.nombre}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Seleccione una Paleta"
+                        variant="standard"
+                        required
+                      />
+                    )}
+                    onChange={(e, value) => setSelectedPopsicle(value)}
+                  />
+                )}
+              </div>
             </div>
             <Button color="error" variant="outlined" fullWidth type="submit">
               Crear Receta
