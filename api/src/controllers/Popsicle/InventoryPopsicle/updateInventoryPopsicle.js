@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
                 nombre_paleta: popsicle.nombre,
                 cantidad: cantidad_paleta,
                 peso_unitario: popsicle.peso,
-                unidad_medida: "GRS",
+                unidad_medida: "GR",
                 tipo: "ENTREGA",
                 BatidaDeHeladoId: id_batida,
                 TipoDePaletumId: tipoPaleta.id, // Usar el ID del tipo de paleta
