@@ -610,7 +610,7 @@ export const createInventoryPopsicle = (nombre) => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        console.log('Error: ', error)
+        console.log('Error: ', error.response.data.data.message)
         throw error
     }
 }

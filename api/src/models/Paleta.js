@@ -26,10 +26,14 @@ module.exports = (sequelize) => {
             },
             unidad_medida: {
                 type: DataTypes.STRING,
-                defaultValue: 'GRS'
+                defaultValue: 'GR'
             },
             descripcion: {
                 type: DataTypes.STRING,
+            },
+            status: {
+                type: DataTypes.ENUM("CREADO", "USADO"),
+                defaultValue: "CREADO"
             }
 
         },

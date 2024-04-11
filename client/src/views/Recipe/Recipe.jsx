@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import CircularIndeterminate from "../../components/spinner/Spinner";
@@ -10,6 +11,7 @@ import {
 } from "../../redux/actions/actions";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
+
 import Swal from "sweetalert2";
 
 const Recipe = () => {
@@ -244,14 +246,15 @@ const Recipe = () => {
           <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
             Receta
           </div>
-          <Button
-            color="error"
-            variant="outlined"
-            fullWidth
-            href="/crear_receta"
-          >
-            Crear Receta
-          </Button>
+          <Link to="/crear_receta">
+            <Button
+              color="error"
+              variant="outlined"
+              fullWidth
+            >
+              Crear Receta
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="mt-8 justify-center flex">

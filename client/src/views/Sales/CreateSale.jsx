@@ -5,13 +5,12 @@ import SearchCustomers from "./SearchCustomers";
 import SalesTable from "./Table";
 import Typography from "@mui/material/Typography";
 import Swal from "sweetalert2";
-//import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 
 export default function CreateSale() {
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedPopsicles, setSelectedPopsicles] = useState([]);
   const [tasa, setTasa] = useState(0);
@@ -76,17 +75,35 @@ const handleSubmit = (e) => {
     showCancelButton: true,
     confirmButtonText: "Registrar",
     denyButtonText: `No registrar`,
-  }).then((result) => {
+  }).then(async(result) => {
     if (result.isConfirmed) {
-      Swal.fire("Venta registrada exitosamente!", "", "success");
-      // Envía los datos al backend en el formato esperado
-      const salesData = {
-        id_cliente: selectedCustomerId,
-        tasa: tasa,
-        ventas: filteredRows,
-      };
-      console.log(salesData);
-      dispatch(createSales(salesData));
+      try {
+        Swal.fire("Venta registrada exitosamente!", "", "success");
+        // Envía los datos al backend en el formato esperado
+        const salesData = {
+          id_cliente: selectedCustomerId,
+          tasa: tasa,
+          ventas: filteredRows,
+        };
+
+        console.log(salesData);
+
+        await dispatch(createSales(salesData));
+         navigate("/Ventas");
+      } catch (error) {
+        // Captura cualquier error que ocurra durante el envío de datos
+
+        console.log(error.response.data.data.message);
+        Swal.fire({
+          width: "20em",
+          title: `${error.response.data.data.message}`,
+          text: "No se pudo Registar al inventario de Paletas",
+          icon: "error",
+          showConfirmButton: false,
+          timer: 4000,
+        });
+      }
+
     } else if (result.isDenied) {
       Swal.fire("La venta no se registró.", "", "info");
     }
@@ -115,6 +132,7 @@ const handleSubmit = (e) => {
           <form onSubmit={handleSubmit}>
             <SearchCustomers onCustomerSelect={handleCustomerSelect} />
             <div className="justify-center flex">
+
               <SalesTable
                 onSelectedPopsiclesChange={handleSelectedPopsiclesChange}
               />

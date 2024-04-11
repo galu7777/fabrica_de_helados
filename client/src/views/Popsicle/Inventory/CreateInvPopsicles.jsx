@@ -17,14 +17,12 @@ export default function CreateInvPopsicles() {
   const navigate = useNavigate();
   const [selectedSmoothie, setSelectedSmoothie] = useState("");
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
-  const [selectedPacking, setSelectedPacking] = useState("");
+
   const smoothie = useSelector((state) => state.smoothies);
   const popsicles = useSelector((state) => state.popsicles);
-  const ingredients = useSelector((state) => state.ingredients);
+
   const dataSmoo = smoothie.data;
   const dataPopsicles = popsicles.data;
-  const dataIngred = ingredients.data;
-
 
   useEffect(() => {
     dispatch(getSmoothies());
@@ -40,14 +38,11 @@ export default function CreateInvPopsicles() {
     setSelectedSmoothie(value);
   };
 
-  const handlePacking = (event, value) => {
-    setSelectedPacking(value.id);
-  };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(selectedPopsicle.id);
-    console.log(selectedSmoothie.id);
+
     if (!selectedSmoothie || !selectedPopsicle) {
       // Muestra una alerta indicando el error
       Swal.fire({
@@ -71,17 +66,17 @@ export default function CreateInvPopsicles() {
               createInventoryPopsicle({
                 id_batida: selectedSmoothie.id,
                 id_paleta: selectedPopsicle.id,
-                id_empaque: selectedPacking,
               })
             );
             navigate("/InventarioPaletas");
           } catch (error) {
             // Captura cualquier error que ocurra durante el envío de datos
-            const { response } = error;
+
+            console.log(error.response.data.data.message);
             Swal.fire({
               width: "20em",
-              title: `${response.data.data}`,
-              text: "No se pudo Guardar El Ingrediente",
+              title: `${error.response.data.data.message}`,
+              text: "No se pudo Registar al inventario de Paletas",
               icon: "error",
               showConfirmButton: false,
               timer: 4000,
@@ -156,24 +151,7 @@ export default function CreateInvPopsicles() {
                 />
               )}
             </div>
-            <div className="w-full px-3 mb-10">
-              {dataIngred && ( // Verificación de nulidad para data
-                <Autocomplete
-                  options={dataIngred.slice(1, 3)}
-                  fullWidth
-                  getOptionLabel={(option) => option.nombre}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Seleccione empaque"
-                      variant="outlined"
-                      required
-                    />
-                  )}
-                  onChange={handlePacking}
-                />
-              )}
-            </div>
+
           </div>
 
           <Button color="error" variant="outlined" fullWidth type="submit">

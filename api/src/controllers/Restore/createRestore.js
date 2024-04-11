@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
                 tipo_paleta: foundPopsicle.paleta,
                 cantidad: cantidad,
                 peso_unitario: foundPopsicle.peso_unitario,
-                unidad_medida: "GRS",
+                unidad_medida: "GR",
                 tipo: "ENTREGA",
                 BatidaDeHeladoId: foundPopsicle.BatidaDeHeladoId,
                 TipoDePaletumId: foundPopsicle.TipoDePaletumId
