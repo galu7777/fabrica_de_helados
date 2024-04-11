@@ -68,7 +68,7 @@ Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
 BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
 //Relacion entre receta y paleta
 Paleta.hasOne(Recipe, { foreignKey: 'id_paleta' });
-Recipe.belongsTo(Recipe, { foreignKey: 'id_paleta' });
+Recipe.belongsTo(Paleta, { foreignKey: 'id_paleta' });
 // Relacion entre inventario paleta, batido y paleta
 InventarioPaleta.belongsTo(Paleta)
 InventarioPaleta.belongsTo(BatidaDeHelado)
