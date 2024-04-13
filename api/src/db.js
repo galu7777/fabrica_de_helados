@@ -76,7 +76,11 @@ InventarioPaleta.belongsTo(TipoDePaleta)
 //Relacion entre devolucion inventario paleta
 Devolucion.belongsTo(InventarioPaleta)
 // Relacion entre cliente y venta
-Cliente.belongsToMany(Venta, { through: ClienteVenta, constraints: false })
+Venta.belongsToMany(StockPaleta, { through: ClienteVenta, as: 'paletasCompradas' });
+
+//Relacion entre venta y cliente
+Cliente.hasOne(Venta, { foreignKey: 'id_cliente' });
+Venta.belongsTo(Cliente, { foreignKey: 'id_cliente' });
 // Relacion entre devolucion y cliente
 Cliente.hasMany(Devolucion)
 Devolucion.belongsTo(Cliente)

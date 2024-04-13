@@ -41,7 +41,7 @@ export default function Sales() {
         align: "center",
       },
       {
-        field: "cantidad",
+        field: "cantidad_total",
         headerName: "Cantidad de paletas",
         width: 200,
         headerAlign: "center",
@@ -49,7 +49,7 @@ export default function Sales() {
       },
 
       {
-        field: "monto",
+        field: "monto_total",
         headerName: "Monto",
         width: 200,
         headerAlign: "center",
@@ -88,36 +88,19 @@ export default function Sales() {
       },
     ];
 
-const rows =
-  data &&
-  data.map((item) => {
-    // Sumar los montos en USD
-    const totalMontoUSD = item.Venta.reduce(
-      (total, venta) => total + venta.ClienteVenta.monto_usd,
-      0
+  const rows =
+    data &&
+    data.map((item) =>
+      //bg-[#fae9ee]
+      ({
+        id: item.id,
+        Cliente: item.Cliente.razon_social,
+        cantidad_total: item.cantidad_total,
+        monto_total: `${item.monto_total}$`,
+        tasa: item.tasa,
+        updatedAt: formatDateTime(item.updatedAt),
+      })
     );
-
-    // Sumar las cantidades de las ventas
-    const totalCantidad = item.Venta.reduce(
-      (total, venta) => total + venta.ClienteVenta.cantidad,
-      0
-    );
-
-    // Obtener la tasa del primer ítem en la lista de ventas
-    const primeraVenta = item.Venta[0];
-    const tasa = primeraVenta ? primeraVenta.ClienteVenta.tasa : "";
-
-    return {
-      id: item.id,
-      Cliente: item.razon_social,
-      cantidad: totalCantidad,
-      nombre_paleta: item.Venta[0].nombre_paleta, // Se asume que todas las ventas tienen el mismo nombre de paleta para el mismo cliente
-      precio: primeraVenta ? primeraVenta.ClienteVenta.precio : "",
-      monto: `${totalMontoUSD} $`,
-      tasa: tasa,
-      updatedAt: formatDateTime(item.updatedAt),
-    };
-  });
 
   return (
     <div
