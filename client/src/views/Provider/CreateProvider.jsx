@@ -58,19 +58,34 @@ export default function CreateProvider() {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async(result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(
-            createProvider({
-              razon_social: form.razon_social,
-              direccion: form.direccion,
-              telefono: form.telefono,
-              cod_dni: form.cod_dni,
-              cedula_rif: form.cedula_rif,
-            }));
+          try {
+              Swal.fire("Registro Exitoso!", "", "success");
+            await  dispatch(
+                createProvider({
+                  razon_social: form.razon_social,
+                  direccion: form.direccion,
+                  telefono: form.telefono,
+                  cod_dni: form.cod_dni,
+                  cedula_rif: form.cedula_rif,
+                })
+              );
               navigate("/proveedores");
+
+          }  catch (error) {
+
+        const { response } = error;
+        Swal.fire({
+          width: "40em",
+          title: `${response.data.data}`,
+          text: "No se pudo Realizar el Batido",
+          icon: "error",
+          showConfirmButton: true,
+        });
+      }
+
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
