@@ -3,9 +3,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import CircularIndeterminate from "../../../components/spinner/Spinner";
-import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import { getInventoryPopsicle } from "../../../redux/actions/actions";
+import CreateStore from "../Store/CreateStore";
+
+
 export default function InventoryPopsicles() {
 const dispatch = useDispatch();
   const inventoryPopsicle = useSelector((state) => state.inventoryPopsicle);
@@ -27,6 +29,13 @@ const dispatch = useDispatch();
          headerAlign: "center",
          align: "center",
        },
+       {
+         field: "cantidad",
+         headerName: "Cantidad",
+         width: 200,
+         headerAlign: "center",
+         align: "center",
+       },
 
        {
          field: "tipo",
@@ -35,20 +44,7 @@ const dispatch = useDispatch();
          headerAlign: "center",
          align: "center",
        },
-       {
-         field: "peso_unitario",
-         headerName: "Peso",
-         width: 100,
-         headerAlign: "center",
-         align: "center",
-       },
-       {
-         field: "unidad_medida",
-         headerName: "Unidad de medida ",
-         width: 200,
-         headerAlign: "center",
-         align: "center",
-       },
+
        {
          field: "updatedAt",
          headerName: "Fecha",
@@ -64,6 +60,7 @@ const dispatch = useDispatch();
           ({
             id: item.id,
             nombre_paleta: item.nombre_paleta,
+            cantidad: item.cantidad,
             tipo: item.tipo,
             peso_unitario: item.peso_unitario,
             unidad_medida: item.unidad_medida,
@@ -80,14 +77,7 @@ const dispatch = useDispatch();
           <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
             Inventorio de Paleta
           </div>
-          <Button
-            color="error"
-            variant="outlined"
-            fullWidth
-            href="/create_inven_Paletas"
-          >
-            Agregar Inventario
-          </Button>
+          <CreateStore />
         </div>
       </div>
       <div className="mt-8 justify-center flex">
