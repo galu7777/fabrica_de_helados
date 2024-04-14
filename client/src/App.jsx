@@ -28,6 +28,7 @@ import EditProvider from "./views/Provider/EditProvider";
 import EditCustomers from "./views/Customer/EditCustomers";
 import DetailSale from "./views/Sales/DetailSale";
 import ListUser from "./views/User/ListUser";
+import CreateStore from "./views/Popsicle/Store/CreateStore";
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
                 <Route path="/Clientes" element={<Customers />} />
                 <Route path="/crear_clientes" element={<CreateCustomers />} />
                 <Route path="/Cliente/:id" element={<EditCustomers />} />
+                <Route path="/store" element={<CreateStore />} />
                 <Route
                   path="/InventarioPaletas"
                   element={<InventoryPopsicles />}
