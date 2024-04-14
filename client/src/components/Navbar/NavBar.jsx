@@ -69,6 +69,10 @@ function DrawerAppBar({ window }) {
            path: "/stock_popsicle",
          },
          {
+           label: "Salida de Paletas",
+           path: "/SalidaPaletas",
+         },
+         {
            label: "Inventario de Paletas",
            path: "/InventarioPaletas",
          },
