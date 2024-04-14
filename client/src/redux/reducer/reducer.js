@@ -30,6 +30,7 @@ import {
     EDIT_POPSICLE,
     DETAIL_POPSICLE,
     DELETE_POPSICLE,
+    ADD_STOREPOPSICLE,
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
     REGISTER,
@@ -78,6 +79,7 @@ const initialState = {
     detailsale: {},
     stockMP: {},
     stockPop: {},
+    newStorePopsicle: {}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -319,6 +321,12 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 popsicles: payload
+            }
+        }
+        case ADD_STOREPOPSICLE: {
+            return {
+                ...state,
+                newStorePopsicle: payload
             }
         }
 
