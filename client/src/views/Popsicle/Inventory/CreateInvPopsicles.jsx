@@ -100,7 +100,7 @@ export default function CreateInvPopsicles() {
       <div className="w-full flex flex-col items-center select-none py-10">
         <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
           <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
-            Agregar Inventario de Paleta
+            Movimientos de Paleta
           </div>
         </div>
       </div>
