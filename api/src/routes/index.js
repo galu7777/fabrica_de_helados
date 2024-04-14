@@ -52,7 +52,7 @@ const getStockMaterialsInventory = require('../controllers/Inventory/StockMateri
 const getStockPopsicle = require('../controllers/Popsicle/StockPopsicle/getStockPopsicle');
 const updateUser = require('../controllers/User/updateUser');
 const createSmoothie = require('../controllers/Smoothie/createSmoothie');
-const createPaletteReport = require('../controllers/Popsicle/Report/createPaletteReport');
+const createPalletMovement = require('../controllers/Popsicle/Movimientos/createPalletMovement');
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -111,8 +111,10 @@ router.get('/inventory_popsicle/get_inventory', getInventoryPopsicle)
 router.delete('/inventory_popsicle/delete/:id', deleteInventoryPopsicle)
 router.put('/inventory_popsicle/update/:id', updateInventoryPopsicle)
 router.post('/inventory_popsicle/create_entry', createInventoryPopsicle)
+
+
 // rutas de reporte de inventario de paletas
-router.post('/popsicle/store', createPaletteReport)
+router.post('/popsicle/store', createPalletMovement)
 
 // rutas cliente
 router.get('/client/get_allclients', getAllClient)
