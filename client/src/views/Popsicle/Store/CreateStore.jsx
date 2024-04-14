@@ -18,7 +18,7 @@ export default function CreateStore() {
   const refrescarPagina = () => {
     window.location.reload();
   };
-  
+
   const [cantidad, setCantidad] = useState("");
 
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
@@ -72,6 +72,7 @@ export default function CreateStore() {
               createStorePopsicle({
                 id_paleta: selectedPopsicle.id,
                 cantidad: Number(cantidad),
+                tipo: 'ENTREGA'
               })
             );
             setTimeout(() => {
