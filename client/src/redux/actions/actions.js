@@ -35,6 +35,7 @@ import {
     DETAIL_POPSICLE,
     DELETE_POPSICLE,
     GET_POPSICLE,
+    ADD_STOREPOPSICLE,
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
     GET_SALES,
@@ -524,6 +525,20 @@ export const getPopsicle = () => async (dispatch) => {
         throw error
     }
 }
+export const createStorePopsicle = (datos) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.post('http://localhost:3001/popsicle/store', datos)
+        dispatch({
+            type: ADD_STOREPOPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
 
 export const createPopsicle = (nombre) => async (dispatch) => {
     try {
@@ -561,7 +576,7 @@ export const editPopsicle = (id, datos) => async (dispatch) => {
     try {
 
         const { data } = await axios.post(`http://localhost:3001/popsicle/update/${id}`, datos)
-console.log(data)
+
         dispatch({
             type: EDIT_POPSICLE,
             payload: data,
