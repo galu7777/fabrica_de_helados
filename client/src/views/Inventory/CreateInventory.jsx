@@ -44,7 +44,7 @@ export default function CreateInventory() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(Number(cantidad));
+   
     if (!cantidad) {
       // Muestra una alerta indicando el error
       Swal.fire({
