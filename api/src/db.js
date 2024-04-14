@@ -34,6 +34,7 @@ const {
   BatidaDeHelado,
   Cliente,
   ClienteVenta,
+  PaletteReport,
   CuentasPorCobrar,
   DetallesDeVenta,
   DetallesDevolucion,
@@ -71,8 +72,11 @@ Paleta.hasOne(Recipe, { foreignKey: 'id_paleta' });
 Recipe.belongsTo(Paleta, { foreignKey: 'id_paleta' });
 // Relacion entre inventario paleta, batido y paleta
 InventarioPaleta.belongsTo(Paleta)
-InventarioPaleta.belongsTo(BatidaDeHelado)
+// InventarioPaleta.belongsTo(BatidaDeHelado)
 InventarioPaleta.belongsTo(TipoDePaleta)
+
+// Relacion entre inventario paleta report paleta
+InventarioPaleta.belongsTo(PaletteReport)
 //Relacion entre devolucion inventario paleta
 Devolucion.belongsTo(InventarioPaleta)
 // Relacion entre cliente y venta
