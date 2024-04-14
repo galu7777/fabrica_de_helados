@@ -25,7 +25,19 @@ module.exports = (sequelize) => {
                 defaultValue: 'GRS'
             },
             tipo: {
-                type: DataTypes.ENUM('ENTREGA','ENTREGA POR BATIDO','SALIDA', 'SALIDA POR VENTA'),
+                type: DataTypes.ENUM('ENTREGA',
+                    'ENTREGA POR BATIDO',
+                    'SALIDA',
+                    'SALIDA POR VENTA',
+                    'SALIDA POR PUBLICIDAD',
+                    'SALIDA POR DERRETIDAS',
+                    'SALIDA POR REGALADAS',
+                    'SALIDA POR DUEÑO',
+                    'OTRO'),
+            },
+            descripcion: {
+                type: DataTypes.STRING,
+                defaultValue: '',
             }
         },
         {
