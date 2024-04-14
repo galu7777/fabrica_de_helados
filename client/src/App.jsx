@@ -29,6 +29,7 @@ import EditCustomers from "./views/Customer/EditCustomers";
 import DetailSale from "./views/Sales/DetailSale";
 import ListUser from "./views/User/ListUser";
 import CreateStore from "./views/Popsicle/Store/CreateStore";
+import SalidaPaletas from "./views/Popsicle/Store/SalidaPaletas";
 
 
 function App() {
@@ -79,6 +80,8 @@ function App() {
                 <Route path="/crear_clientes" element={<CreateCustomers />} />
                 <Route path="/Cliente/:id" element={<EditCustomers />} />
                 <Route path="/store" element={<CreateStore />} />
+                <Route path="/SalidaPaletas" element={<SalidaPaletas />} />
+
                 <Route
                   path="/InventarioPaletas"
                   element={<InventoryPopsicles />}
