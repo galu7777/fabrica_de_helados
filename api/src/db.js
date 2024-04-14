@@ -34,7 +34,7 @@ const {
   BatidaDeHelado,
   Cliente,
   ClienteVenta,
-  PaletteReport,
+  PaletaMovimiento,
   CuentasPorCobrar,
   DetallesDeVenta,
   DetallesDevolucion,
@@ -76,7 +76,7 @@ InventarioPaleta.belongsTo(Paleta)
 InventarioPaleta.belongsTo(TipoDePaleta)
 
 // Relacion entre inventario paleta report paleta
-InventarioPaleta.belongsTo(PaletteReport)
+InventarioPaleta.belongsTo(PaletaMovimiento)
 //Relacion entre devolucion inventario paleta
 Devolucion.belongsTo(InventarioPaleta)
 // Relacion entre cliente y venta
