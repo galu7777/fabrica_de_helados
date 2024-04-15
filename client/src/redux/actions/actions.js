@@ -38,6 +38,7 @@ import {
     ADD_STOREPOPSICLE,
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
+    DETAIL_INVENTORY_POPSICLE,
     GET_SALES,
     ADD__SALE,
     DETAIL_SALE,
@@ -626,6 +627,23 @@ export const createInventoryPopsicle = (nombre) => async (dispatch) => {
         });
     } catch (error) {
         console.log('Error: ', error.response.data.data.message)
+        throw error
+    }
+}
+
+
+export const detailInventoryPopsicle = (id) => async (dispatch) => {
+    try {
+
+
+        const { data } = await axios.get(`http://localhost:3001/inventory_popsicle/detail/${id}`)
+console.log(data)
+        dispatch({
+            type: DETAIL_INVENTORY_POPSICLE,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
         throw error
     }
 }
