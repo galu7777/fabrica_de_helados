@@ -4,8 +4,8 @@ import TextField from "@mui/material/TextField";
 import { getCustomers } from "../../redux/actions/actions";
 import Autocomplete from "@mui/material/Autocomplete";
 import PropTypes from "prop-types"; // Importar PropTypes
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import Modalformcustomers from "./Customers/Modalformcustomers";
+
 
 const SearchCustomers = ({ onCustomerSelect }) => {
   const dispatch = useDispatch();
@@ -44,11 +44,7 @@ const SearchCustomers = ({ onCustomerSelect }) => {
           )}
         </div>
         <div className="flex justify-center p-4">
-          <Link to="/crear_clientes">
-            <Button variant="outlined" color="primary" >
-              Crear Cliente
-            </Button>
-          </Link>
+          <Modalformcustomers />
         </div>
         {selectedCustomer && (
           <div className="flex flex-wrap -mx-3 mb-6">
