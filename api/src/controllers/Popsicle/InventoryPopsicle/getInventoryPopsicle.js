@@ -4,8 +4,6 @@ const response = require('../../../utils/response')
 module.exports = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id)
-
         if (id) {
             const inventoryPopsicle = await InventarioPaleta.findByPk(id);
 
