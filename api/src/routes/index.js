@@ -108,6 +108,7 @@ router.delete('/popsicle/delete/:id', deletePopsicle)
 
 // rutas inventario de paletas
 router.get('/inventory_popsicle/get_inventory', getInventoryPopsicle)
+router.get('/inventory_popsicle/detail/:id', getInventoryPopsicle)
 router.delete('/inventory_popsicle/delete/:id', deleteInventoryPopsicle)
 router.put('/inventory_popsicle/update/:id', updateInventoryPopsicle)
 router.post('/inventory_popsicle/create_entry', createInventoryPopsicle)
