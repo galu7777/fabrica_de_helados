@@ -8,12 +8,11 @@ import CircularIndeterminate from "../../components/spinner/Spinner";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-
 export default function Sales() {
   const dispatch = useDispatch();
   const sales = useSelector((state) => state.sales);
   const { data } = sales;
-  console.log(data);
+ 
 
     const formatDateTime = (dateTimeString) => {
       const dateTime = new Date(dateTimeString);
@@ -91,7 +90,6 @@ export default function Sales() {
   const rows =
     data &&
     data.map((item) =>
-      //bg-[#fae9ee]
       ({
         id: item.id,
         Cliente: item.Cliente.razon_social,
