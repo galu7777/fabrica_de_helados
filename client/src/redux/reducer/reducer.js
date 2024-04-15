@@ -33,6 +33,7 @@ import {
     ADD_STOREPOPSICLE,
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
+    DETAIL_INVENTORY_POPSICLE,
     REGISTER,
     SIGNIN,
     DETAIL_USER,
@@ -70,6 +71,7 @@ const initialState = {
     popsicles: {},
     inventoryPopsicle: {},
     newinventoryPopsicles: {},
+    detail: {},
     user: {},
     userList: {},
     newUser: {},
@@ -374,6 +376,13 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 inventoryPopsicle: payload
+            }
+        }
+
+        case DETAIL_INVENTORY_POPSICLE: {
+            return {
+                ...state,
+                detail: payload
             }
         }
         case ADD__SALE: {
