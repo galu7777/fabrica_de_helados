@@ -1,297 +1,327 @@
-import React from "react";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
+import * as React from "react";
+import { useState } from "react";
+import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { Link, useLocation } from "react-router-dom";
-import Drawer from "@mui/material/Drawer";
-import StyledButton from "./StyledButton";
-import MenuItems from "./MenuItems";
-import useMenu from "./useMenu";
-import Menu from "@mui/material/Menu";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import AccountMenu from "./AccountMenu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-
+import { useNavigate } from "react-router-dom";
+import AccountMenu from "./AccountMenu";
+import StyledButton from "./StyledButton";
 
 const drawerWidth = 240;
 
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
 
-function DrawerAppBar({ window }) {
-  const { pathname } = useLocation();
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
 
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(["width", "margin"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
+const user = JSON.parse(localStorage.getItem("usuario"));
+
+const sections = [
+  { image: "/icons/casa.png", label: "Home", path: "/home" },
+
+  {
+    image: "/icons/helado.svg",
+    label: "Paletas",
+    path: "/Paletas",
+    subMenuItems: [
+      {
+        image: "/icons/tipos.png",
+        label: "Tipos",
+        path: "/TipoPaletas",
+      },
+      {
+        image: "/icons/disponible.png",
+        label: "Disponibles",
+        path: "/stock_popsicle",
+      },
+      {
+        image: "/icons/intercambio.png",
+        label: "movimientos",
+        path: "/InventarioPaletas",
+      },
+      {
+        image: "/icons/salida.png",
+        label: "Salida",
+        path: "/SalidaPaletas",
+      },
+      {
+        image: "/icons/lista.png",
+        label: "Lista de Paletas",
+        path: "/Paletas",
+        roles: ["superAdmi"],
+      },
+    ],
+    roles: ["superAdmi"],
+  },
+
+  {
+    image: "/icons/cliente.png",
+    label: "Clientes",
+    path: "/Clientes",
+    roles: ["superAdmi", "admin"],
+  },
+  {
+    image: "/icons/venta.png",
+    label: "Ventas",
+    path: "/Ventas",
+    roles: ["superAdmi", "admin"],
+  },
+  {
+    image: "/icons/usuario.png",
+    label: "Usuarios",
+    path: "/users",
+    roles: ["superAdmi"],
+  },
+];
+
+export default function MiniDrawer() {
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+   const [currentPath, setCurrentPath] = useState("");
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
   };
-  const user = JSON.parse(localStorage.getItem("usuario"));
-  const userRole = user?.rol ? user.rol : "cliente";
-  const container = window !== undefined ? () => window().document.body : undefined;
 
-   const sections = [
-     { label: "Home", path: "/home" },
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
-     {
-       label: "Materia Prima",
-       path: "/stock_mp",
-       subMenuItems: [
-         { label: "Ingredientes", path: "/ingredientes", roles: ["superAdmi"] },
-         { label: "Receta", path: "/Recetas", roles: ["superAdmi"] },
-         {
-           label: "Movimientos de Materia Prima",
-           path: "/Inventario",
-         },
-         {
-           label: "Inventario Disponible",
-           path: "/stock_mp",
-         },
-       ],
-       roles: ["superAdmi"],
-     },
-     {
-       label: "Paletas",
-       path: "/Paletas",
-       subMenuItems: [
-         {
-           label: "Tipos de Paletas",
-           path: "/TipoPaletas",
-         },
-         {
-           label: "Paletas Disponibles",
-           path: "/stock_popsicle",
-         },
-         {
-           label: "Salida de Paletas",
-           path: "/SalidaPaletas",
-         },
-         {
-           label: "Inventario de Paletas",
-           path: "/InventarioPaletas",
-         },
-         { label: "Lista de Paletas", path: "/Paletas", roles: ["superAdmi"] },
-       ],
-       roles: ["superAdmi"],
-     },
-     {
-       label: "Batidos",
-       path: "/Batidos",
-       roles: ["superAdmi", "empleado"],
-     },
-     {
-       label: "Proveedores",
-       path: "/Proveedores",
-       roles: ["superAdmi", "admin", "empleado"],
-     },
-     {
-       label: "Inventario Productos",
-       path: "/stock_mp",
-
-       subMenuItems: [
-         {
-           label: "Inventario Disponible",
-           path: "/stock_mp",
-         },
-         {
-           label: "Agregar Mercancia",
-           path: "/crear_inventario",
-         },
-       ],
-       roles: ["admin", "empleado"],
-     },
-     {
-       label: "Clientes",
-       path: "/Clientes",
-       roles: ["superAdmi", "admin"],
-     },
-     {
-       label: "Ventas",
-       path: "/Ventas",
-       roles: ["superAdmi", "admin"],
-     },
-     {
-       label: "Usuarios",
-       path: "/users",
-       roles: ["superAdmi"],
-     },
-   ];
-
-
-    const drawer = (
-      <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-        <Typography variant="h6" sx={{ my: 2 }}>
-          MUI
-        </Typography>
-        <Divider />
-        <List>
-          {sections.map((item) => (
-            <ListItem key={item.label} disablePadding>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary={item.path} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    );
-
-
+  const handleNavigation = (path) => {
+    setCurrentPath(path);
+    navigate(path);
+  };
 
   return (
-    <Box>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ background: "#fa042c" }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            Tony Gelati
-          </Typography>
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "red" }}>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{
+                  marginRight: 5,
+                  ...(open && { display: "none" }),
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
 
-          {sections.map(
-            (section, index) =>
-              // Verificar si la sección debe mostrarse basada en el rol del usuario
-              !section.roles || section.roles.includes(userRole) ? (
-                <React.Fragment key={index}>
-                  {section.subMenuItems ? (
-                    <MenuItemsWithSubMenu
-                      section={section}
-                      pathname={pathname}
-                      handleDrawerToggle={handleDrawerToggle}
+              <Typography variant="h6" noWrap component="div">
+                DON PALETON
+              </Typography>
+            </Toolbar>
+          </div>
+          <div className="flex items-center">
+            {user ? (
+              <div className="flex items-center">
+                <div className="mr-2">
+                  <AccountMenu />
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center">
+                  <span className="ml-1"></span>
+                  <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
+                    <a href="/login">Iniciar Sesión</a>
+                  </Typography>
+                  <span className="mr-1 ml-1">|</span>
+                  <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
+                    <a href="/register">Registrar</a>
+                  </Typography>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </AppBar>
+
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader sx={{ backgroundColor: "red" }}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
+            <h2>Cerrar</h2>
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {sections.map((section, index) => (
+            <React.Fragment key={index}>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={() => handleNavigation(section.path)}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                    backgroundColor:
+                      section.path === currentPath ? "red" : "white",
+                    "&:hover": {
+                      backgroundColor: "red",
+                    },
+                  }}
+                >
+                  <StyledButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <img
+                        src={section.image}
+                        alt={section.label}
+                        style={{ width: "24px", height: "24px" }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={section.label}
+                      sx={{ opacity: open ? 1 : 0 }}
                     />
-                  ) : (
-                    <Link to={section.path} style={{ textDecoration: "none" }}>
-                      <StyledButton
-                        color="inherit"
+                  </StyledButton>
+                </ListItemButton>
+              </ListItem>
+              {section.subMenuItems &&
+                section.subMenuItems.map((subItem, subIndex) => (
+                  <ListItem
+                    key={`${index}-${subIndex}`}
+                    disablePadding
+                    sx={{
+                      display: "block",
+                      backgroundColor:
+                        subItem.path === currentPath ? "red" : "white",
+                      "&:hover": {
+                        backgroundColor: "red",
+                      },
+                    }}
+                    onClick={() => handleNavigation(subItem.path)}
+                  >
+                    <StyledButton>
+                      <ListItemButton
                         sx={{
-                          color:
-                            pathname === section.path
-                              ? "red"
-                              : "rgba(255, 255, 255, 0.7)",
-                          backgroundColor:
-                            pathname === section.path ? "white" : "transparent",
+                          minHeight: 48,
+                          justifyContent: open ? "initial" : "center",
+                          pl: open ? 4 : 2.5,
                         }}
                       >
-                        {section.label}
-                      </StyledButton>
-                    </Link>
-                  )}
-                </React.Fragment>
-              ) : null // Si la sección no debe mostrarse, retornar null
-          )}
-          {user ? (
-            <AccountMenu />
-          ) : (
-            <>
-              <div className="flex items-center">
-                <span className="ml-1"></span>
-                <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
-                  <a href="/login">Iniciar Sesión</a>
-                </Typography>
-                <span className="mr-1 ml-1">|</span>
-                <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
-                  <a href="/register">Registrar</a>
-                </Typography>
-              </div>
-            </>
-          )}
-        </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-      <Box component="main" sx={{ p: 1, flexGrow: 1 }}>
-        <Toolbar />
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : "auto",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <img
+                            src={subItem.image}
+                            alt={subItem.label}
+                            style={{ width: "24px", height: "24px" }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={subItem.label}
+                          sx={{ opacity: open ? 1 : 0 }}
+                        />
+                      </ListItemButton>
+                    </StyledButton>
+                  </ListItem>
+                ))}
+
+              <Divider />
+            </React.Fragment>
+          ))}
+        </List>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
       </Box>
     </Box>
   );
 }
-
-DrawerAppBar.propTypes = {
-  window: PropTypes.func,
-};
-
-export default DrawerAppBar;
-
-function MenuItemsWithSubMenu({ section, pathname }) {
-  const { label, subMenuItems } = section;
-  const { anchorEl, open, handleClick, handleClose } = useMenu();
-
-  return (
-    <React.Fragment>
-      <StyledButton
-        onClick={handleClick}
-        size="small"
-        aria-controls={open ? `${label}-menu` : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        color="inherit"
-        sx={{
-          color: subMenuItems.some((item) => item.path === pathname)
-            ? "red"
-            : "rgba(255, 255, 255, 0.7)",
-          backgroundColor: subMenuItems.some((item) => item.path === pathname)
-            ? "white"
-            : "transparent",
-        }}
-      >
-        {label}
-        <ArrowDropDownOutlinedIcon />
-      </StyledButton>
-      <Menu
-        id={`${label}-menu`}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        {subMenuItems.map((item, index) => (
-          <MenuItems
-            key={index}
-            handleClose={handleClose}
-            path={item.path}
-            label={item.label}
-          />
-        ))}
-      </Menu>
-    </React.Fragment>
-  );
-}
-
-MenuItemsWithSubMenu.propTypes = {
-  section: PropTypes.object.isRequired,
-  pathname: PropTypes.string.isRequired,
-  handleDrawerToggle: PropTypes.func.isRequired,
-};
