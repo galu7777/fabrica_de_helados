@@ -5,11 +5,11 @@ const StyledButton = styled(Button)`
   position: relative;
   overflow: hidden;
   transition: color 0.3s ease;
-  color: blue;
+  color: black;
 
   &:hover {
     color: #fff;
-    
+
 
     &::before {
       transform: scaleX(1);
