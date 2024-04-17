@@ -11,7 +11,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { validationNumber } from "../../../validations/validationNumber";
 import { validatedValue } from "../../../validations/validatedValue ";
-
+import { useNavigate } from "react-router-dom";
 
   const metodo = [
     "SALIDA POR PUBLICIDAD",
@@ -22,10 +22,7 @@ import { validatedValue } from "../../../validations/validatedValue ";
   ];
 export default function SalidaPaletas() {
   const dispatch = useDispatch();
-
-  const refrescarPagina = () => {
-    window.location.reload();
-  };
+  const navigate = useNavigate();
 
   const [cantidad, setCantidad] = useState("");
 
@@ -96,15 +93,13 @@ export default function SalidaPaletas() {
               })
             );
             setTimeout(() => {
-              refrescarPagina();
+              navigate("/InventarioPaletas");
             }, 1000);
           } catch (error) {
             // Captura cualquier error que ocurra durante el envío de datos
-
-            console.log(error.response.data.data.message);
             Swal.fire({
               width: "20em",
-              title: `${error.response.data.data.message}`,
+              title: `${error.response.data.data}`,
               text: "No se pudo Registar la salida de Paletas",
               icon: "error",
               showConfirmButton: false,
