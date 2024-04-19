@@ -30,6 +30,7 @@ import DetailSale from "./views/Sales/DetailSale";
 import ListUser from "./views/User/ListUser";
 import CreateStore from "./views/Popsicle/Store/CreateStore";
 import SalidaPaletas from "./views/Popsicle/Store/SalidaPaletas";
+import { Estadisticas } from "./views/Estadisticas/Estadisticas";
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
             {user.rol === "superAdmi" && (
               <>
                 <Route path="/users" element={<ListUser />} />
+                <Route path="/dashboard" element={<Estadisticas />} />
                 <Route path="/ingredientes" element={<Ingredient />} />
                 <Route path="/recetas" element={<Recipe />} />
                 <Route path="/crear_receta" element={<CreateRecipe />} />

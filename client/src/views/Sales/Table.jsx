@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import { getStockPopsicle } from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import PropTypes from "prop-types";
@@ -15,6 +16,8 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
   const [showTextField, setShowTextField] = useState({});
   const [totalOfTotals, setTotalOfTotals] = useState(0);
   const [BCV, setBCV] = useState("");
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +38,7 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
         id: item.id,
         nombre_paleta: item.nombre_paleta,
         peso_unitario: item.peso_unitario,
+        tipo: item.TipoDePaletum.nombre,
         cantidad: 0,
         disponible: item.cantidad,
         precio: item.precio,
@@ -70,15 +74,17 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
     }
   };
   const totalEnBSCalculado = totalOfTotals * BCV;
-  const handleAddButtonClick = (rowId) => {
-    setShowTextField((prevState) => ({ ...prevState, [rowId]: true }));
 
-    // Actualizar el valor de select a true para la fila correspondiente
-    const updatedRows = rows.map((row) =>
-      row.id === rowId ? { ...row, select: true } : row
-    );
-    setRows(updatedRows);
-  };
+const handleAddButtonClick = (rowId) => {
+  setShowTextField((prevState) => ({ ...prevState, [rowId]: true }));
+
+  // Actualizar el valor del select a true para la fila correspondiente
+  const updatedRows = rows.map((row) =>
+    row.id === rowId ? { ...row, select: true, cantidad: 1 } : row
+  );
+  setRows(updatedRows);
+};
+
   const calculateTotals = (updatedRows) => {
     const updatedRowsWithTotals = updatedRows.map((row) => ({
       ...row,
@@ -103,38 +109,50 @@ export default function SalesTable({ onSelectedPopsiclesChange }) {
       align: "center",
     },
     {
-      field: "cantidad",
-      headerName: "Agregar",
-      width: 200,
+      field: "tipo",
+      headerName: "Tipo ",
+      width: 250,
       headerAlign: "center",
       align: "center",
-      renderCell: (params) =>
-        showTextField[params.id] ? (
-          <TextField
-            type="number"
-            value={params.row.cantidad}
-            onChange={(event) => handleQuantityChange(event, params.id)}
-            InputProps={{
-              style: {
-                textAlign: "center",
-              },
-            }}
-            inputProps={{
-              style: {
-                textAlign: "center",
-              },
-            }}
-          />
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleAddButtonClick(params.id)}
-          >
-            Agregar
-          </Button>
-        ),
     },
+  {
+  field: "cantidad",
+  headerName: "Agregar",
+  width: 200,
+  headerAlign: "center",
+  align: "center",
+  renderCell: (params) => showTextField[params.id] ? (
+    <Select
+      sx={{width: '50%', textAlign: 'center'}}
+      value={params.row.cantidad === 0 ? "" : params.row.cantidad}
+      onChange={(event) => handleQuantityChange(event, params.id)}
+      displayEmpty
+      MenuProps={{
+        PaperProps: {
+          style: {
+            maxHeight: 200,
+            overflowY: "auto",
+          },
+        },
+      }}
+    >
+      <MenuItem value={0}>0</MenuItem>
+      {[...Array(params.row.disponible).keys()].map((value) => (
+        <MenuItem key={value + 1} value={value + 1}>
+          {value + 1}
+        </MenuItem>
+      ))}
+    </Select>
+  ) : (
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={() => handleAddButtonClick(params.id)}
+    >
+      Agregar
+    </Button>
+  ),
+},
     {
       field: "disponible",
       headerName: "Disponible",
