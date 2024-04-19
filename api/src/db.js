@@ -82,6 +82,9 @@ Devolucion.belongsTo(InventarioPaleta)
 // Relacion entre cliente y venta
 Venta.belongsToMany(StockPaleta, { through: ClienteVenta, as: 'paletasCompradas' });
 
+//Relacion entre ClienteVenta y StockPaleta
+ClienteVenta.belongsTo(StockPaleta, { as: 'StockPaleta', foreignKey: 'StockPaletumId' });
+StockPaleta.hasMany(ClienteVenta, { as: 'ClienteVentas', foreignKey: 'StockPaletumId' });
 //Relacion entre venta y cliente
 Cliente.hasOne(Venta, { foreignKey: 'id_cliente' });
 Venta.belongsTo(Cliente, { foreignKey: 'id_cliente' });
