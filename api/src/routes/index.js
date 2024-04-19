@@ -53,6 +53,10 @@ const getStockPopsicle = require('../controllers/Popsicle/StockPopsicle/getStock
 const updateUser = require('../controllers/User/updateUser');
 const createSmoothie = require('../controllers/Smoothie/createSmoothie');
 const createPalletMovement = require('../controllers/Popsicle/Movimientos/createPalletMovement');
+const getEstadisticasPaleta = require('../controllers/Report/getEstadisticasPaleta');
+const getVentasMes = require('../controllers/Report/getVentasMes');
+const getBestClient = require('../controllers/Report/getBestClient');
+
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -143,6 +147,12 @@ router.post('/auth/signin', auth)
 // rutas del stock
 router.get('/stock/get_allstock', getStockMaterialsInventory)
 router.get('/stock/get_allstock_popsicle', getStockPopsicle)
+
+//rutas de reporte
+router.get('/report/estadisticas', getEstadisticasPaleta)
+router.get('/report/ventaMes', getVentasMes)
+router.get('/report/bestclient', getBestClient)
+
 
 // rutas de devolucion
 router.get('/restore/get_restore', getRestore)
