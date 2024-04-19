@@ -112,7 +112,7 @@ const handleSubmit = (e) => {
 
   return (
     <div className="bg-cover bg-center h-screen select-none bg-gray-100 ">
-      <div className="flex flex-col h-screen rounded-lg shadow-xl items-center select-none bg-white mx-auto my-auto w-full">
+      <div className="flex flex-col h-screen items-center select-none bg-white mx-auto my-auto w-full">
         <div className="p-6 w-3/4">
           <div className="flex items-center text-center justify-center">
             <img
