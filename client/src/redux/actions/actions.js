@@ -39,6 +39,9 @@ import {
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
     DETAIL_INVENTORY_POPSICLE,
+    GET_ESTADISTICAS,
+    GET_VENTAMES,
+    GET_TOP_CUSTOMER,
     GET_SALES,
     ADD__SALE,
     DETAIL_SALE,
@@ -675,7 +678,47 @@ export const detailsales = (id) => async (dispatch) => {
     }
 }
 
+export const getEstadisticasVentas = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/report/estadisticas')
 
+        dispatch({
+            type: GET_ESTADISTICAS,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const getVentaMes = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/report/ventaMes')
+
+        dispatch({
+            type: GET_VENTAMES,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const getTopCustomer = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/report/bestclient')
+
+        dispatch({
+            type: GET_TOP_CUSTOMER,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
 export const createSales = (nombre) => async (dispatch) => {
     try {
 
