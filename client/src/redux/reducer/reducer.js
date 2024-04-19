@@ -34,6 +34,9 @@ import {
     ADD_INVENTORY_POPSICLE,
     GET_INVENTORY_POPSICLE,
     DETAIL_INVENTORY_POPSICLE,
+    GET_ESTADISTICAS,
+    GET_VENTAMES,
+    GET_TOP_CUSTOMER,
     REGISTER,
     SIGNIN,
     DETAIL_USER,
@@ -72,6 +75,9 @@ const initialState = {
     inventoryPopsicle: {},
     newinventoryPopsicles: {},
     detail: {},
+    estadisticas: {},
+    ventaMes: {},
+    topCustomer: {},
     user: {},
     userList: {},
     newUser: {},
@@ -383,6 +389,26 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 detail: payload
+            }
+        }
+
+        case GET_ESTADISTICAS: {
+            return {
+                ...state,
+                estadisticas: payload
+            }
+        }
+
+        case GET_VENTAMES: {
+            return {
+                ...state,
+                ventaMes: payload
+            }
+        }
+        case GET_TOP_CUSTOMER: {
+            return {
+                ...state,
+                topCustomer: payload
             }
         }
         case ADD__SALE: {
