@@ -8,7 +8,6 @@ export default function VentaMes() {
   const dispatch = useDispatch();
   const estadistica = useSelector((state) => state.ventaMes);
   const { data: dataVenta } = estadistica;
-
   // Estado para controlar si los datos se han cargado
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -19,6 +18,7 @@ export default function VentaMes() {
       setDataLoaded(true); // Marcar los datos como cargados
     }
   }, [dispatch, dataLoaded]);
+
 
   return (
     <div className="flex flex-col items-center">
@@ -33,9 +33,9 @@ export default function VentaMes() {
           </div>
         </div>
         <div className="mx-2">
-            <p className="text-gray-500">Número de Ventas</p>
+          <p className="text-gray-500">Número de Ventas</p>
           <p className="text-4xl">
-            $ {dataVenta ? dataVenta.totalAmount : "0"}
+            $ {dataVenta ? dataVenta.totalAmount.toFixed(2) : "0"}
           </p>
         </div>
       </div>

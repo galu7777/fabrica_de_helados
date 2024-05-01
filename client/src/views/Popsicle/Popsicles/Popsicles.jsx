@@ -95,24 +95,6 @@ export default function Popsicles() {
       align: "center",
     },
     {
-      field: "Eliminar",
-      headerName: "Eliminar",
-      width: 100,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => (
-        <div>
-          <DeleteIcon
-            variant="outlined"
-            color="error"
-            onClick={() => handleDelete(params.row.id)}
-          >
-
-          </DeleteIcon>
-        </div>
-      ),
-    },
-    {
       field: "Editar",
       headerName: "Editar",
       width: 100,
@@ -125,6 +107,22 @@ export default function Popsicles() {
             color="primary"
             className="cursor-pointer"
             onClick={() => handleEdit(params.row.id)}
+          />
+        </div>
+      ),
+    },
+    {
+      field: "Eliminar",
+      headerName: "Eliminar",
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <div>
+          <DeleteIcon
+            variant="outlined"
+            color="error"
+            onClick={() => handleDelete(params.row.id)}
           />
         </div>
       ),
@@ -144,7 +142,7 @@ export default function Popsicles() {
         tipo_paleta: item.TipoDePaletum.nombre,
         unidad_medida: item.unidad_medida,
         descripcion: item.descripcion,
-        precio: `${item.precio} $`,
+        precio: `${item.precio.toFixed(2)} $`,
       })
     );
   return (
@@ -156,7 +154,7 @@ export default function Popsicles() {
         <div className="w-full flex flex-col items-center select-none py-10">
           <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
             <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
-              Paleta
+              Helado
             </div>
             <Button
               color="error"
@@ -164,7 +162,7 @@ export default function Popsicles() {
               fullWidth
               href="/crear_paletas"
             >
-              Crear Paleta
+              Crear Helado
             </Button>
           </div>
         </div>
@@ -190,7 +188,6 @@ export default function Popsicles() {
                   },
                 }}
                 pageSizeOptions={[5]}
-
                 disableRowSelectionOnClick
               />
             ) : (

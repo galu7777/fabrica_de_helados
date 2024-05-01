@@ -32,7 +32,7 @@ export function Estadisticas() {
   const dispatch = useDispatch();
   const estadistica = useSelector((state) => state.estadisticas);
   const dataEstad = estadistica.data;
-  console.log(dataEstad);
+ 
   useEffect(() => {
     dispatch(getEstadisticasVentas());
   }, [dispatch]);

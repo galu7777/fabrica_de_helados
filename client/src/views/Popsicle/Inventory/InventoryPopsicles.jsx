@@ -104,21 +104,28 @@ export default function InventoryPopsicles() {
 
   return (
     <div
-      className="bg-cover bg-center h-screen select-none "
+      className="bg-cover bg-center h-screen select-none"
       style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
     >
       <div className="w-full flex flex-col items-center select-none py-10">
-        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto ">
           <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
-            Inventario de Paletas
+            Agregar Helado
           </div>
           <CreateStore />
         </div>
       </div>
-      <div className="mt-8 justify-center flex">
+
+      <div className=" justify-center flex mt-7 ">
+        <div className="text-2xl text-center font-bold mb-10 text-[#9b1028] mt-5 w-5/12 bg-white py-5 rounded-md">
+          Movimientos
+        </div>
+      </div>
+
+      <div className="flex justify-center">
         <Box
           sx={{
-            height: 800,
+            height: 700,
             width: "70%",
             backgroundColor: "white",
             boxShadow: 24,

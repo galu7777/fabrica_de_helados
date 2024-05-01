@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
                 return response(res, 400, { message: `No stock or inventory was found with this id: ${id_stock_paleta}` });
             }
 
-            if (stockPopsicle.cantidad - cantidad <= 0) {
+            if (stockPopsicle.cantidad - cantidad < 0) {
                 return response(res, 400, { message: 'Insufficient quantity in inventory.' });
             }
 

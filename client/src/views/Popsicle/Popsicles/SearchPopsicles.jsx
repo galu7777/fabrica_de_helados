@@ -12,7 +12,7 @@ export default function SearchPopsicles({
   const dispatch = useDispatch();
   const popsicleType = useSelector((state) => state.typePopsicles);
   const { data } = popsicleType;
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedType, setSelectedType] = useState(null);
 
   useEffect(() => {
     const fetchDefaultPopsicleData = async () => {

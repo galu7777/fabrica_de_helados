@@ -5,18 +5,15 @@ import {
   createStorePopsicle,
 } from "../../../redux/actions/actions";
 import Swal from "sweetalert2";
-import Button from "@mui/material/Button";
+import {Button, Paper} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { validationNumber } from "../../../validations/validationNumber";
-import { validatedValue } from "../../../validations/validatedValue ";
-
 import { useNavigate } from "react-router-dom";
 
   const metodo = [
     "SALIDA POR PUBLICIDAD",
-    "SALIDA POR DERRETIDAS",
-    "SALIDA POR REGALADAS",
+    "DERRETIDAS",
+    "REGALADAS",
     "SALIDA POR DUEÑO",
     "OTRO",
   ];
@@ -24,22 +21,12 @@ export default function SalidaPaletas() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [cantidad, setCantidad] = useState("");
-
+  const [cantidad, setCantidad] = useState(null);
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
 
-  console.log(selectedPopsicle)
-
   const [descripcion, setDescripcion] = useState("");
-
-
   const popsicles = useSelector((state) => state.stockPop);
-
   const dataPopsicles = popsicles.data;
-
-  console.log(dataPopsicles)
-
-
  const [value, setValue] = useState(metodo[0]);
  const [tipo, setTipo] = useState("");
 
@@ -55,15 +42,8 @@ export default function SalidaPaletas() {
 
 
 
-  const handleChange = (e) => {
-    const { value } = e.target;
-
-    // Si el valor no es un número, actualizamos el estado con el valor validado
-    if (!validationNumber(value)) {
-      setCantidad(validatedValue(value));
-    } else {
-      setCantidad(value);
-    }
+  const handleQuantityChange = (event, newValue) => {
+ setCantidad(newValue);
   };
 
   const handleSubmit = (e) => {
@@ -122,7 +102,7 @@ export default function SalidaPaletas() {
       className="bg-cover bg-center h-screen select-none "
       style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
     >
-      <div className=" justify-center flex ">
+      <div className=" justify-center flex py-10 ">
         <form
           onSubmit={handleSubmit}
           className="w-2/4 p-8 bg-white rounded-lg shadow-2xl"
@@ -210,14 +190,34 @@ export default function SalidaPaletas() {
             </div>
           </div>
           <div className="w-full mt-5">
-            <TextField
-              required
-              fullWidth
-              type="text"
-              label="Cantidad"
-              variant="outlined"
+            <Autocomplete
               value={cantidad}
-              onChange={handleChange}
+              onChange={handleQuantityChange}
+              options={[
+                ...Array(Math.max(selectedPopsicle?.cantidad || 0, 1)),
+              ].map((_, value) => value + 1)}
+              getOptionLabel={(option) => option.toString()}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Cantidad"
+                  required
+                  InputProps={{
+                    ...params.InputProps,
+                    type: "number",
+                  }}
+                />
+              )}
+              PaperComponent={({ children }) => (
+                <Paper
+                  style={{
+                    maxHeight: 200,
+                    overflowY: "auto",
+                  }}
+                >
+                  {children}
+                </Paper>
+              )}
             />
           </div>
           <div className="w-full mt-10 mb-10">

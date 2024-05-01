@@ -12,7 +12,7 @@ export default function Sales() {
   const dispatch = useDispatch();
   const sales = useSelector((state) => state.sales);
   const { data } = sales;
- 
+
 
     const formatDateTime = (dateTimeString) => {
       const dateTime = new Date(dateTimeString);
@@ -27,7 +27,7 @@ export default function Sales() {
     const columns = [
       {
         field: "id",
-        headerName: "Numero de factura",
+        headerName: "Numero de Pedido",
         width: 200,
         headerAlign: "center",
         align: "center",
@@ -89,16 +89,14 @@ export default function Sales() {
 
   const rows =
     data &&
-    data.map((item) =>
-      ({
-        id: item.id,
-        Cliente: item.Cliente.razon_social,
-        cantidad_total: item.cantidad_total,
-        monto_total: `${item.monto_total}$`,
-        tasa: item.tasa,
-        updatedAt: formatDateTime(item.updatedAt),
-      })
-    );
+    data.map((item) => ({
+      id: item.id,
+      Cliente: item.Cliente.razon_social,
+      cantidad_total: item.cantidad_total,
+      monto_total: `${item.monto_total.toFixed(2)}$`,
+      tasa: item.tasa,
+      updatedAt: formatDateTime(item.updatedAt),
+    }));
 
   return (
     <div

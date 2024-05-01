@@ -6,7 +6,7 @@ import {
 } from "../../../redux/actions/actions";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
-
+import InputAdornment from "@mui/material/InputAdornment";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { validationNumber } from "../../../validations/validationNumber";
@@ -80,8 +80,6 @@ export default function CreateStore() {
             }, 1000);
           } catch (error) {
             // Captura cualquier error que ocurra durante el envío de datos
-
-            console.log(error.response.data.data.message);
             Swal.fire({
               width: "20em",
               title: `${error.response.data.data.message}`,
@@ -130,6 +128,13 @@ export default function CreateStore() {
                 variant="standard"
                 value={cantidad}
                 onChange={handleChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                    UND
+                    </InputAdornment>
+                  ),
+                }}
               />
             </div>
           </div>

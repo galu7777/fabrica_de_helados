@@ -14,7 +14,6 @@ export default function CreateSmoothie() {
   const recipes = useSelector((state) => state.recipes);
   const { data } = recipes;
     const [selected, setSelected] = useState(null);
-console.log(selected)
     const refrescarPagina = () => {
       window.location.reload();
     };

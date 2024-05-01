@@ -7,7 +7,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const stock = useSelector((state) => state.stockPop);
   const { data } = stock;
-
+  const MAX_DESCRIPTION_LENGTH = 22; // Número máximo de caracteres para la descripción
 
   const paletas = data
     ? data.map((pop) => {
@@ -22,7 +22,7 @@ const Home = () => {
             precio_unitario: pop.precio_unitario,
             peso_unitario: pop.peso_unitario,
             unidad_medida: pop.unidad_medida,
-            precio: pop.precio,
+            precio: pop.precio.toFixed(2),
           };
         } catch (error) {
           console.error("Error decoding image data:", error);
@@ -33,6 +33,13 @@ const Home = () => {
   useEffect(() => {
     dispatch(getStockPopsicle());
   }, [dispatch]);
+
+  const truncateDescription = (description) => {
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+      return `${description.slice(0, MAX_DESCRIPTION_LENGTH)}...`;
+    }
+    return description;
+  };
 
   return (
     <div className="w-full bg-white py-16 select-none">
@@ -56,8 +63,12 @@ const Home = () => {
                   <h3 className="text-xl font-semibold mb-2">
                     {item.nombre_paleta}
                   </h3>
-                  <p className="text-gray-700 mb-4">{item.descripcion}</p>
-
+                  <p
+                    className="text-gray-700 mb-4 line-clamp"
+                    title={item.descripcion}
+                  >
+                    {truncateDescription(item.descripcion)}
+                  </p>
                   <p className="text-gray-700 py-2">
                     ({item.cantidad} Disponibles)
                   </p>
@@ -73,7 +84,6 @@ const Home = () => {
                       </span>
                     </div>
                   </div>
-
                   <p className="text-2xl mb-5 text-center font-bold text-gray-800">
                     Precio: ${item.precio}
                   </p>

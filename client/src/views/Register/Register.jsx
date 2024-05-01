@@ -38,8 +38,6 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // if (Object.keys(error).length === 0) {
-       console.log(input);
     const newUser = { ...input };
     if (repitPassword !== input.password) {
        Swal.fire({

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
 import { useDispatch, useSelector } from "react-redux";
 import { getTopCustomer } from "../../redux/actions/actions";
+import EmojiEventsRoundedIcon from "@mui/icons-material/EmojiEventsRounded";
 
 export default function TopCustomer() {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export default function TopCustomer() {
         razon_social: dataTop.razon_social,
         cod_dni: dataTop.cod_dni,
         cedula_rif: dataTop.cedula_rif,
-        total_comprado: dataTop.total_comprado,
+        total_comprado: dataTop.total_comprado.toFixed(2),
       });
     }
   }, [dataTop]);
@@ -40,6 +41,12 @@ export default function TopCustomer() {
       <p className="text-gray-600 font-normal py-8 text-2xl">Mejor Cliente</p>
       <div className="justify-between flex ">
         <div className="text-center">
+          <div>
+            <EmojiEventsRoundedIcon
+              sx={{ color: "#FFA500", fontSize: "3rem" }}
+            />
+          </div>
+
           <p className="text-gray-500 text-lg my-1">{form.razon_social}</p>
 
           <p className="text-gray-500 text-lg">
@@ -57,9 +64,7 @@ export default function TopCustomer() {
       </div>
 
       <Divider />
-      <p className="text-gray-500 text-2xl my-5">
-        Número de Paletas Compradas
-      </p>
+      <p className="text-gray-500 text-2xl my-5">Monto total Compra en Helados</p>
       <div className="flex ">
         <div>
           <p className="text-4xl">
@@ -70,7 +75,7 @@ export default function TopCustomer() {
             />{" "}
           </p>
         </div>
-        <div className="text-4xl mb-10">{form.total_comprado}</div>
+        <div className="text-4xl mb-10">$ {form.total_comprado}</div>
       </div>
     </div>
   );

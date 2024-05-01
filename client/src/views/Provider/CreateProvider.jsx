@@ -38,9 +38,6 @@ export default function CreateProvider() {
     setForm({ ...form, [name]: value });
   };
 
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

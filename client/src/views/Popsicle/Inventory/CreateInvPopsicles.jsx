@@ -71,8 +71,6 @@ export default function CreateInvPopsicles() {
             navigate("/InventarioPaletas");
           } catch (error) {
             // Captura cualquier error que ocurra durante el envío de datos
-
-            console.log(error.response.data.data.message);
             Swal.fire({
               width: "20em",
               title: `${error.response.data.data.message}`,

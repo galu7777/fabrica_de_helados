@@ -59,7 +59,7 @@ export default function Inventory() {
       align: "center",
     },
   ];
-  console.log(data)
+
   const rows =
     data &&
     data.map((item) =>
