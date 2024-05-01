@@ -6,7 +6,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Customers() {
   const dispatch = useDispatch();
@@ -76,39 +77,35 @@ export default function Customers() {
         align: "center",
       },
       {
-        field: "Eliminar",
-        headerName: "Eliminar",
-        width: 200,
-        headerAlign: "center",
-        align: "center",
-        renderCell: (params) => (
-          <div>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Eliminar
-            </Button>
-          </div>
-        ),
-      },
-      {
         field: "Editar",
         headerName: "Editar",
-        width: 200,
+        width: 100,
         headerAlign: "center",
         align: "center",
         renderCell: (params) => (
           <div>
-            <Button
+            <VisibilityIcon
               variant="outlined"
               color="primary"
               href={`/Cliente/${params.row.id}`}
               //onClick={() => handleDelete(params.row.id)}
-            >
-              Editar
-            </Button>
+            />
+          </div>
+        ),
+      },
+      {
+        field: "Eliminar",
+        headerName: "Eliminar",
+        width: 100,
+        headerAlign: "center",
+        align: "center",
+        renderCell: (params) => (
+          <div>
+            <DeleteIcon
+              variant="outlined"
+              color="error"
+              onClick={() => handleDelete(params.row.id)}
+            />
           </div>
         ),
       },
