@@ -579,7 +579,7 @@ export const editPopsicle = (id, datos) => async (dispatch) => {
 
     try {
 
-        const { data } = await axios.post(`http://localhost:3001/popsicle/update/${id}`, datos)
+        const { data } = await axios.put(`http://localhost:3001/popsicle/update/${id}`, datos)
 
         dispatch({
             type: EDIT_POPSICLE,
