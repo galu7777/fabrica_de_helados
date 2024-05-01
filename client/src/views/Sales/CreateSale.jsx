@@ -14,7 +14,6 @@ export default function CreateSale() {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedPopsicles, setSelectedPopsicles] = useState([]);
   const [tasa, setTasa] = useState(0);
-
   useEffect(() => {
     dispatch(getCustomers());
   }, [dispatch]);
@@ -86,14 +85,11 @@ const handleSubmit = (e) => {
           ventas: filteredRows,
         };
 
-        console.log(salesData);
 
         await dispatch(createSales(salesData));
          navigate("/Ventas");
       } catch (error) {
         // Captura cualquier error que ocurra durante el envío de datos
-
-        console.log(error.response.data.data.message);
         Swal.fire({
           width: "20em",
           title: `${error.response.data.data.message}`,
