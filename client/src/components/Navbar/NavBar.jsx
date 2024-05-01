@@ -20,6 +20,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 import AccountMenu from "./AccountMenu";
 import StyledButton from "./StyledButton";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
 const drawerWidth = 240;
 
@@ -91,6 +92,7 @@ const user = JSON.parse(localStorage.getItem("usuario"));
 
 const sections = [
   { image: "/icons/casa.png", label: "Home", path: "/home" },
+  { image: "/icons/analytics.svg", label: "Estadísticas", path: "/dashboard" },
 
   {
     image: "/icons/helado.svg",
@@ -167,161 +169,169 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ backgroundColor: "red" }}>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                sx={{
-                  marginRight: 5,
-                  ...(open && { display: "none" }),
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-
-              <Typography variant="h6" noWrap component="div">
-                DON PALETON
-              </Typography>
-            </Toolbar>
-          </div>
-          <div className="flex items-center">
-            {user ? (
-              <div className="flex items-center">
-                <div className="mr-2">
-                  <AccountMenu />
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center">
-                  <span className="ml-1"></span>
-                  <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
-                    <a href="/login">Iniciar Sesión</a>
-                  </Typography>
-                  <span className="mr-1 ml-1">|</span>
-                  <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
-                    <a href="/register">Registrar</a>
-                  </Typography>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </AppBar>
-
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader sx={{ backgroundColor: "red" }}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-            <h2>Cerrar</h2>
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {sections.map((section, index) => (
-            <React.Fragment key={index}>
-              <ListItem
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={() => handleNavigation(section.path)}
-              >
-                <ListItemButton
+    <div className="-mb-12">
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open} sx={{ backgroundColor: "red" }}>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <Toolbar>
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
                   sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                    backgroundColor:
-                      section.path === currentPath ? "red" : "white",
-                    "&:hover": {
-                      backgroundColor: "red",
-                    },
+                    marginRight: 5,
+                    ...(open && { display: "none" }),
                   }}
                 >
-                  <StyledButton>
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <img
-                        src={section.image}
-                        alt={section.label}
-                        style={{ width: "24px", height: "24px" }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={section.label}
-                      sx={{ opacity: open ? 1 : 0 }}
+                  <MenuIcon />
+                </IconButton>
+
+                <Typography variant="h6" noWrap component="div">
+                  DON PALETON
+                </Typography>
+              </Toolbar>
+            </div>
+            <div className="flex items-center">
+              {user ? (
+                <div className="flex items-center">
+                  <div className="h-full">
+                    <HomeRoundedIcon
+                      className="cursor-pointer"
+                      style={{ fontSize: "35px" }}
                     />
-                  </StyledButton>
-                </ListItemButton>
-              </ListItem>
-              {section.subMenuItems &&
-                section.subMenuItems.map((subItem, subIndex) => (
-                  <ListItem
-                    key={`${index}-${subIndex}`}
-                    disablePadding
+                  </div>
+                  <div className="mr-2">
+                    <AccountMenu />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center">
+                    <span className="ml-1"></span>
+                    <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
+                      <a href="/login">Iniciar Sesión</a>
+                    </Typography>
+                    <span className="mr-1 ml-1">|</span>
+                    <Typography className="p-1 rounded-sm cursor-pointer mr-2 hover:bg-white hover:text-red-700">
+                      <a href="/register">Registrar</a>
+                    </Typography>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </AppBar>
+
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader sx={{ backgroundColor: "red" }}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon className=" text-white" />
+              ) : (
+                <ChevronLeftIcon className=" text-white" />
+              )}
+              <h2 className="text-white">Cerrar</h2>
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {sections.map((section, index) => (
+              <React.Fragment key={index}>
+                <ListItem
+                  disablePadding
+                  sx={{ display: "block" }}
+                  onClick={() => handleNavigation(section.path)}
+                >
+                  <ListItemButton
                     sx={{
-                      display: "block",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                       backgroundColor:
-                        subItem.path === currentPath ? "red" : "white",
+                        section.path === currentPath ? "red" : "white",
                       "&:hover": {
                         backgroundColor: "red",
                       },
                     }}
-                    onClick={() => handleNavigation(subItem.path)}
                   >
                     <StyledButton>
-                      <ListItemButton
+                      <ListItemIcon
                         sx={{
-                          minHeight: 48,
-                          justifyContent: open ? "initial" : "center",
-                          pl: open ? 4 : 2.5,
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
                         }}
                       >
-                        <ListItemIcon
+                        <img
+                          src={section.image}
+                          alt={section.label}
+                          style={{ width: "24px", height: "24px" }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={section.label}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </StyledButton>
+                  </ListItemButton>
+                </ListItem>
+                {section.subMenuItems &&
+                  section.subMenuItems.map((subItem, subIndex) => (
+                    <ListItem
+                      key={`${index}-${subIndex}`}
+                      disablePadding
+                      sx={{
+                        display: "block",
+                        backgroundColor:
+                          subItem.path === currentPath ? "red" : "white",
+                        "&:hover": {
+                          backgroundColor: "red",
+                        },
+                      }}
+                      onClick={() => handleNavigation(subItem.path)}
+                    >
+                      <StyledButton>
+                        <ListItemButton
                           sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : "auto",
-                            justifyContent: "center",
+                            minHeight: 48,
+                            justifyContent: open ? "initial" : "center",
+                            pl: open ? 4 : 2.5,
                           }}
                         >
-                          <img
-                            src={subItem.image}
-                            alt={subItem.label}
-                            style={{ width: "24px", height: "24px" }}
+                          <ListItemIcon
+                            sx={{
+                              minWidth: 0,
+                              mr: open ? 3 : "auto",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <img
+                              src={subItem.image}
+                              alt={subItem.label}
+                              style={{ width: "24px", height: "24px" }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={subItem.label}
+                            sx={{ opacity: open ? 1 : 0 }}
                           />
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={subItem.label}
-                          sx={{ opacity: open ? 1 : 0 }}
-                        />
-                      </ListItemButton>
-                    </StyledButton>
-                  </ListItem>
-                ))}
+                        </ListItemButton>
+                      </StyledButton>
+                    </ListItem>
+                  ))}
 
-              <Divider />
-            </React.Fragment>
-          ))}
-        </List>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+                <Divider />
+              </React.Fragment>
+            ))}
+          </List>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+        </Box>
       </Box>
-    </Box>
+    </div>
   );
 }
