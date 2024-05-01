@@ -18,7 +18,7 @@ export default function CreateRecipe() {
   const popsicles = useSelector((state) => state.popsicles);
   const dataPopsicles = popsicles.data;
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
-  console.log(dataPopsicles)
+
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getPopsicle());
@@ -42,7 +42,6 @@ export default function CreateRecipe() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(selectedPopsicle.id);
     // Obtener solo los ingredientes seleccionados
     const selectedIngredientesIds = selectedIngredients
       .filter((ingredient) => ingredient.selected)
@@ -57,7 +56,7 @@ export default function CreateRecipe() {
       id_paleta: selectedPopsicle.id,
       ingredientes: selectedIngredientesIds,
     };
-    console.log(selectedIngredientesIds);
+
 
     // Verificar si form.cantidad y form.medida están definidos antes de llamar a trim()
     if (
