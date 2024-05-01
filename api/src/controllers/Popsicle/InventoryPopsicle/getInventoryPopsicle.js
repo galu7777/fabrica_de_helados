@@ -14,8 +14,11 @@ module.exports = async (req, res) => {
 
         } else {
             const inventory = await InventarioPaleta.findAll({
-                include: [TipoDePaleta]
+                include: [TipoDePaleta],
+                order: [['createdAt', 'DESC']]
             })
+
+
             return response(res, 200, inventory)
 
         }
