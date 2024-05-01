@@ -10,8 +10,6 @@ const DetailPopsicle = ({ id }) => {
   const detail = useSelector((state) => state.detail);
   const [open, setOpen] = useState(true);
 
-  console.log(detail)
-
   useEffect(() => {
     if (id) {
       dispatch(detailInventoryPopsicle(id));
