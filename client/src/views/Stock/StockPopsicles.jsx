@@ -10,7 +10,7 @@ export default function StockPopsicles() {
   const dispatch = useDispatch();
   const stockPop = useSelector((state) => state.stockPop);
   const data = stockPop.data;
- 
+
 
   useEffect(() => {
     dispatch(getStockPopsicle());
@@ -33,7 +33,7 @@ export default function StockPopsicles() {
     },
     {
       field: "nombre_paleta",
-      headerName: "Nombre del Ingrediente",
+      headerName: "Nombre de la Paleta",
       width: 300,
       headerAlign: "center",
       align: "center",
