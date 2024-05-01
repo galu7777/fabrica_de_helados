@@ -23,8 +23,6 @@ export default function DetailSale() {
   const dispatch = useDispatch();
   const sale = useSelector((state) => state.detailsale);
   const { data } = sale;
-  console.log(data);
-
   useEffect(() => {
     dispatch(detailsales(id));
   }, [dispatch, id]);
@@ -83,8 +81,8 @@ export default function DetailSale() {
               </div>
             </div>
             <div className="text-lg font-semibold text-right">
-              {/* <span>Numero de Factura:</span>
-            {data?.id} */}
+              <span>Numero de Pedido: </span>
+            {data?.id}
             </div>
             <div className="text-center">
               <h1 className="text-3xl font-bold text-black mb-2">
@@ -159,10 +157,10 @@ export default function DetailSale() {
                         {venta.nombre_paleta}
                       </TableCell>
                       <TableCell align="center">
-                        {venta.ClienteVenta.precio}
+                        {venta.ClienteVenta.precio.toFixed(2)}
                       </TableCell>
                       <TableCell align="center">
-                        {venta.ClienteVenta.monto_usd}
+                        {venta.ClienteVenta.monto_usd.toFixed(2)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -181,7 +179,7 @@ export default function DetailSale() {
                 <div className="flex items-center">
                   <p className="text-gray-500 font-medium">Total a pagar:</p>
                   <p className="text-2xl font-bold text-amazon-orange ml-2">
-                    ${data.monto_total}
+                    ${data.monto_total.toFixed(2)}
                   </p>
                 </div>
               </div>
