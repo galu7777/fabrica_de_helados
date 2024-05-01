@@ -1,14 +1,15 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Box, Input } from "@mui/material";
 import Button from "@mui/material/Button";
-
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchPopsicles from "./SearchPopsicles";
 import { detailPopsicle, editPopsicle } from "../../../redux/actions/actions";
+import convertToWeight from "../../../function/convertToWeight";
+import formatoPrecio from "../../../function/formatPrice";
 
 export default function EditPopsicle() {
   const { id } = useParams();
@@ -18,6 +19,8 @@ export default function EditPopsicle() {
   const { data } = popsicle;
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [sendImage, setSendImage] = useState(null);
+
 
   const [form, setForm] = useState({
     nombre: "",
@@ -31,7 +34,7 @@ export default function EditPopsicle() {
   useEffect(() => {
     dispatch(detailPopsicle(id));
   }, [dispatch, id]);
- const [selectedPopsicle, setSelectedPopsicle] = useState(null);
+  const [selectedPopsicle, setSelectedPopsicle] = useState(null);
 
   useEffect(() => {
     if (data) {
@@ -44,9 +47,7 @@ export default function EditPopsicle() {
         precio: data.precio,
       });
       setSelectedImage(data.image);
-       setSelectedPopsicle(data.TipoDePaletum);
-
-
+      setSelectedPopsicle(data.TipoDePaletum);
     }
   }, [data]);
 
@@ -57,6 +58,19 @@ export default function EditPopsicle() {
 
   const handlePopsicleSelect = (popsicle) => {
     setSelectedPopsicle(popsicle);
+  };
+
+  const handlePeso = (e) => {
+    const { name, value } = e.target;
+    const newValue = convertToWeight(value);
+    setForm({ ...form, [name]: newValue });
+  };
+
+  const handlePrecio = (e) => {
+    const { name, value } = e.target;
+
+    const newValue = formatoPrecio(value);
+    setForm({ ...form, [name]: newValue });
   };
 
   const handleSubmit = (e) => {
@@ -85,7 +99,7 @@ export default function EditPopsicle() {
       formData.append("descripcion", form.descripcion.toUpperCase());
       formData.append("id_tipo_paleta", selectedPopsicle.id);
       formData.append("precio", form.precio);
-      formData.append("image", selectedImage); // Agrega la imagen al FormData
+      formData.append("image", sendImage);
 
       Swal.fire({
         title: "¿Quieres registrar esta Paleta?",
@@ -97,7 +111,7 @@ export default function EditPopsicle() {
         if (result.isConfirmed) {
           Swal.fire("Registro Exitoso!", "", "success");
           // Ahora puedes enviar el formData al servidor
-          dispatch(editPopsicle(id,formData));
+          dispatch(editPopsicle(id, formData));
           navigate("/Paletas");
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
@@ -114,6 +128,7 @@ export default function EditPopsicle() {
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
+      setSendImage(file)
     }
   };
 
@@ -197,11 +212,11 @@ export default function EditPopsicle() {
                     <TextField
                       id="outlined-adornment-weight"
                       variant="outlined"
-                      type="number"
+                      type="text"
                       fullWidth
                       label="Precio"
                       value={form.precio}
-                      onChange={handleChange}
+                      onChange={handlePrecio}
                       name="precio"
                       required
                       InputProps={{
@@ -216,11 +231,11 @@ export default function EditPopsicle() {
                   <TextField
                     id="outlined-adornment-weight"
                     variant="outlined"
-                    type="number"
+                    type="text"
                     label="Peso"
                     fullWidth
                     value={form.peso}
-                    onChange={handleChange}
+                    onChange={handlePeso}
                     name="peso"
                     required
                     InputProps={{
