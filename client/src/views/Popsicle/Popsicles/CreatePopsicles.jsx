@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchPopsicles from "./SearchPopsicles";
 import UploadFile from "./UploadFile";
+import formatoPrecio from "../../../function/formatPrice";
+import convertToWeight from "../../../function/convertToWeight";
 
 export default function CreatePopsicles() {
   const dispatch = useDispatch();
@@ -23,12 +25,25 @@ export default function CreatePopsicles() {
     precio: "",
   });
   const handleChange = (e) => {
-      const { name, value } = e.target;
-      setForm({ ...form, [name]: value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
+const handlePeso = (e) => {
+  const { name, value } = e.target;
+  const newValue = convertToWeight(value);
+  setForm({ ...form, [name]: newValue });
+};
+
+const handlePrecio = (e) => {
+  const { name, value } = e.target;
+
+  const newValue = formatoPrecio(value);
+  setForm({ ...form, [name]: newValue });
+};
+
   const handlePopsicleSelect = (popsicle) => {
-        setSelectedPopsicle(popsicle);
+    setSelectedPopsicle(popsicle);
   };
 
   const handleImageChange = (event) => {
@@ -38,7 +53,6 @@ export default function CreatePopsicles() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (
       !form.nombre ||
       !form.peso ||
@@ -50,34 +64,47 @@ export default function CreatePopsicles() {
     ) {
       // Muestra una alerta indicando el error
       Swal.fire({
-        title: 'Verifica la informacion.',
-        text: 'Por favor, complete todos los campos',
-        icon: 'warning',
+        title: "Verifica la informacion.",
+        text: "Por favor, complete todos los campos",
+        icon: "warning",
       });
     } else {
       // Crea un objeto FormData para enviar al servidor
       const formData = new FormData();
-      formData.append('nombre', form.nombre.toUpperCase());
-      formData.append('peso', form.peso);
-      formData.append('descripcion', form.descripcion.toUpperCase());
-      formData.append('id_tipo_paleta', selectedPopsicle.id);
-      formData.append('precio', form.precio);
-      formData.append('image', selectedImage); // Agrega la imagen al FormData
+      formData.append("nombre", form.nombre.toUpperCase());
+      formData.append("peso", form.peso);
+      formData.append("descripcion", form.descripcion.toUpperCase());
+      formData.append("id_tipo_paleta", selectedPopsicle.id);
+      formData.append("precio", form.precio);
+      formData.append("image", selectedImage); // Agrega la imagen al FormData
 
       Swal.fire({
-        title: '¿Quieres registrar esta Paleta?',
+        title: "¿Quieres registrar esta Paleta?",
         showDenyButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Registrar',
+        confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire('Registro Exitoso!', '', 'success');
-          // Ahora puedes enviar el formData al servidor
-          dispatch(createPopsicle(formData));
-          navigate('/Paletas');
+          try {
+             Swal.fire("Registro Exitoso!", "", "success");
+             // Ahora puedes enviar el formData al servidor
+             dispatch(createPopsicle(formData));
+             navigate("/Paletas");
+          } catch (error) {
+            // Captura cualquier error que ocurra durante el envío de datos
+            Swal.fire({
+              width: "20em",
+              title: `${error.response.data.data.message}`,
+              text: "No se pudo Registar al inventario de Paletas",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 4000,
+            });
+          }
+
         } else if (result.isDenied) {
-          Swal.fire('Los Cambios no se registraron.', '', 'info');
+          Swal.fire("Los Cambios no se registraron.", "", "info");
         }
       });
     }
@@ -123,11 +150,11 @@ export default function CreatePopsicles() {
                     <TextField
                       id="outlined-adornment-weight"
                       variant="outlined"
-                      type="number"
+                      type="text"
                       fullWidth
                       label="Precio"
                       value={form.precio}
-                      onChange={handleChange}
+                      onChange={handlePrecio}
                       name="precio"
                       required
                       InputProps={{
@@ -138,15 +165,15 @@ export default function CreatePopsicles() {
                     />
                   </div>
                 </div>
-                <div className="">
+                <div>
                   <TextField
                     id="outlined-adornment-weight"
                     variant="outlined"
-                    type="number"
+                    type="text"
                     label="Peso"
                     fullWidth
                     value={form.peso}
-                    onChange={handleChange}
+                    onChange={handlePeso}
                     name="peso"
                     required
                     InputProps={{
