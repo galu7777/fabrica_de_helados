@@ -1,25 +1,60 @@
-const { Recipe, Ingrediente, RecipeIngrediente } = require('../../db');
+const { Recipe, Ingrediente, RecipeIngrediente, Paleta } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
     try {
-        // Obtener todas las recetas con sus ingredientes relacionados
-        const recetasConIngredientes = await Recipe.findAll({
-            include: [
-                {
-                    model: Ingrediente,
-                    attributes: ['id', 'nombre'],
-                    through: {
-                        model: RecipeIngrediente,
-                        attributes: ['cantidad', 'unidad_medida'] // Puedes ajustar las columnas que deseas obtener de la tabla intermedia
-                    },
-                },
-            ],
-        });
+        const { id } = req.params;
 
-        response(res, 200, recetasConIngredientes);
+        if (id) {
+            // Si se proporciona un ID, buscar la receta por su ID
+            const recipe = await Recipe.findByPk(id, {
+                include: [
+                    {
+                        model: Ingrediente,
+                        attributes: ['id', 'nombre'],
+                        through: {
+                            model: RecipeIngrediente,
+                            attributes: ['cantidad', 'unidad_medida']
+                        },
+                    },
+                    {
+                        model: Paleta,
+                        attributes: ['id', 'nombre', 'unidad_medida', 'peso', 'precio', 'descripcion']
+                    },
+                ],
+            });
+
+            if (!recipe) {
+                return response(res, 404, 'Receta no encontrada');
+            }
+
+            // Si se encuentra la receta, responder con la receta encontrada
+            return response(res, 200, recipe);
+        } else {
+            // Si no se proporciona un ID, obtener todas las recetas
+            const recipes = await Recipe.findAll({
+                include: [
+                    {
+                        model: Ingrediente,
+                        attributes: ['id', 'nombre'],
+                        through: {
+                            model: RecipeIngrediente,
+                            attributes: ['cantidad', 'unidad_medida']
+                        },
+                    },
+                    {
+                        model: Paleta,
+                        attributes: ['id', 'nombre', 'unidad_medida', 'peso', 'precio', 'descripcion']
+                    },
+                ],
+            });
+
+            // Responder con todas las recetas encontradas
+            return response(res, 200, recipes);
+        }
     } catch (error) {
         console.error('Error: ', error.message);
-        response(res, 500, 'Internal Server Error');
+        // Manejar errores y responder con un mensaje de error
+        return response(res, 500, `Internal Server Error: ${error.message}`);
     }
 };

@@ -30,4 +30,19 @@ export const Endpoints = {
     TypePopsicle: {
         GetTypePopsicle: createUrl({ base: "typePopsicle", endpoint: "get_type_popsicle" }),
     },
+    Popsicle: {
+        GetPopsicle: createUrl({ base: "popsicle", endpoint: "get_popsicle" }),
+    },
+    InventoryPopsicle: {
+        GetInventoryPopsicle: createUrl({ base: "inventory_popsicle", endpoint: "get_inventoryPopsicle" }),
+    },
+    Sale: {
+        GetSales: createUrl({ base: "sale", endpoint: "get_allsales" }),
+    },
+    StockMateriaPrima: {
+        GetStockMateriaPrima: createUrl({ base: "stock", endpoint: "get_allstock" }),
+    },
+    StockPopsicle: {
+        GetStockPopsicle: createUrl({ base: "stock", endpoint: "get_allstock_popsicle" }),
+    },
 }

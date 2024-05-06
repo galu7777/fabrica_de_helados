@@ -5,10 +5,10 @@ import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { DataGrid } from "@mui/x-data-grid";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
 import CircularIndeterminate from "../../components/spinner/Spinner";
+import PropTypes from "prop-types";
+import InputAdornment from "@mui/material/InputAdornment";
+
 
 const TableRecipe = ({ onSelectedIngredientsChange }) => {
   const dispatch = useDispatch();
@@ -28,10 +28,10 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
 
   useEffect(() => {
     if (data) {
-      const updatedRows = data.map((item) => ({
+      const updatedRows = data.slice(2).map((item) => ({
         id: item.id,
         nombre: item.nombre,
-        unidad: item.unidad,
+        unidad_medida: item.unidad_medida,
         cantidad: item.cantidad || "",
       }));
       setRows(updatedRows);
@@ -39,12 +39,11 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
   }, [data]);
 
   useEffect(() => {
-    // Actualizar los ingredientes seleccionados cuando cambian las filas
     const updatedSelectedIngredients = rows.filter((row) => row.selected);
     setSelectedIngredients(updatedSelectedIngredients);
   }, [rows]);
 
-  const units = ["", "KG", "GR", "L", "ML", "OZ"];
+
 
   const handleCheckboxChange = (event, id) => {
     const isChecked = event.target.checked;
@@ -91,12 +90,12 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
     {
       field: "cantidad",
       headerName: "Cantidad",
-      width: 150,
+      width: 300,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
         <TextField
-        required
+          required
           id={`cantidad-${params.id}`}
           label="Cantidad"
           variant="outlined"
@@ -105,33 +104,15 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
             handleInputChange(params.id, "cantidad", event.target.value)
           }
           size="small"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+
+                {params.row.unidad_medida}
+              </InputAdornment>
+            ),
+          }}
         />
-      ),
-    },
-    {
-      field: "unidad",
-      headerName: "Unidad de Medida",
-      width: 200,
-      renderCell: (params) => (
-        <FormControl size="small" fullWidth>
-          <Select
-            value={params.row.unidad || ""}
-            onChange={(event) =>
-              handleInputChange(params.id, "unidad", event.target.value)
-            }
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-          >
-            <MenuItem value="">
-              <em>Seleccionar unidad</em>
-            </MenuItem>
-            {units.map((unit) => (
-              <MenuItem key={unit} value={unit}>
-                {unit}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
       ),
     },
   ];
@@ -159,6 +140,10 @@ const TableRecipe = ({ onSelectedIngredientsChange }) => {
       )}
     </div>
   );
+};
+
+TableRecipe.propTypes = {
+  onSelectedIngredientsChange: PropTypes.func.isRequired,
 };
 
 export default TableRecipe;

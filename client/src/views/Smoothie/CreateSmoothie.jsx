@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 import { getRecipes, createSmoothie } from "../../redux/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
+
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
+
 export default function CreateSmoothie() {
-  const [selectedRecipe, setSelectedRecipe] = useState("");
+
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipes);
   const { data } = recipes;
+    const [selected, setSelected] = useState(null);
     const refrescarPagina = () => {
       window.location.reload();
     };
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
-  console.log(selectedRecipe);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if ( (selectedRecipe === "")) {
+    if (selected.name === "") {
       // Muestra una alerta indicando el error
       Swal.fire({
         title: "Verifica la informacion.",
@@ -35,18 +38,32 @@ export default function CreateSmoothie() {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async(result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(
-            createSmoothie({
-              id_receta: selectedRecipe,
-            })
-          );
-           setTimeout(() => {
-             refrescarPagina();
-           }, "1000");
+          try {
+            Swal.fire("Registro Exitoso!", "", "success");
+            await dispatch(
+              createSmoothie({
+                id_receta: selected.id,
+              })
+            );
+            setTimeout(() => {
+              refrescarPagina();
+            }, "1000");
+          } catch (error) {
+            // Captura cualquier error que ocurra durante el envío de datos
+            const { response } = error;
+            Swal.fire({
+              width: "40em",
+              title: `${response.data.data}`,
+              text: "No se pudo Realizar el Batido",
+              icon: "error",
+              showConfirmButton: true,
+
+
+            });
+          }
 
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
@@ -54,30 +71,33 @@ export default function CreateSmoothie() {
       });
     }
   };
+    const handleSelect = (event, value) => {
+      setSelected(value);
+
+    };
   return (
     <>
       <form onSubmit={handleSubmit} className="w-full ">
         <div className=" -mx-3 mb-6 ">
           <div className="w-full px-3">
             <div className="w-full mr-4">
-              <InputLabel id="demo-simple-select-helper-label">
-                Seleccione una Receta
-              </InputLabel>
-              <Select
-                labelId="ingredient-select-label"
-                id="ingredient-select"
-                value={selectedRecipe}
-                onChange={(e) => setSelectedRecipe(e.target.value)}
-                fullWidth
-              >
-                <MenuItem value="">Seleccione un Batido</MenuItem>
-                {data &&
-                  data.map((ingredient) => (
-                    <MenuItem key={ingredient.id} value={ingredient.id}>
-                      {ingredient.nombre}
-                    </MenuItem>
-                  ))}
-              </Select>
+
+              {data && ( // Verificación de nulidad para data
+                <Autocomplete
+                  options={data}
+                  fullWidth
+                  getOptionLabel={(option) => option.nombre}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Buscar Receta"
+                      variant="outlined"
+                      required
+                    />
+                  )}
+                  onChange={handleSelect}
+                />
+              )}
             </div>
           </div>
         </div>

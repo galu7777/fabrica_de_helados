@@ -1,39 +1,93 @@
 import {
     ADD_INGREDIENT,
     GET_INGREDIENTS,
+    EDIT_INGREDIENTS,
+    DELETE_INGREDIENTS,
+    DETAIL_INGREDIENTS,
     ADD_RECIPE,
     GET_RECIPES,
+    EDIT_RECIPES,
+    DELETE_RECIPES,
+    DETAIL_RECIPES,
     ADD_PROVIDER,
     GET_PROVIDERS,
+    EDIT_PROVIDER,
+    DELETE_PROVIDER,
+    DETAIL_PROVIDER,
     GET_INVENTORY,
     ADD_INVENTORY,
     GET_SMOOTHIES,
     ADD_SMOOTHIE,
     GET_CUSTOMERS,
     ADD_CUSTOMER,
+    EDIT_CUSTOMER,
+    DETAIL_CUSTOMER,
+    DELETE_CUSTOMER,
     GET_TYPE_POPSICLE,
     ADD_TYPE_POPSICLE,
+    ADD_POPSICLE,
+    GET_POPSICLE,
+    EDIT_POPSICLE,
+    DETAIL_POPSICLE,
+    DELETE_POPSICLE,
+    ADD_STOREPOPSICLE,
+    ADD_INVENTORY_POPSICLE,
+    GET_INVENTORY_POPSICLE,
+    DETAIL_INVENTORY_POPSICLE,
+    GET_ESTADISTICAS,
+    GET_VENTAMES,
+    GET_TOP_CUSTOMER,
     REGISTER,
-    SIGNIN
+    SIGNIN,
+    DETAIL_USER,
+    EDIT_USER,
+    GET_USER,
+    GET_SALES,
+    ADD__SALE,
+    DETAIL_SALE,
+    GET_STOCK_MP,
+    GET_STOCK_POPSICLES
+
 } from "../actions/actionsTypes"
 
 const initialState = {
     ingredients: {},
     newIngredient: {},
+    ingredientDetail: {},
     recipes: {},
     newRecipe: {},
+    recipeDetail: {},
     providers: {},
     newProvider:{},
+    providerDetail: {},
     inventory:{},
     newInventory:{},
     smoothies: {},
     newSmoothie: {},
     customers: {},
     newCustomers: {},
+    customerDetail: {},
     newTypePopsicles: {},
     typePopsicles: {},
+    newPopsicles: {},
+    popsicleDetail: {},
+    popsicles: {},
+    inventoryPopsicle: {},
+    newinventoryPopsicles: {},
+    detail: {},
+    estadisticas: {},
+    ventaMes: {},
+    topCustomer: {},
     user: {},
-    newUser: {}
+    userList: {},
+    newUser: {},
+    userDetail: {},
+    sales: {},
+    newsale: {},
+    detailsale: {},
+    stockMP: {},
+    stockPop: {},
+    newStorePopsicle: {}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -52,6 +106,30 @@ export const reducer = (state = initialState, {type,payload} ) => {
             }
         }
 
+        case GET_USER: {
+            return {
+                ...state,
+                userList: payload
+            }
+        }
+
+        case EDIT_USER: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    [payload.id]: payload,
+                },
+            };
+        }
+
+        case DETAIL_USER:
+            return {
+                ...state,
+                userDetail: payload,
+
+            };
+
         case GET_INGREDIENTS: {
             return {
                 ...state,
@@ -64,6 +142,31 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 ...state,
                 newIngredient: payload
             }
+        }
+
+        case EDIT_INGREDIENTS: {
+            return {
+                ...state,
+                ingredients: {
+                    ...state.ingredients,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_INGREDIENTS:
+            return {
+                ...state,
+                ingredientDetail: payload,
+
+            };
+
+        case DELETE_INGREDIENTS: {
+            const { [payload.id]: _, ...remainingIngredients } = state.ingredients;
+            return {
+                ...state,
+                ingredients: remainingIngredients,
+                error: null,
+            };
         }
         case GET_RECIPES: {
             return {
@@ -79,6 +182,31 @@ export const reducer = (state = initialState, {type,payload} ) => {
             }
         }
 
+        case EDIT_RECIPES: {
+            return {
+                ...state,
+                recipes: {
+                    ...state.ingredients,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_RECIPES:
+            return {
+                ...state,
+                recipeDetail: payload,
+
+            };
+        case DELETE_RECIPES: {
+            const { [payload.id]: _, ...remainingRecipes } = state.ingredients;
+            return {
+                ...state,
+                recipes: remainingRecipes,
+                error: null,
+            };
+        }
+
+
         case GET_PROVIDERS: {
             return {
                 ...state,
@@ -92,6 +220,32 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 newProvider: payload
             }
         }
+
+
+        case EDIT_PROVIDER: {
+            return {
+                ...state,
+                providers: {
+                    ...state.ingredients,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_PROVIDER:
+            return {
+                ...state,
+                providerDetail: payload,
+
+            };
+        case DELETE_PROVIDER: {
+            const { [payload.id]: _, ...remainProvider } = state.providers;
+            return {
+                ...state,
+                providers: remainProvider,
+                error: null,
+            };
+        }
+
         case GET_INVENTORY: {
             return {
                 ...state,
@@ -133,6 +287,30 @@ export const reducer = (state = initialState, {type,payload} ) => {
             }
         }
 
+
+        case EDIT_CUSTOMER: {
+            return {
+                ...state,
+                customers: {
+                    ...state.customers,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_CUSTOMER:
+            return {
+                ...state,
+                customerDetail: payload,
+
+            };
+        case DELETE_CUSTOMER: {
+            const { [payload.id]: _, ...remainingcustomers } = state.customers;
+            return {
+                ...state,
+                customers: remainingcustomers,
+                error: null,
+            };
+        }
         case GET_TYPE_POPSICLE: {
             return {
                 ...state,
@@ -144,6 +322,125 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 newTypePopsicles: payload
+            }
+        }
+
+        case GET_POPSICLE: {
+            return {
+                ...state,
+                popsicles: payload
+            }
+        }
+        case ADD_STOREPOPSICLE: {
+            return {
+                ...state,
+                newStorePopsicle: payload
+            }
+        }
+
+        case ADD_POPSICLE: {
+            return {
+                ...state,
+                newPopsicles: payload
+            }
+        }
+
+
+        case EDIT_POPSICLE: {
+            return {
+                ...state,
+                popsicles: {
+                    ...state.popsicles,
+                    [payload.id]: payload,
+                },
+            };
+        }
+        case DETAIL_POPSICLE:
+            return {
+                ...state,
+                popsicleDetail: payload,
+
+            };
+
+        case DELETE_POPSICLE: {
+            const { [payload.id]: _, ...remainingPopsicles } = state.ingredients;
+            return {
+                ...state,
+                popsicles: remainingPopsicles,
+                error: null,
+            };
+        }
+
+        case ADD_INVENTORY_POPSICLE: {
+            return {
+                ...state,
+                newinventoryPopsicles: payload
+            }
+        }
+
+        case GET_INVENTORY_POPSICLE: {
+            return {
+                ...state,
+                inventoryPopsicle: payload
+            }
+        }
+
+        case DETAIL_INVENTORY_POPSICLE: {
+            return {
+                ...state,
+                detail: payload
+            }
+        }
+
+        case GET_ESTADISTICAS: {
+            return {
+                ...state,
+                estadisticas: payload
+            }
+        }
+
+        case GET_VENTAMES: {
+            return {
+                ...state,
+                ventaMes: payload
+            }
+        }
+        case GET_TOP_CUSTOMER: {
+            return {
+                ...state,
+                topCustomer: payload
+            }
+        }
+        case ADD__SALE: {
+            return {
+                ...state,
+                newsale: payload
+            }
+        }
+
+        case GET_SALES: {
+            return {
+                ...state,
+                sales: payload
+            }
+        }
+
+        case DETAIL_SALE:
+            return {
+                ...state,
+                detailsale: payload,
+
+            };
+        case GET_STOCK_MP: {
+            return {
+                ...state,
+                stockMP: payload
+            }
+        }
+        case GET_STOCK_POPSICLES: {
+            return {
+                ...state,
+                stockPop: payload
             }
         }
 

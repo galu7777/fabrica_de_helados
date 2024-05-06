@@ -13,18 +13,29 @@ module.exports = (sequelize) => {
             },
             nombre: {
                 type: DataTypes.STRING,
-                unique: true  
+                unique: true
+            },
+            image: {
+                type: DataTypes.TEXT
             },
             peso: {
                 type: DataTypes.FLOAT
             },
+            precio: {
+                type: DataTypes.FLOAT
+            },
             unidad_medida: {
                 type: DataTypes.STRING,
-                defaultValue: 'GRS'
+                defaultValue: 'GR'
             },
             descripcion: {
                 type: DataTypes.STRING,
+            },
+            status: {
+                type: DataTypes.ENUM("CREADO", "USADO"),
+                defaultValue: "CREADO"
             }
+
         },
         {
         timestamps: true,

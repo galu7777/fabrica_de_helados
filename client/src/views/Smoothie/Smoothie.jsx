@@ -6,22 +6,21 @@ import { DataGrid } from "@mui/x-data-grid";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import CreateSmoothie from "./CreateSmoothie";
 export default function Smoothie() {
-
   const dispatch = useDispatch();
   const smoothies = useSelector((state) => state.smoothies);
-    const { data } = smoothies;
-    useEffect(() => {
-      dispatch(getSmoothies());
-    }, [dispatch]);
-
-      const formatDateTime = (dateTimeString) => {
-        const dateTime = new Date(dateTimeString);
-        return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
-      };
+  const { data } = smoothies;
+  useEffect(() => {
+    dispatch(getSmoothies());
+  }, [dispatch]);
+ 
+  const formatDateTime = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+    return dateTime.toLocaleString(); // Utiliza el método toLocaleString para formatear la fecha y hora de manera local
+  };
 
   const columns = [
     {
-      field: "id_receta",
+      field: "nombre",
       headerName: "Nombre la receta",
       width: 400,
       headerAlign: "center",
@@ -29,7 +28,7 @@ export default function Smoothie() {
     },
     {
       field: "cantidad",
-      headerName: "cantidad total de ingredientes",
+      headerName: "Peso del Batido",
       width: 400,
       headerAlign: "center",
       align: "center",
@@ -43,17 +42,18 @@ export default function Smoothie() {
     },
   ];
 
-  const rows =
-    data &&
-    data.map((item) =>
-      //bg-[#fae9ee]
-      ({
-        id: item.id,
-        id_receta: item.id_receta,
-        cantidad: item.cantidad,
-        updatedAt: formatDateTime(item.updatedAt),
-      })
-    );
+const rows =
+  data &&
+  data.map((item) => {
+    const total = item.cantidad / 1000;
+    return {
+      id: item.id,
+      nombre: item.Recipe.nombre,
+      cantidad: `${total} KG`,
+      updatedAt: formatDateTime(item.updatedAt),
+    };
+  });
+
 
   return (
     <>
@@ -73,7 +73,7 @@ export default function Smoothie() {
           <Box
             sx={{
               height: 400,
-              width: "60%",
+              width: "65%",
               backgroundColor: "white",
               boxShadow: 24,
               borderRadius: 2,
@@ -91,7 +91,6 @@ export default function Smoothie() {
                   },
                 }}
                 pageSizeOptions={[5]}
-                checkboxSelection
                 disableRowSelectionOnClick
               />
             ) : (

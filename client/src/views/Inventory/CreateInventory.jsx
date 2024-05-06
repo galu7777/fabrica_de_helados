@@ -12,28 +12,40 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import Autocomplete from "@mui/material/Autocomplete";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function CreateInventory() {
   const [selectedIngredient, setSelectedIngredient] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("ENTREGA");
   const navigate = useNavigate();
   const [cantidad, setCantidad] = useState("");
-  const [unidad, setUnidad] = useState("");
+  const [selectedUnidadIngred, setSelectedUnidadIngred] = useState(null);
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredients);
   const providers = useSelector((state) => state.providers);
   const dataIng = ingredients.data;
   const dataProv = providers.data;
+
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getProviders());
   }, [dispatch]);
 
+  const handleIngredSelect = (event, value) => {
+    setSelectedIngredient(value);
+    setSelectedUnidadIngred(value.unidad_medida); // Establecer la unidad de medida
+  };
+
+  const handleProviderSelect = (event, value) => {
+    setSelectedProvider(value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!selectedIngredient || !selectedProvider || !cantidad || !unidad) {
+   
+    if (!cantidad) {
       // Muestra una alerta indicando el error
       Swal.fire({
         title: "Verifica la informacion.",
@@ -47,20 +59,35 @@ export default function CreateInventory() {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async (result) => {
+
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(
-            createInventory({
-              cantidad: cantidad,
-              tipo: type,
-              IngredienteId: selectedIngredient,
-              ProveedorId: selectedProvider,
-              unidad_medida: unidad
-            })
-          );
-           navigate("/Inventario");
+          try {
+             await dispatch(
+               createInventory({
+                 cantidad: Number(cantidad),
+                 tipo: type,
+                 IngredienteId: selectedIngredient.id,
+                 ProveedorId: selectedProvider.id,
+               })
+             );
+             Swal.fire("Registro Exitoso!", "", "success");
+
+             navigate("/Inventario");
+          } catch (error) {
+            // Captura cualquier error que ocurra durante el envío de datos
+            const { response } = error;
+            Swal.fire({
+              width: "20em",
+              title: `${response.data.data}`,
+              text: "No se pudo Guardar la Receta",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 4000,
+            });
+          }
+
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -88,47 +115,41 @@ export default function CreateInventory() {
           <div className=" -mx-3 mb-6 py-10">
             <div className="w-full px-3 mb-10">
               <div className="w-full mr-4">
-                <InputLabel id="demo-simple-select-helper-label">
-                  Seleccione un Ingrediente
-                </InputLabel>
-                <Select
-                  labelId="ingredient-select-label"
-                  id="ingredient-select"
-                  required
-                  value={selectedIngredient}
-                  onChange={(e) => setSelectedIngredient(e.target.value)}
-                  fullWidth
-                >
-                  <MenuItem value="">Seleccione un ingrediente</MenuItem>
-                  {dataIng &&
-                    dataIng.map((ingredient) => (
-                      <MenuItem key={ingredient.id} value={ingredient.id}>
-                        {ingredient.nombre}
-                      </MenuItem>
-                    ))}
-                </Select>
+                {dataIng && ( // Verificación de nulidad para data
+                  <Autocomplete
+                    options={dataIng}
+                    fullWidth
+                    getOptionLabel={(option) => option.nombre}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Buscar Productos"
+                        variant="outlined"
+                        required
+                      />
+                    )}
+                    onChange={handleIngredSelect}
+                  />
+                )}
               </div>
             </div>
             <div className="w-full px-3 mb-10">
-              <InputLabel id="demo-simple-select-helper-label">
-                Seleccione un Proveedor
-              </InputLabel>
-              <Select
-                required
-                labelId="provider-select-label"
-                id="provider-select"
-                value={selectedProvider}
-                onChange={(e) => setSelectedProvider(e.target.value)}
-                className="w-full"
-              >
-                <MenuItem value="">Seleccione un proveedor</MenuItem>
-                {dataProv &&
-                  dataProv.map((provider) => (
-                    <MenuItem key={provider.id} value={provider.id}>
-                      {provider.razon_social}
-                    </MenuItem>
-                  ))}
-              </Select>
+              {dataProv && ( // Verificación de nulidad para data
+                <Autocomplete
+                  options={dataProv.slice(1)}
+                  fullWidth
+                  getOptionLabel={(option) => option.razon_social}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Buscar Proveedor"
+                      variant="outlined"
+                      required
+                    />
+                  )}
+                  onChange={handleProviderSelect}
+                />
+              )}
             </div>
             <div className="w-full px-3 mb-10">
               <InputLabel id="demo-simple-select-helper-label">
@@ -147,7 +168,7 @@ export default function CreateInventory() {
               </Select>
             </div>
             <div className="w-full px-3 flex">
-              <div className="w-2/4 mr-4 py-6">
+              <div className="w-full mr-4 py-6">
                 <TextField
                   required
                   fullWidth
@@ -156,30 +177,14 @@ export default function CreateInventory() {
                   variant="outlined"
                   value={cantidad}
                   onChange={(e) => setCantidad(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {selectedUnidadIngred ? selectedUnidadIngred : ""}
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-              </div>
-
-              <div className="w-2/4 py-0.5">
-                <InputLabel id="demo-simple-select-helper-label">
-                  Seleccione una Unidad de medida
-                </InputLabel>
-                <Select
-                  required
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={unidad}
-                  fullWidth
-                  onChange={(e) => setUnidad(e.target.value)}
-                >
-                  <MenuItem value="">
-                    <em>Seleccionar unidad</em>
-                  </MenuItem>
-                  <MenuItem value={"KG"}>KG</MenuItem>
-                  <MenuItem value={"GR"}>GR</MenuItem>
-                  <MenuItem value={"L"}>L</MenuItem>
-                  <MenuItem value={"ML"}>ML</MenuItem>
-                  <MenuItem value={"OZ"}>OZ</MenuItem>
-                </Select>
               </div>
             </div>
           </div>

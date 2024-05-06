@@ -1,8 +1,16 @@
-const { InventarioPaleta, Paleta, TipoDePaleta, BatidaDeHelado } = require('../../../db')
+const {
+    InventarioPaleta,
+    Paleta,
+    TipoDePaleta,
+    BatidaDeHelado,
+    InventarioMateriaPrima,
+    StockMateriaPrima,
+    StockPaleta
+} = require('../../../db')
 const response = require('../../../utils/response')
 
 module.exports = async (req, res) => {
-    const { id_batida, id_tipo_de_paleta, id_paleta} = req.body;
+    const { id_batida, id_paleta} = req.body;
     try {
         const foundSmoothie = await InventarioPaleta.findOne({
             where: { BatidaDeHeladoId: id_batida }
@@ -12,28 +20,135 @@ module.exports = async (req, res) => {
             return response(res, 200, "Shake already registered in the db.")
         }
         const foundedSmoothie = await BatidaDeHelado.findByPk(id_batida)
-        const foundedPopsicleType = await TipoDePaleta.findByPk(id_tipo_de_paleta)
         const foundedPopsicle = await Paleta.findByPk(id_paleta)
+        const idTypyPopsicle = foundedPopsicle.dataValues.TipoDePaletumId
+        const foundedPopsicleType = await TipoDePaleta.findByPk(idTypyPopsicle)
 
         const typePopsicle = foundedPopsicleType.dataValues
         const smoothie = foundedSmoothie.dataValues
         const popsicle = foundedPopsicle.dataValues
-        
+
         if(typePopsicle && smoothie && popsicle){
             const { id, cantidad } = smoothie
-            const cantidad_paleta = Math.floor(cantidad * 1000 / popsicle.peso)
+            const foundPalletWood = await StockMateriaPrima.findByPk(1)
+            const foundPackaging = await StockMateriaPrima.findByPk(2)
+            let cantidad_paleta = Math.floor(cantidad / popsicle.peso)
 
-            const entry_inventory_popsicle = await InventarioPaleta.create({
-                nombre_paleta: popsicle.nombre,
-                tipo_paleta: typePopsicle.nombre,
-                cantidad: cantidad_paleta,
-                peso_unitario: popsicle.peso,
-                unidad_medida: "GRS",
-                tipo: "ENTREGA",
-                BatidaDeHeladoId: id,
-                TipoDePaletumId: typePopsicle.id
-            })
-            return response(res, 201, {entry_inventory_popsicle})
+            if (foundPalletWood.cantidad - cantidad_paleta <= 0 && foundPackaging.cantidad - cantidad_paleta <= 0) {
+                let insufficientIngredient;
+                if (foundPalletWood.cantidad - cantidad_paleta <= 0) {
+                    insufficientIngredient = "Madera de paleta";
+                } else {
+                    insufficientIngredient = "Empaque";
+                }
+                return response(res, 400, { message: `Cantidad insuficiente en el inventario de ${insufficientIngredient}.` })
+            } else {
+                const nombre_paleta = popsicle.nombre
+                const foundStock = await StockPaleta.findOne({
+                    where: {nombre_paleta}
+                })
+                if(foundStock){
+                    const cntPw = foundPalletWood.cantidad - cantidad_paleta
+                    await foundPalletWood.update({
+                        cantidad: cntPw
+                    })
+                    await foundedSmoothie.update({
+                        status: "USADO"
+                    })
+                    await InventarioMateriaPrima.create({
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPalletWood.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPalletWood.IngredienteId,
+                        ProveedorId: foundPalletWood.ProveedorId
+                    })
+
+                    const cntP = foundPackaging.cantidad - cantidad_paleta
+                    await foundPackaging.update({
+                        cantidad: cntP
+                    })
+                    await InventarioMateriaPrima.create({
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPackaging.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPackaging.IngredienteId,
+                        ProveedorId: foundPackaging.ProveedorId
+                    })
+
+                    await InventarioPaleta.create({
+                        nombre_paleta: popsicle.nombre,
+                        tipo_paleta: typePopsicle.nombre,
+                        cantidad: cantidad_paleta,
+                        peso_unitario: popsicle.peso,
+                        precio: popsicle.precio,
+                        unidad_medida: "GRS",
+                        tipo: "ENTREGA",
+                        PaletumId: popsicle.id,
+                        BatidaDeHeladoId: id,
+                        TipoDePaletumId: typePopsicle.id
+                    })
+                    const cnt = foundStock.cantidad
+                    const entry_stock_popsicle = await foundStock.update({
+                        cantidad: cnt + cantidad_paleta
+                    })
+
+                    return response(res, 201, {entry_stock_popsicle})
+                } else {
+                    const cntPw = foundPalletWood.cantidad - cantidad_paleta
+                    await foundPalletWood.update({
+                        cantidad: cntPw
+                    })
+                    await foundedSmoothie.update({
+                        status: "USADO"
+                    })
+                    await InventarioMateriaPrima.create({
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPalletWood.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPalletWood.IngredienteId,
+                        ProveedorId: foundPalletWood.ProveedorId
+                    })
+
+                    const cntP = foundPackaging.cantidad - cantidad_paleta
+                    await foundPackaging.update({
+                        cantidad: cntP
+                    })
+                    await InventarioMateriaPrima.create({
+                        cantidad: -cantidad_paleta,
+                        unidad_medida: foundPackaging.unidad_medida,
+                        tipo: "SALIDA",
+                        IngredienteId: foundPackaging.IngredienteId,
+                        ProveedorId: foundPackaging.ProveedorId
+                    })
+
+                    await InventarioPaleta.create({
+                        nombre_paleta: popsicle.nombre,
+                        tipo_paleta: typePopsicle.nombre,
+                        cantidad: cantidad_paleta,
+                        peso_unitario: popsicle.peso,
+                        precio: popsicle.precio,
+                        unidad_medida: "GRS",
+                        tipo: "ENTREGA",
+                        PaletumId: popsicle.id,
+                        BatidaDeHeladoId: id,
+                        TipoDePaletumId: typePopsicle.id
+                    })
+                    const entry_stock_popsicle = await StockPaleta.create({
+                        nombre_paleta: popsicle.nombre,
+                        tipo_paleta: typePopsicle.nombre,
+                        cantidad: cantidad_paleta,
+                        peso_unitario: popsicle.peso,
+                        precio: popsicle.precio,
+                        unidad_medida: "GRS",
+                        tipo: "ENTREGA",
+                        PaletumId: popsicle.id,
+                        BatidaDeHeladoId: id,
+                        TipoDePaletumId: typePopsicle.id
+                    })
+
+                    return response(res, 201, {entry_stock_popsicle})
+                }
+            }
         } else {
             return response(res, 500, "Don't founded info")
         }

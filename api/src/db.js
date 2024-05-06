@@ -30,9 +30,11 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { 
+const {
   BatidaDeHelado,
   Cliente,
+  ClienteVenta,
+  PaletaMovimiento,
   CuentasPorCobrar,
   DetallesDeVenta,
   DetallesDevolucion,
@@ -48,10 +50,14 @@ const {
   Recipe,
   TipoDePaleta,
   Venta,
-  User
+  User,
+  StockMateriaPrima,
+  StockPaleta,
 } = sequelize.models;
 
 // Aca vendrian las relaciones
+// Relacion entre Paleta y tipo de Paletas.
+Paleta.belongsTo(TipoDePaleta);
 // Relacion entre ingredientes, proveedores e inventario.
 Ingrediente.belongsTo(Proveedor);
 InventarioMateriaPrima.belongsTo(Ingrediente);
@@ -61,19 +67,39 @@ Recipe.belongsToMany(Ingrediente, {through: RecipeIngrediente, constraints: fals
 //Relacion entre receta y batido
 Recipe.hasMany(BatidaDeHelado, { foreignKey: 'id_recipe' })
 BatidaDeHelado.belongsTo(Recipe, { foreignKey: 'id_recipe' })
-// Relacion entre batido y paleta
-InventarioPaleta.belongsTo(BatidaDeHelado)
+//Relacion entre receta y paleta
+Paleta.hasOne(Recipe, { foreignKey: 'id_paleta' });
+Recipe.belongsTo(Paleta, { foreignKey: 'id_paleta' });
+// Relacion entre inventario paleta, batido y paleta
+InventarioPaleta.belongsTo(Paleta)
+// InventarioPaleta.belongsTo(BatidaDeHelado)
 InventarioPaleta.belongsTo(TipoDePaleta)
+
+// Relacion entre inventario paleta report paleta
+// InventarioPaleta.belongsTo(PaletaMovimiento)
 //Relacion entre devolucion inventario paleta
 Devolucion.belongsTo(InventarioPaleta)
 // Relacion entre cliente y venta
-Cliente.hasMany(Venta)
-Venta.belongsTo(Cliente)
+Venta.belongsToMany(StockPaleta, { through: ClienteVenta, as: 'paletasCompradas' });
+
+//Relacion entre ClienteVenta y StockPaleta
+ClienteVenta.belongsTo(StockPaleta, { as: 'StockPaleta', foreignKey: 'StockPaletumId' });
+StockPaleta.hasMany(ClienteVenta, { as: 'ClienteVentas', foreignKey: 'StockPaletumId' });
+//Relacion entre venta y cliente
+Cliente.hasOne(Venta, { foreignKey: 'id_cliente' });
+Venta.belongsTo(Cliente, { foreignKey: 'id_cliente' });
 // Relacion entre devolucion y cliente
 Cliente.hasMany(Devolucion)
 Devolucion.belongsTo(Cliente)
 // Relacion entre devolucion y venta
 Devolucion.belongsTo(Venta)
+// Relacion entre stock, proveedores e ingredientes
+StockMateriaPrima.belongsTo(Ingrediente);
+StockMateriaPrima.belongsTo(Proveedor);
+// Relacion entre stock paleta, batido y paleta
+StockPaleta.belongsTo(Paleta)
+StockPaleta.belongsTo(BatidaDeHelado)
+StockPaleta.belongsTo(TipoDePaleta)
 
 // Product.hasMany(Reviews);
 

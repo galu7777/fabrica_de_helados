@@ -14,9 +14,6 @@ module.exports = (sequelize) => {
             nombre_paleta: {
                 type: DataTypes.STRING,
             },
-            tipo_paleta: {
-                type: DataTypes.STRING,
-            },
             cantidad: {
                 type: DataTypes.INTEGER,
             },
@@ -28,7 +25,19 @@ module.exports = (sequelize) => {
                 defaultValue: 'GRS'
             },
             tipo: {
-                type: DataTypes.ENUM('ENTREGA','ENTREGA POR BATIDO','SALIDA', 'SALIDA POR VENTA'),
+                type: DataTypes.ENUM('ENTREGA',
+                    'ENTREGA POR BATIDO',
+                    'SALIDA',
+                    'SALIDA POR VENTA',
+                    'SALIDA POR PUBLICIDAD',
+                    'DERRETIDAS',
+                    'REGALADAS',
+                    'SALIDA POR DUEÑO',
+                    'OTRO'),
+            },
+            descripcion: {
+                type: DataTypes.STRING,
+                defaultValue: '',
             }
         },
         {

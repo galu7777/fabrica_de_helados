@@ -32,7 +32,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(cUser);
       await dispatch(signin(cUser));
       Swal.fire({
         width: "20em",
@@ -44,9 +43,11 @@ function Login() {
       });
       navigate("/home");
     } catch (error) {
+      const { response } = error
       Swal.fire({
         width: "20em",
-        title: "No se pudo iniciar sesion",
+        title: `${response.data.data}`,
+        text: "No se pudo iniciar sesion",
         icon: "error",
         showConfirmButton: false,
         timer: 1000,
@@ -74,7 +75,7 @@ function Login() {
             <div className="bg-white rounded-md shadow-md h-2/4 w-2/4 p-8">
               <form className="p-6  " onSubmit={handleSubmit}>
                 <h1 className="text-indigo-600 text-2xl font-bold text-center">
-                  Iniciar Session
+                  Iniciar Sesión
                 </h1>
                 <div className="mb-6 px-2 mt-10">
                   <TextField
@@ -143,7 +144,10 @@ function Login() {
               </form>
               <p className="text-center">
                 ¿No tienes una cuenta?{" "}
-                <Link to="/register" className="linkR text-center hover:text-indigo-600">
+                <Link
+                  to="/register"
+                  className="linkR text-center hover:text-indigo-600"
+                >
                   Regístrate
                 </Link>
               </p>

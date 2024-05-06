@@ -19,9 +19,29 @@ export {
 } from "./smoothie"
 
 export {
-    getClient as getClientsApi
+    getCliente as getClientsApi
 } from "./client"
 
 export {
     getTypePopsicle as getTypePopsicleApi
 } from "./typePopsicle"
+
+export {
+    getPopsicle as getPopsicleApi
+} from "./popsicles"
+
+export {
+    getInventoryPopsicles as getInventoryPopsicleApi
+} from "./inventoryPopsicles"
+
+export {
+    getSales as getSalesApi
+} from "./sales"
+
+export {
+    getStockMateriaPrima as getStockMateriaPrimaApi
+} from "./stockMateriaPrima"
+
+export {
+    getStockPopsicle as getStockPopsicleApi
+} from "./stockPopsicle"

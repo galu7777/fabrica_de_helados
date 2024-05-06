@@ -15,12 +15,12 @@ export default function CreateProvider() {
   const [form, setForm] = useState({
     razon_social: "",
     direccion: "",
-    cod_dni: "",
+    cod_dni: "V",
     cedula_rif: "",
     telefono: "",
   });
   const [telSelect, setTelSelect] = useState({
-    uno: "",
+    uno: "0414",
     dos: "",
   });
   const handleTel = (e) => {
@@ -38,9 +38,6 @@ export default function CreateProvider() {
     setForm({ ...form, [name]: value });
   };
 
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,19 +55,34 @@ export default function CreateProvider() {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async(result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire("Registro Exitoso!", "", "success");
-          dispatch(
-            createProvider({
-              razon_social: form.razon_social,
-              direccion: form.direccion,
-              telefono: form.telefono,
-              cod_dni: form.cod_dni,
-              cedula_rif: form.cedula_rif,
-            }));
+          try {
+              Swal.fire("Registro Exitoso!", "", "success");
+            await  dispatch(
+                createProvider({
+                  razon_social: form.razon_social,
+                  direccion: form.direccion,
+                  telefono: form.telefono,
+                  cod_dni: form.cod_dni,
+                  cedula_rif: form.cedula_rif,
+                })
+              );
               navigate("/proveedores");
+
+          }  catch (error) {
+
+        const { response } = error;
+        Swal.fire({
+          width: "40em",
+          title: `${response.data.data}`,
+          text: "No se pudo Realizar el Batido",
+          icon: "error",
+          showConfirmButton: true,
+        });
+      }
+
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -128,13 +140,16 @@ export default function CreateProvider() {
                     name="cod_dni"
                   >
                     <MenuItem value={"V"}>V</MenuItem>
+                    <MenuItem value={"E"}>E</MenuItem>
                     <MenuItem value={"J"}>J</MenuItem>
                     <MenuItem value={"G"}>G</MenuItem>
+                    <MenuItem value={"R"}>R</MenuItem>
+                    <MenuItem value={"P"}>P</MenuItem>
                   </Select>
                 </div>
                 <div className="w-3/4">
                   <TextField
-                    label="Cedula de Identidad"
+                    label="RIF"
                     variant="outlined"
                     type="number"
                     fullWidth
@@ -156,7 +171,7 @@ export default function CreateProvider() {
                     defaultValue={""}
                     onChange={handleTel}
                     name="uno"
-                    value={form.uno}
+                    value={telSelect.uno}
                     required
                   >
                     <MenuItem value={"0414"}>0414</MenuItem>
@@ -174,14 +189,14 @@ export default function CreateProvider() {
                     type="number"
                     onChange={handleTel}
                     name="dos"
-                    value={form.dos}
+                    value={telSelect.dos}
                     required
                   />
                 </div>
               </div>
             </div>
             <Button color="error" variant="outlined" fullWidth type="submit">
-             Aceptar
+              Aceptar
             </Button>
           </form>
         </div>
