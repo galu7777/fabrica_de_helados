@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { signin } from "../../redux/actions/actions";
@@ -9,7 +9,7 @@ import "./Login.style.css";
 import InputAdornment from "@mui/material/InputAdornment";
 
 function Login() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // const [error, setError] = useState("");
@@ -41,7 +41,7 @@ function Login() {
         timer: 2000,
         timerProgressBar: true,
       });
-      navigate("/home");
+     window.location.href = "/home";
     } catch (error) {
       const { response } = error
       Swal.fire({

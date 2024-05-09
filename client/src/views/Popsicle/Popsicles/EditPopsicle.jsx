@@ -257,6 +257,8 @@ export default function EditPopsicle() {
                   fullWidth
                   name="descripcion"
                   required
+                  multiline
+                  rows={4}
                 />
               </div>
             </div>

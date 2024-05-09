@@ -20,7 +20,10 @@ module.exports = (sequelize) => {
             },
             tipo: {
                 type: DataTypes.ENUM('ENTREGA','SALIDA'),
-            }
+            },
+            invoice_amount: {
+                type: DataTypes.FLOAT
+            },
         },
         {
             timestamps: true,

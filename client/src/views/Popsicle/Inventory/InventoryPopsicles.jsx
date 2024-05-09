@@ -8,6 +8,7 @@ import CreateStore from "../Store/CreateStore";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import DetailPopsicle from "../../../components/modal/paletas/DetailPopsicle";
+import LowStockAlert from "../../../components/Alert/LowStockAlert";
 
 export default function InventoryPopsicles() {
   const dispatch = useDispatch();
@@ -107,6 +108,7 @@ export default function InventoryPopsicles() {
       className="bg-cover bg-center h-screen select-none"
       style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
     >
+      <LowStockAlert />
       <div className="w-full flex flex-col items-center select-none py-10">
         <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto ">
           <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">

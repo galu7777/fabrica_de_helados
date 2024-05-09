@@ -6,7 +6,7 @@ import SalesTable from "./Table";
 import Typography from "@mui/material/Typography";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-
+import LowStockAlert from "../../components/Alert/LowStockAlert";
 
 export default function CreateSale() {
   const dispatch = useDispatch();
@@ -108,6 +108,7 @@ const handleSubmit = (e) => {
 
   return (
     <div className="bg-cover bg-center h-screen select-none bg-gray-100 ">
+      <LowStockAlert />
       <div className="flex flex-col h-screen items-center select-none bg-white mx-auto my-auto w-full">
         <div className="p-6 w-3/4">
           <div className="flex items-center text-center justify-center">

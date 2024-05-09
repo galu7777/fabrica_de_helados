@@ -3,7 +3,7 @@ const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
     const { id } = req.params;
-    const { cantidad, tipo, IngredienteId, ProveedorId } = req.body;
+    const { cantidad, tipo, IngredienteId, ProveedorId, invoice_amount } = req.body;
 
     try {
         if (!id) {
@@ -28,6 +28,10 @@ module.exports = async (req, res) => {
         if (ProveedorId !== undefined) {
             item.ProveedorId = ProveedorId;
         }
+        if (invoice_amount !== undefined) {
+            item.invoice_amount = invoice_amount;
+        }
+
 
         await item.save();
 

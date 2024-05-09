@@ -31,7 +31,7 @@ import ListUser from "./views/User/ListUser";
 import CreateStore from "./views/Popsicle/Store/CreateStore";
 import SalidaPaletas from "./views/Popsicle/Store/SalidaPaletas";
 import { Estadisticas } from "./views/Estadisticas/Estadisticas";
-
+import ShowPopsicle from "./views/Home/ShowPopsicle/ShowPopsicle";
 
 function App() {
   const location = useLocation();
@@ -52,6 +52,7 @@ function App() {
           </>
         )}
         <Route path="/home" element={<Home />} />
+        <Route path="/showPopsicle/:id" element={<ShowPopsicle />} />
 
         {/* Proteger rutas según el rol */}
         {user && (
@@ -113,10 +114,16 @@ function App() {
 
             {user.rol === "empleado" && (
               <>
-                <Route path="/batidos" element={<Smoothie />} />
-                <Route path="/Inventario" element={<Inventory />} />
+                <Route path="/stock_popsicle" element={<StockPopsicles />} />
+                <Route
+                  path="/InventarioPaletas"
+                  element={<InventoryPopsicles />}
+                />
+                <Route path="/store" element={<CreateStore />} />
+                <Route path="/SalidaPaletas" element={<SalidaPaletas />} />
+                <Route path="/Paletas" element={<Popsicles />} />
+                <Route path="/Paleta/:id" element={<EditPopsicle />} />
                 <Route path="/crear_inventario" element={<CreateInventory />} />
-                <Route path="/stock_mp" element={<StockMateriaPrima />} />
                 <Route path="/proveedores" element={<Provider />} />
                 <Route path="/Provider/:id" element={<EditProvider />} />
               </>

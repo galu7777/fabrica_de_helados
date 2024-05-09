@@ -18,6 +18,7 @@ export default function CreateRecipe() {
   const popsicles = useSelector((state) => state.popsicles);
   const dataPopsicles = popsicles.data;
   const [selectedPopsicle, setSelectedPopsicle] = useState("");
+  const [cantidad, setCantidad] = useState("");
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -151,6 +152,20 @@ export default function CreateRecipe() {
                     onChange={(e, value) => setSelectedPopsicle(value)}
                   />
                 )}
+              </div>
+            </div>
+            <div className="w-full px-3 flex">
+              <div className="w-full mr-4 mb-6">
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  label="Cantidad de Paletas"
+                  variant="outlined"
+                  value={cantidad}
+                  onChange={(e) => setCantidad(e.target.value)}
+
+                />
               </div>
             </div>
             <Button color="error" variant="outlined" fullWidth type="submit">

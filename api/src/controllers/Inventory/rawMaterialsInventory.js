@@ -2,7 +2,7 @@ const { InventarioMateriaPrima, StockMateriaPrima, Ingrediente } = require('../.
 const response = require('../../utils/response')
 
 module.exports = async (req, res) => {
-    const { cantidad, tipo, IngredienteId, ProveedorId } = req.body;
+    const { cantidad, tipo, IngredienteId, ProveedorId, invoice_amount } = req.body;
     try {
         if(cantidad == 0 || cantidad <= 0){
             return response(res, 500, {message: 'The quantity must be a positive number and greater than zero.'})
@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
                     cantidad: cnt
                 })
                 await InventarioMateriaPrima.create({
-                    cantidad: -cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
+                    cantidad: -cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId, invoice_amount: -invoice_amount
                 })
                 return response(res, 201, {message: 'success', entry})
             }
@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
                 cantidad: cnt
             })
             await InventarioMateriaPrima.create({
-                cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
+                cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId, invoice_amount
             })
             return response(res, 201, {message: 'success', entry})
         }

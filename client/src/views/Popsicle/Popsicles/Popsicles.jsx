@@ -1,24 +1,24 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPopsicle, deletePopsicle } from "../../../redux/actions/actions";
+import { getPopsicle } from "../../../redux/actions/actions";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CircularIndeterminate from "../../../components/spinner/Spinner";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Swal from "sweetalert2";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import Swal from "sweetalert2";
+// import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Popsicles() {
   const dispatch = useDispatch();
   const popsicles = useSelector((state) => state.popsicles);
   const { data } = popsicles;
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-      const refrescarPagina = () => {
-        window.location.reload();
-      };
+  // const refrescarPagina = () => {
+  //   window.location.reload();
+  // };
 
   useEffect(() => {
     dispatch(getPopsicle());
@@ -29,27 +29,27 @@ export default function Popsicles() {
     // por ejemplo, usando react-router-dom:
     navigate(`/Paleta/${id}`);
   };
-  const handleDelete = (id) => {
-    // Mostrar un cuadro de diálogo de confirmación con SweetAlert
-    Swal.fire({
-      title: "¿Estás seguro de que quieres Eliminarlo?",
-      text: "Esta acción no se puede deshacer",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminarlo",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Registro Exitoso!", "", "success");
-        dispatch(deletePopsicle(id));
-        setTimeout(() => {
-          refrescarPagina();
-        }, "1000");
-      }
-    });
-  };
+  // const handleDelete = (id) => {
+  //   // Mostrar un cuadro de diálogo de confirmación con SweetAlert
+  //   Swal.fire({
+  //     title: "¿Estás seguro de que quieres Eliminarlo?",
+  //     text: "Esta acción no se puede deshacer",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Sí, eliminarlo",
+  //     cancelButtonText: "Cancelar",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire("Registro Exitoso!", "", "success");
+  //       dispatch(deletePopsicle(id));
+  //       setTimeout(() => {
+  //         refrescarPagina();
+  //       }, "1000");
+  //     }
+  //   });
+  // };
   const columns = [
     {
       field: "image",
@@ -111,24 +111,23 @@ export default function Popsicles() {
         </div>
       ),
     },
-    {
-      field: "Eliminar",
-      headerName: "Eliminar",
-      width: 100,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => (
-        <div>
-          <DeleteIcon
-            variant="outlined"
-            color="error"
-            onClick={() => handleDelete(params.row.id)}
-          />
-        </div>
-      ),
-    },
+    // {
+    //   field: "Eliminar",
+    //   headerName: "Eliminar",
+    //   width: 100,
+    //   headerAlign: "center",
+    //   align: "center",
+    //   renderCell: (params) => (
+    //     <div>
+    //       <DeleteIcon
+    //         variant="outlined"
+    //         color="error"
+    //         onClick={() => handleDelete(params.row.id)}
+    //       />
+    //     </div>
+    //   ),
+    // },
   ];
-
 
   const rows =
     data &&

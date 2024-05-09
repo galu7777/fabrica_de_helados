@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import CircularIndeterminate from "../../components/spinner/Spinner";
+import LowStockAlert from "../../components/Alert/LowStockAlert";
 
 export default function StockMateriaPrima() {
 const dispatch = useDispatch();
@@ -13,6 +14,8 @@ const stockMp = useSelector((state) => state.stockMP);
   useEffect(() => {
     dispatch(getStockMateriaPrima());
   }, [dispatch]);
+
+
 
    const columns = [
      {
@@ -45,7 +48,7 @@ const stockMp = useSelector((state) => state.stockMP);
        ({
          id: item.id,
          nombre: item.Ingrediente.nombre,
-         cantidad: item.cantidad,
+         cantidad: item.cantidad.toFixed(2),
          unidad_medida: item.unidad_medida
        })
      );
@@ -54,6 +57,7 @@ const stockMp = useSelector((state) => state.stockMP);
       className="bg-cover bg-center h-screen select-none "
       style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
     >
+      <LowStockAlert />
       <div className="flex flex-col items-center py-10">
         <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
           <h2 className="text-2xl text-center font-bold mb-6 text-red-700">

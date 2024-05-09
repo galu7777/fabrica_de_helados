@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import Autocomplete from "@mui/material/Autocomplete";
+import {  Paper } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import { getStockPopsicle } from "../../redux/actions/actions";
 import CircularIndeterminate from "../../components/spinner/Spinner";
 import PropTypes from "prop-types";
@@ -131,27 +132,39 @@ const calculateTotals = (updatedRows) => {
       align: "center",
       renderCell: (params) =>
         showTextField[params.id] ? (
-          <Select
-            sx={{ width: "50%", textAlign: "center" }}
+          <Autocomplete
+            sx={{ textAlign: "center" }}
+            fullWidth
             value={params.row.cantidad === 0 ? "" : params.row.cantidad}
-            onChange={(event) => handleQuantityChange(event, params.id)}
-            displayEmpty
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 200,
-                  overflowY: "auto",
-                },
-              },
-            }}
-          >
-            <MenuItem value={0}>0</MenuItem>
-            {[...Array(params.row.disponible).keys()].map((value) => (
-              <MenuItem key={value + 1} value={value + 1}>
-                {value + 1}
-              </MenuItem>
-            ))}
-          </Select>
+            onChange={(event, newValue) =>
+              handleQuantityChange({ target: { value: newValue } }, params.id)
+            }
+            options={[...Array(params.row.disponible).keys()].map(
+              (value) => value + 1
+            )}
+            getOptionLabel={(option) => option.toString()}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label=""
+                required
+                sx={{ textAlign: "center" }}
+                InputProps={{
+                  ...params.InputProps,
+                  type: "number",
+                  style: {
+                    textAlign: "center",
+                    textAlignLast: "center", // Agrega esta propiedad para centrar el cursor
+                  },
+                }}
+              />
+            )}
+            PaperComponent={({ children }) => (
+              <Paper style={{ maxHeight: 200, overflowY: "auto" }}>
+                {children}
+              </Paper>
+            )}
+          />
         ) : (
           <Button
             variant="contained"

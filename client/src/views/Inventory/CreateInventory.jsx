@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
+import { ModalformProvider } from "./Provider/ModalformProvider";
 
 export default function CreateInventory() {
   const [selectedIngredient, setSelectedIngredient] = useState("");
@@ -21,6 +22,7 @@ export default function CreateInventory() {
   const [type, setType] = useState("ENTREGA");
   const navigate = useNavigate();
   const [cantidad, setCantidad] = useState("");
+  const [invoice_amount, setInvoice_amount] = useState("");
   const [selectedUnidadIngred, setSelectedUnidadIngred] = useState(null);
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredients);
@@ -44,7 +46,7 @@ export default function CreateInventory() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+
     if (!cantidad) {
       // Muestra una alerta indicando el error
       Swal.fire({
@@ -60,21 +62,21 @@ export default function CreateInventory() {
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
       }).then(async (result) => {
-
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           try {
-             await dispatch(
-               createInventory({
-                 cantidad: Number(cantidad),
-                 tipo: type,
-                 IngredienteId: selectedIngredient.id,
-                 ProveedorId: selectedProvider.id,
-               })
-             );
-             Swal.fire("Registro Exitoso!", "", "success");
+            await dispatch(
+              createInventory({
+                cantidad: Number(cantidad),
+                tipo: type,
+                IngredienteId: selectedIngredient.id,
+                ProveedorId: selectedProvider.id,
+                invoice_amount: invoice_amount,
+              })
+            );
+            Swal.fire("Registro Exitoso!", "", "success");
 
-             navigate("/Inventario");
+            navigate("/Inventario");
           } catch (error) {
             // Captura cualquier error que ocurra durante el envío de datos
             const { response } = error;
@@ -87,7 +89,6 @@ export default function CreateInventory() {
               timer: 4000,
             });
           }
-
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }
@@ -101,17 +102,13 @@ export default function CreateInventory() {
       style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
     >
       <div className="w-full flex flex-col items-center select-none py-10">
-        <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto">
-          <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
-            Agregar Mercancia
-          </div>
-        </div>
-      </div>
-      <div className="mt-8 justify-center flex">
         <form
           onSubmit={handleSubmit}
           className="w-2/4 p-8 bg-white rounded-lg shadow-2xl"
         >
+          <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
+            Agregar Mercancia
+          </div>
           <div className=" -mx-3 mb-6 py-10">
             <div className="w-full px-3 mb-10">
               <div className="w-full mr-4">
@@ -133,7 +130,27 @@ export default function CreateInventory() {
                 )}
               </div>
             </div>
-            <div className="w-full px-3 mb-10">
+            <div className="w-full px-3 flex">
+              <div className="w-full mr-4 mb-6">
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  label="Cantidad del Producto"
+                  variant="outlined"
+                  value={cantidad}
+                  onChange={(e) => setCantidad(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {selectedUnidadIngred ? selectedUnidadIngred : ""}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+            </div>
+            <div className="w-full px-3 ">
               {dataProv && ( // Verificación de nulidad para data
                 <Autocomplete
                   options={dataProv.slice(1)}
@@ -150,7 +167,9 @@ export default function CreateInventory() {
                   onChange={handleProviderSelect}
                 />
               )}
+              <ModalformProvider />
             </div>
+
             <div className="w-full px-3 mb-10">
               <InputLabel id="demo-simple-select-helper-label">
                 Seleccione un tipo
@@ -167,21 +186,24 @@ export default function CreateInventory() {
                 <MenuItem value={"SALIDA"}>SALIDA</MenuItem>
               </Select>
             </div>
+
+            <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
+              Factura del Producto
+            </div>
+
             <div className="w-full px-3 flex">
-              <div className="w-full mr-4 py-6">
+              <div className="w-full mr-4 mb-6">
                 <TextField
                   required
                   fullWidth
                   type="number"
-                  label="Cantidad"
+                  label="Monto de la factura"
                   variant="outlined"
-                  value={cantidad}
-                  onChange={(e) => setCantidad(e.target.value)}
+                  value={invoice_amount}
+                  onChange={(e) => setInvoice_amount(e.target.value)}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">
-                        {selectedUnidadIngred ? selectedUnidadIngred : ""}
-                      </InputAdornment>
+                      <InputAdornment position="end">$</InputAdornment>
                     ),
                   }}
                 />

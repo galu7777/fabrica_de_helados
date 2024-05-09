@@ -32,7 +32,7 @@ export function Estadisticas() {
   const dispatch = useDispatch();
   const estadistica = useSelector((state) => state.estadisticas);
   const dataEstad = estadistica.data;
- 
+
   useEffect(() => {
     dispatch(getEstadisticasVentas());
   }, [dispatch]);
@@ -48,7 +48,7 @@ export function Estadisticas() {
     const amountLeastSold = dataEstad.leastSold.total_cantidad_salida;
 
     data = {
-      labels: ["2024-04"],
+      labels: ["2024-05"],
       datasets: [
         {
           type: "bar",

@@ -14,13 +14,15 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 import AccountMenu from "./AccountMenu";
-import StyledButton from "./StyledButton";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const drawerWidth = 240;
 
@@ -92,18 +94,23 @@ const user = JSON.parse(localStorage.getItem("usuario"));
 
 const sections = [
   { image: "/icons/casa.png", label: "Home", path: "/home" },
-  { image: "/icons/analytics.svg", label: "Estadísticas", path: "/dashboard" },
+  {
+    image: "/icons/analytics.svg",
+    label: "Estadísticas",
+    path: "/dashboard",
+    roles: ["superAdmi"],
+  },
 
   {
     image: "/icons/helado.svg",
     label: "Paletas",
-    path: "/Paletas",
+
     subMenuItems: [
-      {
-        image: "/icons/tipos.png",
-        label: "Tipos",
-        path: "/TipoPaletas",
-      },
+      // {
+      //   image: "/icons/tipos.png",
+      //   label: "Tipos",
+      //   path: "/TipoPaletas",
+      // },
       {
         image: "/icons/disponible.png",
         label: "Disponibles",
@@ -123,12 +130,51 @@ const sections = [
         image: "/icons/lista.png",
         label: "Lista de Paletas",
         path: "/Paletas",
+
+      },
+    ],
+    roles: ["superAdmi","empleado"],
+  },
+
+  {
+    image: "/icons/helado.svg",
+    label: "Materia Prima",
+    subMenuItems: [
+      {
+        image: "/icons/tipos.png",
+        label: "Ingredientes",
+        path: "/ingredientes",
+      },
+      {
+        image: "/icons/disponible.png",
+        label: "Recetas",
+        path: "/recetas",
+      },
+      {
+        image: "/icons/intercambio.png",
+        label: "Batidos",
+        path: "/batidos",
+      },
+      {
+        image: "/icons/salida.png",
+        label: "Mercancia",
+        path: "/Inventario",
+      },
+      {
+        image: "/icons/lista.png",
+        label: "Inventario",
+        path: "/stock_mp",
         roles: ["superAdmi"],
       },
     ],
     roles: ["superAdmi"],
   },
-
+  {
+    image: "/icons/cliente.png",
+    label: "Proveedores",
+    path: "/proveedores",
+    roles: ["superAdmi", "admin", "empleado"],
+  },
   {
     image: "/icons/cliente.png",
     label: "Clientes",
@@ -138,7 +184,7 @@ const sections = [
   {
     image: "/icons/venta.png",
     label: "Ventas",
-    path: "/Ventas",
+    path: "/crear_ventas",
     roles: ["superAdmi", "admin"],
   },
   {
@@ -147,13 +193,31 @@ const sections = [
     path: "/users",
     roles: ["superAdmi"],
   },
+  {
+    image: "/icons/helado.svg",
+    label: "Mercancia",
+    subMenuItems: [
+      {
+        image: "/icons/salida.png",
+        label: "Agregar",
+        path: "/crear_inventario",
+      },
+      {
+        image: "/icons/lista.png",
+        label: "Inventario",
+        path: "/stock_mp",
+        roles: ["superAdmi"],
+      },
+    ],
+    roles: ["admin", "empleado"],
+  },
 ];
 
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-   const [currentPath, setCurrentPath] = useState("");
+  const [currentPath, setCurrentPath] = useState("");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -167,29 +231,48 @@ export default function MiniDrawer() {
     setCurrentPath(path);
     navigate(path);
   };
+  // Filtrar las secciones según el rol del usuario
+  const filteredSections = sections.filter((section) => {
+    if (!user) return false; // Si no hay usuario, ocultar todas las secciones
+    if (!section.roles) return true; // Si no hay roles definidos, mostrar la sección
+    return section.roles.includes(user.rol); // Mostrar la sección si el rol del usuario está incluido en los roles permitidos
+  });
 
   return (
-    <div className="-mb-12">
+    <div className="-mb-12 select-none">
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} sx={{ backgroundColor: "red" }}>
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <Toolbar>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleDrawerOpen}
-                  edge="start"
-                  sx={{
-                    marginRight: 5,
-                    ...(open && { display: "none" }),
-                  }}
-                >
-                  <MenuIcon />
-                </IconButton>
+                {user &&
+                (user.rol === "empleado" ||
+                  user.rol === "admin" ||
+                  user.rol === "superAdmi") ? (
+                  <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={handleDrawerOpen}
+                    edge="start"
+                    sx={{
+                      marginRight: 5,
+                      ...(open && { display: "none" }),
+                    }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                ) : (
+                  ""
+                )}
 
-                <Typography variant="h6" noWrap component="div">
+                <Typography
+                  onClick={() => navigate("/home")}
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ cursor: "pointer" }}
+                >
                   DON PALETON
                 </Typography>
               </Toolbar>
@@ -224,110 +307,87 @@ export default function MiniDrawer() {
             </div>
           </div>
         </AppBar>
-
-        <Drawer variant="permanent" open={open}>
-          <DrawerHeader sx={{ backgroundColor: "red" }}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronRightIcon className=" text-white" />
-              ) : (
-                <ChevronLeftIcon className=" text-white" />
-              )}
-              <h2 className="text-white">Cerrar</h2>
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <List>
-            {sections.map((section, index) => (
-              <React.Fragment key={index}>
-                <ListItem
-                  disablePadding
-                  sx={{ display: "block" }}
-                  onClick={() => handleNavigation(section.path)}
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                      backgroundColor:
-                        section.path === currentPath ? "red" : "white",
-                      "&:hover": {
-                        backgroundColor: "red",
-                      },
-                    }}
-                  >
-                    <StyledButton>
-                      <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: open ? 3 : "auto",
-                          justifyContent: "center",
-                        }}
+        {user &&
+        (user.rol === "empleado" ||
+          user.rol === "admin" ||
+          user.rol === "superAdmi") ? (
+          <Drawer variant="permanent" open={open}>
+            <DrawerHeader sx={{ backgroundColor: "red" }}>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "rtl" ? (
+                  <ChevronRightIcon className=" text-white" />
+                ) : (
+                  <ChevronLeftIcon className=" text-white" />
+                )}
+                <h2 className="text-white">Cerrar</h2>
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <List>
+              {filteredSections.map((section, index) => (
+                <React.Fragment key={index}>
+                  {section.subMenuItems ? ( // Si tiene subMenuItems, renderizar un Accordion
+                    <Accordion>
+                      <AccordionSummary
+                        // sx={{display: "block"}}
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls={`panel${index}-content`}
+                        id={`panel${index}-header`}
                       >
+                        <ListItemIcon>
+                          <img
+                            src={section.image}
+                            alt={section.label}
+                            style={{ width: "24px", height: "24px" }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText primary={section.label} />
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <List>
+                          {section.subMenuItems.map((subItem, subIndex) => (
+                            <ListItem
+                              key={`${index}-${subIndex}`}
+                              button
+                              onClick={() => handleNavigation(subItem.path)}
+                              selected={subItem.path === currentPath}
+                            >
+                              <ListItemIcon>
+                                <img
+                                  src={subItem.image}
+                                  alt={subItem.label}
+                                  style={{ width: "24px", height: "24px" }}
+                                />
+                              </ListItemIcon>
+                              <ListItemText primary={subItem.label} />
+                            </ListItem>
+                          ))}
+                        </List>
+                      </AccordionDetails>
+                    </Accordion>
+                  ) : (
+                    // Si no tiene subMenuItems, renderizar un ListItem simple
+                    <ListItem
+                      button
+                      onClick={() => handleNavigation(section.path)}
+                      selected={section.path === currentPath}
+                    >
+                      <ListItemIcon>
                         <img
                           src={section.image}
                           alt={section.label}
                           style={{ width: "24px", height: "24px" }}
                         />
                       </ListItemIcon>
-                      <ListItemText
-                        primary={section.label}
-                        sx={{ opacity: open ? 1 : 0 }}
-                      />
-                    </StyledButton>
-                  </ListItemButton>
-                </ListItem>
-                {section.subMenuItems &&
-                  section.subMenuItems.map((subItem, subIndex) => (
-                    <ListItem
-                      key={`${index}-${subIndex}`}
-                      disablePadding
-                      sx={{
-                        display: "block",
-                        backgroundColor:
-                          subItem.path === currentPath ? "red" : "white",
-                        "&:hover": {
-                          backgroundColor: "red",
-                        },
-                      }}
-                      onClick={() => handleNavigation(subItem.path)}
-                    >
-                      <StyledButton>
-                        <ListItemButton
-                          sx={{
-                            minHeight: 48,
-                            justifyContent: open ? "initial" : "center",
-                            pl: open ? 4 : 2.5,
-                          }}
-                        >
-                          <ListItemIcon
-                            sx={{
-                              minWidth: 0,
-                              mr: open ? 3 : "auto",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <img
-                              src={subItem.image}
-                              alt={subItem.label}
-                              style={{ width: "24px", height: "24px" }}
-                            />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={subItem.label}
-                            sx={{ opacity: open ? 1 : 0 }}
-                          />
-                        </ListItemButton>
-                      </StyledButton>
+                      <ListItemText primary={section.label} />
                     </ListItem>
-                  ))}
+                  )}
+                </React.Fragment>
+              ))}
+            </List>
+          </Drawer>
+        ) : null}
 
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
-        </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
         </Box>

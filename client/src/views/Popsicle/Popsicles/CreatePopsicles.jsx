@@ -193,6 +193,8 @@ const handlePrecio = (e) => {
                   value={form.descripcion}
                   onChange={handleChange}
                   fullWidth
+                  multiline
+                  rows={4}
                   name="descripcion"
                   required
                 />
