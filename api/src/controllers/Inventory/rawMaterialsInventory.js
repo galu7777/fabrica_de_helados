@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
                 cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
             })
             await InventarioMateriaPrima.create({
-                cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId
+                cantidad, unidad_medida: ingredientUM.unidad_medida, tipo, IngredienteId, ProveedorId, invoice_amount
             })
             return response(res, 201, {message: 'success', entry})
         }
