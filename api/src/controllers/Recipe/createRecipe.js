@@ -2,7 +2,7 @@ const { Recipe, Ingrediente, Paleta } = require('../../db');
 const response = require('../../utils/response');
 
 module.exports = async (req, res) => {
-    const { nombre, ingredientes, id_paleta } = req.body;
+    const { nombre, ingredientes, id_paleta, cantidadAprox } = req.body;
     try {
         // Verificar si ya existe una receta con el mismo nombre
         const recetaExistente = await Recipe.findOne({ where: { nombre } });
@@ -23,7 +23,9 @@ module.exports = async (req, res) => {
             // Crear la receta
             const nuevaReceta = await Recipe.create({
                 nombre,
-                id_paleta
+                id_paleta,
+                cantidadAprox
+
             });
 
             // Iterar sobre cada ingrediente y asociarlo a la receta
