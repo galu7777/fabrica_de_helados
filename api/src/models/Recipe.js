@@ -15,7 +15,10 @@ module.exports = (sequelize) => {
             nombre: {
                 type: DataTypes.STRING,
                 unique: true
-            }
+            },
+            cantidadAprox: {
+                type: DataTypes.INTEGER,
+            },
         },
         {
             timestamps: true,
