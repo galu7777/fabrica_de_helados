@@ -5,10 +5,13 @@ module.exports = async (req, res) => {
     const { id_paleta, cantidad, tipo, descripcion } = req.body;
 
     try {
+
         const foundedPopsicle = await Paleta.findByPk(id_paleta);
         const idTypePopsicle = foundedPopsicle.TipoDePaletumId;
         const typePopsicle = await TipoDePaleta.findByPk(idTypePopsicle);
+
         const popsicle = foundedPopsicle.dataValues;
+
         let cantidad_paleta = cantidad;
 
         let existingInventory = await InventarioPaleta.findOne({ where: { PaletumId: id_paleta } });
@@ -29,6 +32,10 @@ module.exports = async (req, res) => {
                 });
 
         } else {
+
+            const foundedStockPopsicle = await StockPaleta.findByPk(id_paleta);
+            const stock = foundedStockPopsicle.dataValues;
+
             // Lógica para SALIDA
             if (!existingInventory) {
                 return response(res, 404, 'No hay stock disponible para la paleta');
@@ -39,15 +46,14 @@ module.exports = async (req, res) => {
             if (existingInventory) {
 
                 existingInventory = await InventarioPaleta.create({
-                    nombre_paleta: popsicle.nombre,
-                    tipo_paleta: typePopsicle.nombre,
+                    nombre_paleta: stock.nombre_paleta,
                     cantidad: cantidad_paleta,
-                    peso_unitario: popsicle.peso,
-                    precio: popsicle.precio,
+                    peso_unitario: stock.peso,
+                    precio: stock.precio,
                     unidad_medida: "GRS",
                     tipo: tipo,
-                    PaletumId: popsicle.id,
-                    TipoDePaletumId: typePopsicle.id,
+                    PaletumId: stock.PaletumId,
+                    TipoDePaletumId: stock.TipoDePaletumId,
                     descripcion
                 });
 
