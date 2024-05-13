@@ -56,6 +56,7 @@ const createPalletMovement = require('../controllers/Popsicle/Movimientos/create
 const getEstadisticasPaleta = require('../controllers/Report/getEstadisticasPaleta');
 const getVentasMes = require('../controllers/Report/getVentasMes');
 const getBestClient = require('../controllers/Report/getBestClient');
+const getExpectedQuantity = require('../controllers/Report/getExpectedQuantity');
 
 
 // Importar todos los routers;
@@ -147,11 +148,13 @@ router.post('/auth/signin', auth)
 // rutas del stock
 router.get('/stock/get_allstock', getStockMaterialsInventory)
 router.get('/stock/get_allstock_popsicle', getStockPopsicle)
+router.get('/stock/detailpopsicle/:id', getStockPopsicle)
 
 //rutas de reporte
 router.get('/report/estadisticas', getEstadisticasPaleta)
 router.get('/report/ventaMes', getVentasMes)
 router.get('/report/bestclient', getBestClient)
+router.get('/report/aprox', getExpectedQuantity)
 
 
 // rutas de devolucion
