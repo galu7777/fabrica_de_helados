@@ -67,18 +67,18 @@ module.exports = async (req, res) => {
 
             // Actualizar la cantidad de paletas en stock
             await stockPopsicle.update({ cantidad: stockPopsicle.cantidad - cantidad });
-
+           
             // Registrar la salida por venta en el inventario
             await InventarioPaleta.create({
-                nombre_paleta: inventoryPopsicle.nombre_paleta,
-                tipo_paleta: inventoryPopsicle.tipo_paleta,
+                nombre_paleta: stockPopsicle.nombre_paleta,
+                tipo_paleta: stockPopsicle.tipo_paleta,
                 cantidad: -cantidad,
-                peso_unitario: inventoryPopsicle.peso_unitario,
-                unidad_medida: inventoryPopsicle.unidad_medida,
+                peso_unitario: stockPopsicle.peso_unitario,
+                unidad_medida: stockPopsicle.unidad_medida,
                 tipo: "SALIDA POR VENTA",
-                PaletumId: inventoryPopsicle.PaletumId,
-                BatidaDeHeladoId: inventoryPopsicle.BatidaDeHeladoId,
-                TipoDePaletumId: inventoryPopsicle.TipoDePaletumId
+                PaletumId: stockPopsicle.PaletumId,
+                BatidaDeHeladoId: stockPopsicle.BatidaDeHeladoId,
+                TipoDePaletumId: stockPopsicle.TipoDePaletumId
             });
         }
         await newVenta.update({
