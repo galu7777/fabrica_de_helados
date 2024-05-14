@@ -32,6 +32,8 @@ import CreateStore from "./views/Popsicle/Store/CreateStore";
 import SalidaPaletas from "./views/Popsicle/Store/SalidaPaletas";
 import { Estadisticas } from "./views/Estadisticas/Estadisticas";
 import ShowPopsicle from "./views/Home/ShowPopsicle/ShowPopsicle";
+import ListDispatch from "./views/Popsicle/Dispatch/ListDispatch";
+import DetailDispatch from "./views/Popsicle/Dispatch/DetailDispatch";
 
 function App() {
   const location = useLocation();
@@ -41,7 +43,8 @@ function App() {
     <div>
       {location.pathname !== "/register" &&
         location.pathname !== "/login" &&
-        !location.pathname.startsWith("/Venta/") && <NavBar />}
+        !location.pathname.startsWith("/Venta/") &&
+        !location.pathname.startsWith("/Pedidos/") && <NavBar />}
       <Routes>
         {user ? (
           <Route path="/home" element={<Home />} />
@@ -126,6 +129,9 @@ function App() {
                 <Route path="/crear_inventario" element={<CreateInventory />} />
                 <Route path="/proveedores" element={<Provider />} />
                 <Route path="/Provider/:id" element={<EditProvider />} />
+                <Route path="/Pedidos" element={<ListDispatch />} />
+                <Route path="/Pedidos/:id" element={<DetailDispatch />} />
+                <Route path="/stock_mp" element={<StockMateriaPrima />} />
               </>
             )}
           </>

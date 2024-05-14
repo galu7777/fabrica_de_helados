@@ -17,6 +17,7 @@ export default function StockPopsicles() {
   }, [dispatch]);
 
   const columns = [
+   
     {
       field: "image",
       headerName: "Imagen",

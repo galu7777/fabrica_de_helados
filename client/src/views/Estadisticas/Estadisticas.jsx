@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEstadisticasVentas } from "../../redux/actions/actions";
 import VentaMes from "./VentaMes";
 import TopCustomer from "./TopCustomer";
+import { ConciPopsicle } from "./ConciPopsicle";
 
 import {
   Chart as ChartJS,
@@ -82,12 +83,16 @@ export function Estadisticas() {
       },
     };
   }
+  const nameMostSold = dataEstad.mostSold.nombre_paleta;
+  const amountMostSold = dataEstad.mostSold.total_cantidad_salida;
+  const nameLeastSold = dataEstad.leastSold.nombre_paleta;
+  const amountLeastSold = dataEstad.leastSold.total_cantidad_salida;
 
   return (
-    <div className="bg-blue-50 h-screen -mt-10 select-none flex">
-      <div className="p-4 w-full" style={{ flex: 1 }}>
-        <div className="flex flex-col justify-between w-full ">
-          <div className="bg-white  mb-5 h-1/4 shadow-2xl rounded-md w-full">
+    <>
+      <div className="bg-blue-50 h-screen select-none flex flex-col lg:flex-row">
+        <div className="flex flex-col h-3/4 mt-4  ">
+          <div className="bg-white mb-5 shadow-2xl rounded-md h-1/4">
             <div className="ml-20 text-left">
               <p className="text-gray-600 font-normal py-8 text-2xl">
                 Total de Ventas
@@ -95,51 +100,50 @@ export function Estadisticas() {
               <VentaMes />
             </div>
           </div>
-
-          <div className="bg-white h-1/4  shadow-2xl rounded-md">
-           <TopCustomer />
+          <div className="bg-white shadow-2xl rounded-md h-full">
+            <TopCustomer />
           </div>
         </div>
-      </div>
-
-      <div className="p-4" style={{ flex: 3 }}>
-        <div className="bg-white justify-center w-full shadow-2xl rounded-md h-3/4">
-          <div className="p-8">
-            <div className="ml-20 text-left">
-              <p className="text-gray-600 font-normal text-2xl">
-                Estadísticas de Ventas
-              </p>
-            </div>
-            <div className="h-80 justify-center items-center flex">
-              <Bar data={data} options={options} />
-            </div>
-
-            <div className="h-px bg-gray-200 my-4"></div>
-            <div className="text-left">
-              <p className="text-gray-500 font-medium">
-                <span className="border-1 border rounded-2xl py-2 border-green-500 p-2 text-xs font-semibold bg-green-100 text-green-500 bg-opacity-100">
-                  {" "}
-                  más vendidas
-                </span>{" "}
-                {dataEstad.mostSold.nombre_paleta} :
-                {dataEstad.mostSold.total_cantidad_salida}
-                <span className="text-lg font-bold text-black "></span>
-              </p>
+        <div className="p-4 flex-grow bg-gray-50 ml-5 shadow-2xl rounded-md  h-3/4 mt-4">
+          <div className="bg-white ">
+            <div className="p-8">
+              <div className="ml-20 text-left">
+                <p className="text-gray-600 font-normal text-2xl">
+                  Estadísticas de Ventas
+                </p>
+              </div>
+              <div className="h-80 flex justify-center items-center">
+                <Bar data={data} options={options} />
+              </div>
               <div className="h-px bg-gray-200 my-4"></div>
-              <p className="text-gray-500 font-medium">
-                <span className="border-1 border rounded-2xl py-2 border-red-500 p-2 text-xs font-semibold bg-red-100 text-red-500 bg-opacity-100">
-                  {" "}
-                  menos vendidas
-                </span>{" "}
-                {dataEstad.leastSold.nombre_paleta} :
-                {dataEstad.leastSold.total_cantidad_salida}
-                <span className="text-lg font-bold text-black"></span>
-              </p>
+              <div className="flex justify-center items-center">
+                <div className="flex items-center">
+                  <p className="text-gray-500 font-medium mr-2">
+                    <span className="border-1 border rounded-2xl py-2 border-green-500 p-2 text-xs font-semibold bg-green-100 text-green-500 bg-opacity-100">
+                      más vendidas
+                    </span>{" "}
+                    {nameMostSold} : {amountMostSold}
+                  </p>
+                </div>
+                <div className="flex items-center">
+                  <p className="text-gray-500 font-medium">
+                    <span className="border-1 border rounded-2xl py-2 border-red-500 p-2 text-xs font-semibold bg-red-100 text-red-500 bg-opacity-100">
+                      menos vendidas
+                    </span>{" "}
+                    {nameLeastSold} : {amountLeastSold}
+                  </p>
+                </div>
+              </div>
+              <div className="h-px bg-gray-200 my-4"></div>
             </div>
-            <div className="h-px bg-gray-200 my-4"></div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="bg-blue-50 h-full -mt-40 select-none mb-10">
+        <div className="w-full rounded-lg mt-4 bg-white h-screen">
+          <ConciPopsicle />
+        </div>
+      </div>
+    </>
   );
 }

@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { Link } from "react-router-dom";
 export default function Customers() {
   const dispatch = useDispatch();
   const customers = useSelector((state) => state.customers);
@@ -84,12 +84,13 @@ export default function Customers() {
         align: "center",
         renderCell: (params) => (
           <div>
-            <VisibilityIcon
-              variant="outlined"
-              color="primary"
-              href={`/Cliente/${params.row.id}`}
-              //onClick={() => handleDelete(params.row.id)}
-            />
+            <Link to={`/Cliente/${params.row.id}`}>
+              <VisibilityIcon
+                variant="outlined"
+                color="primary"
+                //onClick={() => handleDelete(params.row.id)}
+              />
+            </Link>
           </div>
         ),
       },

@@ -109,7 +109,7 @@ export default function InventoryPopsicles() {
       style={{ height: "940px", backgroundImage: "url('/marca-agua.svg')" }}
     >
       <LowStockAlert />
-      <div className="w-full flex flex-col items-center select-none py-10">
+      <div className="w-full flex flex-col items-center select-none py-5">
         <div className="bg-white rounded-lg shadow-lg p-6 w-1/3 mx-auto ">
           <div className="text-2xl text-center font-bold mb-6 text-[#9b1028]">
             Agregar Helado
@@ -118,7 +118,7 @@ export default function InventoryPopsicles() {
         </div>
       </div>
 
-      <div className=" justify-center flex mt-7 ">
+      <div className=" justify-center flex ">
         <div className="text-2xl text-center font-bold mb-10 text-[#9b1028] mt-5 w-5/12 bg-white py-5 rounded-md">
           Movimientos
         </div>
@@ -127,7 +127,7 @@ export default function InventoryPopsicles() {
       <div className="flex justify-center">
         <Box
           sx={{
-            height: 700,
+            height: 480,
             width: "70%",
             backgroundColor: "white",
             boxShadow: 24,
@@ -138,11 +138,11 @@ export default function InventoryPopsicles() {
             <DataGrid
               rows={rows}
               columns={columns}
-              pageSize={25}
+              pageSize={7}
               initialState={{
                 pagination: {
                   paginationModel: {
-                    pageSize: 25,
+                    pageSize: 7,
                   },
                 },
               }}

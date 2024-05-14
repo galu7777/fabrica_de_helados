@@ -71,7 +71,7 @@ export default function CreateInventory() {
                 tipo: type,
                 IngredienteId: selectedIngredient.id,
                 ProveedorId: selectedProvider.id,
-                invoice_amount: invoice_amount,
+                invoice_amount: Number(invoice_amount).toFixed(2),
               })
             );
             Swal.fire("Registro Exitoso!", "", "success");

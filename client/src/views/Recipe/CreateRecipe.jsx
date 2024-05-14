@@ -54,8 +54,9 @@ export default function CreateRecipe() {
     const nombre = form.nombre.toUpperCase();
     const dataTransformada = {
       nombre,
-      id_paleta: selectedPopsicle.id,
       ingredientes: selectedIngredientesIds,
+      id_paleta: selectedPopsicle.id,
+      cantidadAprox: cantidad,
     };
 
 

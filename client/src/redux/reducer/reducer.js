@@ -37,6 +37,7 @@ import {
     GET_ESTADISTICAS,
     GET_VENTAMES,
     GET_TOP_CUSTOMER,
+    GET_APROX,
     REGISTER,
     SIGNIN,
     DETAIL_USER,
@@ -46,7 +47,8 @@ import {
     ADD__SALE,
     DETAIL_SALE,
     GET_STOCK_MP,
-    GET_STOCK_POPSICLES
+    GET_STOCK_POPSICLES,
+    GET_STOCKPOPDETAIL
 
 } from "../actions/actionsTypes"
 
@@ -78,6 +80,7 @@ const initialState = {
     estadisticas: {},
     ventaMes: {},
     topCustomer: {},
+    popsicleAprox: {},
     user: {},
     userList: {},
     newUser: {},
@@ -87,7 +90,8 @@ const initialState = {
     detailsale: {},
     stockMP: {},
     stockPop: {},
-    newStorePopsicle: {}
+    newStorePopsicle: {},
+    detail_stockpop: {}
 }
 
 export const reducer = (state = initialState, {type,payload} ) => {
@@ -411,6 +415,12 @@ export const reducer = (state = initialState, {type,payload} ) => {
                 topCustomer: payload
             }
         }
+        case GET_APROX: {
+            return {
+                ...state,
+                popsicleAprox: payload
+            }
+        }
         case ADD__SALE: {
             return {
                 ...state,
@@ -441,6 +451,13 @@ export const reducer = (state = initialState, {type,payload} ) => {
             return {
                 ...state,
                 stockPop: payload
+            }
+        }
+
+        case GET_STOCKPOPDETAIL: {
+            return {
+                ...state,
+                detail_stockpop: payload
             }
         }
 

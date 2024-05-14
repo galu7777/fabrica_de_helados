@@ -15,8 +15,11 @@ const LowStockAlert = () => {
         if (data) {
             const alerts = [];
             data.forEach((item) => {
-                if (item.cantidad < 200) {
-                    alerts.push(`El ingrediente ${item.Ingrediente.nombre} tiene una cantidad de ${item.cantidad.toFixed(2)} ${item.unidad_medida}`);
+                if (item.cantidad < 10) {
+                    alerts.push(
+                        `El ingrediente ${item.Ingrediente.nombre} tiene una cantidad de ${item.cantidad.toFixed(2)} ${item.unidad_medida}\n\n`
+                    );
+
                 }
             });
 
@@ -24,10 +27,10 @@ const LowStockAlert = () => {
                 Swal.fire({
                     icon: "warning",
                     title: "Poca materia prima",
-                    html: alerts.join("<p>"),
+                    html: alerts.join(`<p class="mb-3 mt-5 text-left">`),
                     confirmButtonText: "Aceptar",
                     customClass: {
-                        popup: "w-2/4",
+                        popup: "w-auto h-auto",
                     },
                 });
             }

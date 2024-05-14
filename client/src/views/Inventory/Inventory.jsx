@@ -28,7 +28,7 @@ export default function Inventory() {
     {
       field: "cantidad",
       headerName: "Cantidad",
-      width: 200,
+      width: 150,
       headerAlign: "center",
       align: "center",
     },
@@ -45,9 +45,17 @@ export default function Inventory() {
       align: "center",
     },
     {
+      field: "invoice_amount",
+      headerName: "Monto de la factura",
+      width: 150,
+      headerAlign: "center",
+      align: "center",
+    },
+
+    {
       field: "Proveedor",
       headerName: "Proveedor",
-      width: 400,
+      width: 200,
       headerAlign: "center",
       align: "center",
     },
@@ -69,6 +77,7 @@ export default function Inventory() {
         nombre: item.Ingrediente.nombre,
         cantidad: item.cantidad,
         unidad_medida: item.unidad_medida,
+        invoice_amount: item.invoice_amount,
         tipo: item.tipo,
         Proveedor: item.Proveedor.razon_social,
         updatedAt: formatDateTime(item.updatedAt),

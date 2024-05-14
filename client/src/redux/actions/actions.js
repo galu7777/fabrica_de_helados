@@ -42,11 +42,13 @@ import {
     GET_ESTADISTICAS,
     GET_VENTAMES,
     GET_TOP_CUSTOMER,
+    GET_APROX,
     GET_SALES,
     ADD__SALE,
     DETAIL_SALE,
     GET_STOCK_MP,
-    GET_STOCK_POPSICLES
+    GET_STOCK_POPSICLES,
+    GET_STOCKPOPDETAIL
 
 } from "./actionsTypes"
 // import { getIngredientsApi } from "../../api";
@@ -719,6 +721,20 @@ export const getTopCustomer = () => async (dispatch) => {
         throw error
     }
 }
+
+export const getConciliacionPopsicle = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get('http://localhost:3001/report/aprox')
+
+        dispatch({
+            type: GET_APROX,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
 export const createSales = (nombre) => async (dispatch) => {
     try {
 
@@ -755,6 +771,20 @@ export const getStockPopsicle = (nombre) => async (dispatch) => {
         const { data } = await axios.get('http://localhost:3001/stock/get_allstock_popsicle', nombre)
         dispatch({
             type: GET_STOCK_POPSICLES,
+            payload: data,
+        });
+    } catch (error) {
+        console.log('Error: ', error)
+        throw error
+    }
+}
+
+export const getStockPopsicleDetail = (id) => async (dispatch) => {
+    try {
+
+        const { data } = await axios.get(`http://localhost:3001/stock/detailpopsicle/${id}`)
+        dispatch({
+            type: GET_STOCKPOPDETAIL,
             payload: data,
         });
     } catch (error) {

@@ -130,38 +130,43 @@ const sections = [
         image: "/icons/lista.png",
         label: "Lista de Paletas",
         path: "/Paletas",
-
       },
     ],
-    roles: ["superAdmi","empleado"],
+    roles: ["superAdmi", "empleado"],
+  },
+  {
+    image: "/icons/cliente.png",
+    label: "Pedidos",
+    path: "/Pedidos",
+    roles: ["empleado"],
   },
 
   {
-    image: "/icons/helado.svg",
+    image: "/icons/raw-materials.svg",
     label: "Materia Prima",
     subMenuItems: [
       {
-        image: "/icons/tipos.png",
+        image: "/icons/ingredient.svg",
         label: "Ingredientes",
         path: "/ingredientes",
       },
       {
-        image: "/icons/disponible.png",
+        image: "/icons/recipe.svg",
         label: "Recetas",
         path: "/recetas",
       },
       {
-        image: "/icons/intercambio.png",
+        image: "/icons/batido.svg",
         label: "Batidos",
         path: "/batidos",
       },
       {
-        image: "/icons/salida.png",
+        image: "/icons/mercancia.svg",
         label: "Mercancia",
         path: "/Inventario",
       },
       {
-        image: "/icons/lista.png",
+        image: "/icons/inventario.svg",
         label: "Inventario",
         path: "/stock_mp",
         roles: ["superAdmi"],
@@ -170,7 +175,7 @@ const sections = [
     roles: ["superAdmi"],
   },
   {
-    image: "/icons/cliente.png",
+    image: "/icons/food.svg",
     label: "Proveedores",
     path: "/proveedores",
     roles: ["superAdmi", "admin", "empleado"],
@@ -184,7 +189,7 @@ const sections = [
   {
     image: "/icons/venta.png",
     label: "Ventas",
-    path: "/crear_ventas",
+    path: "/Ventas",
     roles: ["superAdmi", "admin"],
   },
   {
@@ -194,7 +199,7 @@ const sections = [
     roles: ["superAdmi"],
   },
   {
-    image: "/icons/helado.svg",
+    image: "/icons/mercancia.svg",
     label: "Mercancia",
     subMenuItems: [
       {

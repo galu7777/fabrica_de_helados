@@ -48,7 +48,7 @@ const Home = () => {
   return (
     <>
       {data && (
-        <div className="w-full bg-white py-16 select-none">
+        <div className="w-full  py-16 select-none h-screen">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold mb-8 text-center text-gray-500">
               Paletas

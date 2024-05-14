@@ -51,6 +51,7 @@ export default function Popsicles() {
   //   });
   // };
   const columns = [
+
     {
       field: "image",
       headerName: "Imagen",

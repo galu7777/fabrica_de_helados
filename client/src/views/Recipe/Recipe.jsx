@@ -67,7 +67,7 @@ const Recipe = () => {
   };
 
   const showEditDialog = async () => {
-    const { nombre, Ingredientes } = detailData;
+    const { nombre, Ingredientes, cantidadAprox } = detailData;
     // Crear una plantilla HTML con entradas de texto para cada ingrediente
     const ingredientesHTML = Ingredientes.map((ingrediente, index) => {
       const { nombre, RecipeIngrediente } = ingrediente;
@@ -96,8 +96,18 @@ const Recipe = () => {
       },
       html: `
       <div>
-                       <h1 class='text-2xl font-bold text-indigo-800 mt-5'>Nombre de la Receta</h1>
-        <input id="swal-nombre" class="swal2-input" value="${nombre}" placeholder="Nombre">
+    <div class="flex justify-between items-center">
+  <div>
+    <h1 class="text-2xl font-bold text-indigo-800 mt-5">Nombre de la Receta</h1>
+    <input id="swal-nombre" class="swal2-input" value="${nombre}" placeholder="Nombre">
+  </div>
+  <div>
+    <h1 class="text-2xl font-bold text-indigo-800 mt-5">Cantidad Aproximada de Paletas</h1>
+    <input id="swal-nombre" class="swal2-input" value="${cantidadAprox}" placeholder="Nombre">
+  </div>
+</div>
+
+
         ${ingredientesHTML}
       </div>
     `,
@@ -114,12 +124,10 @@ const Recipe = () => {
             `#swal-cantidad-${index}`
           );
 
-
           return {
             ...ingrediente,
             RecipeIngrediente: {
               cantidad: cantidadInput.value.trim(),
-
             },
           };
         });
@@ -128,42 +136,41 @@ const Recipe = () => {
       },
     }).then(async (result) => {
       if (result.isConfirmed) {
+        try {
+          // Transformar result.value al formato esperado
+          const { nombre, Ingredientes } = result.value;
 
-         try {
-           // Transformar result.value al formato esperado
-           const { nombre, Ingredientes } = result.value;
+          const ingredientesTransformados = Ingredientes.map(
+            ({ id, RecipeIngrediente }) => ({
+              id,
+              cantidad: RecipeIngrediente.cantidad,
+              unidad_medida: RecipeIngrediente.unidad_medida,
+            })
+          );
 
-           const ingredientesTransformados = Ingredientes.map(
-             ({ id, RecipeIngrediente }) => ({
-               id,
-               cantidad: RecipeIngrediente.cantidad,
-               unidad_medida: RecipeIngrediente.unidad_medida,
-             })
-           );
+          const dataTransformada = {
+            nombre,
+            ingredientes: ingredientesTransformados,
+          };
 
-           const dataTransformada = {
-             nombre,
-             ingredientes: ingredientesTransformados,
-           };
-
-           // Dispatch con el formato transformado
+          // Dispatch con el formato transformado
           await dispatch(editRecipe(editingId, dataTransformada));
-           Swal.fire("Editado con Exito!", "", "success");
-           setTimeout(() => {
-             refrescarPagina();
-           }, "1000");
+          Swal.fire("Editado con Exito!", "", "success");
+          setTimeout(() => {
+            refrescarPagina();
+          }, "1000");
 
-           // Muestra una alerta de éxito
-           Swal.fire({
-             title: "Registro Exitoso!",
-             icon: "success",
-           });
+          // Muestra una alerta de éxito
+          Swal.fire({
+            title: "Registro Exitoso!",
+            icon: "success",
+          });
 
-           // Refresca la página después de un segundo
-           setTimeout(() => {
-             refrescarPagina();
-           }, 1000);
-         } catch (error) {
+          // Refresca la página después de un segundo
+          setTimeout(() => {
+            refrescarPagina();
+          }, 1000);
+        } catch (error) {
           // Captura cualquier error que ocurra durante el envío de datos
           const { response } = error;
           Swal.fire({
@@ -174,9 +181,7 @@ const Recipe = () => {
             showConfirmButton: false,
             timer: 4000,
           });
-
         }
-
       }
 
       setIsEditing(false);

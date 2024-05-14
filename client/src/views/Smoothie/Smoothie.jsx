@@ -56,6 +56,8 @@ const rows =
     };
   });
 
+  console.log(data)
+
 
   return (
     <>

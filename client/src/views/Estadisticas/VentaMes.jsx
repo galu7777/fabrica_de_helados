@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getVentaMes } from "../../redux/actions/actions";
-import Divider from "@mui/material/Divider";
 
 
 export default function VentaMes() {
@@ -21,9 +20,9 @@ export default function VentaMes() {
 
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex  w-full  ">
-        <div>
+    <div className="flex flex-col items-center h-screen">
+      <div className="flex w-full flex-col md:flex-row">
+        <div className="flex justify-center md:justify-start md:mr-2 mb-4 md:mb-0">
           <div className="p-4 bg-indigo-100 rounded-md">
             <img
               className="h-10 w-10 object-contain text-indigo-600"
@@ -32,7 +31,7 @@ export default function VentaMes() {
             />
           </div>
         </div>
-        <div className="mx-2">
+        <div className="text-center md:text-left">
           <p className="text-gray-500">Número de Ventas</p>
           <p className="text-4xl">
             $ {dataVenta ? dataVenta.totalAmount.toFixed(2) : "0"}
@@ -40,9 +39,6 @@ export default function VentaMes() {
         </div>
       </div>
 
-      <div className="w-full mt-5">
-        <Divider />
-      </div>
     </div>
   );
 }

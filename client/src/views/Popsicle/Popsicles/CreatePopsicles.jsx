@@ -84,13 +84,13 @@ const handlePrecio = (e) => {
         showCancelButton: true,
         confirmButtonText: "Registrar",
         denyButtonText: `No registrar`,
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-             Swal.fire("Registro Exitoso!", "", "success");
-             // Ahora puedes enviar el formData al servidor
-             dispatch(createPopsicle(formData));
-             navigate("/Paletas");
+            Swal.fire("Registro Exitoso!", "", "success");
+            // Ahora puedes enviar el formData al servidor
+            await dispatch(createPopsicle(formData));
+            navigate("/Paletas");
           } catch (error) {
             // Captura cualquier error que ocurra durante el envío de datos
             Swal.fire({
@@ -102,7 +102,6 @@ const handlePrecio = (e) => {
               timer: 4000,
             });
           }
-
         } else if (result.isDenied) {
           Swal.fire("Los Cambios no se registraron.", "", "info");
         }

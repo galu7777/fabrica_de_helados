@@ -37,7 +37,7 @@ export default function TopCustomer() {
   }, [dataTop]);
 
   return (
-    <div className="ml-20 text-left">
+    <div className="ml-20 text-left ">
       <p className="text-gray-600 font-normal py-8 text-2xl">Mejor Cliente</p>
       <div className="justify-between flex ">
         <div className="text-center">
